@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="공공데이터 원윈도우 검색을 LLM 기반 하이브리드 검색과 챗봇으로 고도화한 과정">
+<title>원윈도우 AI 검색 고도화 | 임영기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="detail.css">
+</head>
+<body>
+<nav class="nav"><div class="wrap"><a href="../index.html#projects">← 포트폴리오로</a><b>임영기</b></div></nav>
+
+<div class="wrap">
+  <header>
+    <div class="stages"><span class="on">데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
+    <h1>원윈도우 AI 검색 고도화</h1>
+    <p class="lead">공공데이터 통합 카탈로그 약 13.5만 건을 찾는 국가 서비스의 검색과 챗봇을, 외부 상용 RAG 없이 자체 구성한 LLM 기반 하이브리드 검색으로 바꾸고 있습니다.</p>
+    <dl class="facts">
+      <dt>기간</dt><dd>2026.09 ~ 12 예정 (NIA 사업)</dd>
+      <dt>역할</dt><dd>검색 백엔드 설계와 구현, GPU 추론 서버 구축, 검색 품질 평가, 감리 대응 산출물</dd>
+      <dt>환경</dt><dd>외부 접속이 막힌 폐쇄망, A100 2장</dd>
+      <dt>기술</dt><dd>vLLM, EXAONE-4.0-32B-AWQ, bge-m3, k3s, FastAPI, PostgreSQL + pgvector(HNSW), MCP, SSE</dd>
+    </dl>
+    <div class="metrics">
+      <div><b>71 → 86</b><span>hit@1, 100문항 (상용 RAG 대비)</span></div>
+      <div><b>14.8s → 1.7s</b><span>문항당 처리 시간</span></div>
+      <div><b>153 / 156</b><span>질의 의도 분류 정확도, 평균 0.06초</span></div>
+      <div><b>149 = 149</b><span>기존 서버와 동등성 검증, 199문항</span></div>
+    </div>
+  </header>
+
+  <section>
+    <h2><small>OVERVIEW</small>검색 파이프라인</h2>
+    <p>기존 Elasticsearch와 외부 상용 RAG를 자체 구축한 EXAONE, bge-m3, pgvector, MCP 구성으로 대체했습니다. 질의마다 의도를 먼저 나누고, 검색이 필요한 질의만 아래 단계를 거칩니다.</p>
+    <figure>
+      <svg viewBox="0 0 760 300" role="img" aria-label="검색 파이프라인: 질의, 의도 라우터, LLM 검색어 확장, 키워드 검색과 벡터 검색 병렬, 가중 RRF 결합, LLM 재순위, 결과와 요약 스트리밍">
+        <defs><marker id="a1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#161616"/></marker></defs>
+        <g font-size="13" text-anchor="middle">
+          <rect x="10" y="120" width="90" height="56" rx="10" fill="#ffffff" stroke="#161616"/><text x="55" y="152" font-weight="700" fill="#161616">질의</text>
+          <rect x="130" y="102" width="120" height="92" rx="10" fill="#e3d9fb" stroke="#6a3fbf"/><text x="190" y="128" font-weight="700" fill="#161616">의도 라우터 (5분류)</text><text x="190" y="150" font-size="11" fill="#444444">검색, 상세, API,</text><text x="190" y="166" font-size="11" fill="#444444">외부지식, 잡담</text>
+          <rect x="280" y="120" width="110" height="56" rx="10" fill="#ffffff" stroke="#161616"/><text x="335" y="144" font-weight="700" fill="#161616">LLM 검색어</text><text x="335" y="162" fill="#161616">확장</text>
+          <rect x="420" y="60" width="130" height="56" rx="10" fill="#ffffff" stroke="#161616"/><text x="485" y="84" font-weight="700" fill="#161616">키워드 검색</text><text x="485" y="102" font-size="11.5" fill="#444444">MCP</text>
+          <rect x="420" y="180" width="130" height="56" rx="10" fill="#ffffff" stroke="#161616"/><text x="485" y="204" font-weight="700" fill="#161616">의미 검색</text><text x="485" y="222" font-size="11.5" fill="#444444">bge-m3 + pgvector</text>
+          <rect x="580" y="120" width="80" height="56" rx="10" fill="#ffffff" stroke="#161616"/><text x="620" y="144" font-weight="700" fill="#161616">가중</text><text x="620" y="162" fill="#161616">RRF</text>
+          <rect x="680" y="110" width="70" height="76" rx="10" fill="#e3d9fb" stroke="#6a3fbf"/><text x="715" y="140" font-weight="700" fill="#161616">LLM</text><text x="715" y="158" font-weight="700" fill="#161616">재순위</text>
+        </g>
+        <g stroke="#161616" stroke-width="1.5" fill="none" marker-end="url(#a1)">
+          <path d="M100 148 H126"/><path d="M250 148 H276"/>
+          <path d="M390 140 L416 92"/><path d="M390 156 L416 204"/>
+          <path d="M550 88 L576 136"/><path d="M550 208 L576 160"/>
+          <path d="M660 148 H676"/>
+        </g>
+        <g font-size="12" fill="#666666">
+          <text x="190" y="214" text-anchor="middle">잡담, 외부지식은 바로 답변</text>
+          <path d="M190 194 V200" stroke="#9a9a9a" stroke-dasharray="3 3"/>
+          <text x="715" y="214" text-anchor="middle">결과와 AI 요약</text>
+          <text x="715" y="230" text-anchor="middle">(SSE 스트리밍)</text>
+        </g>
+        <text x="10" y="284" font-size="12" fill="#666666">의미 없는 입력은 무결과 임계값(0.64)으로 걸러 빈 결과를 돌려줌</text>
+      </svg>
+    </figure>
+    <div class="ph"><b>이미지 자리: 원윈도우 검색, 챗봇 화면</b><p>고도화된 검색 결과 화면이나 멀티턴 챗봇 대화 화면 캡처</p><p><code>projects/images/onewindow-chat.png</code></p></div>
+  </section>
+
+  <section>
+    <h2><small>01</small>하이브리드 검색 설계</h2>
+    <div class="psr">
+      <div><b>설계</b><p>LLM 검색어 확장, MCP 키워드 검색과 pgvector 의미 검색, 가중 RRF 결합, LLM 목록형 재순위로 이어지는 단계를 만들고, 앞단에 질의 의도 라우터를 두어 검색이 필요 없는 질의는 바로 답하게 했습니다.</p></div>
+      <div><b>라우터</b><p>검색, 상세, API, 외부지식, 잡담 5분류 프롬프트를 설계해 단일 질의 <mark>153/156</mark>, 멀티턴 29/30 정확도, 평균 0.06초.</p></div>
+      <div><b>무결과</b><p>의미 없는 입력을 거르는 기준을 감으로 정하지 않고, 무의미 질의 60개와 정상 질의 199개로 임계값별 오판 수를 재서 0.64를 채택했습니다.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><small>02</small>벡터 구성 실험과 Elasticsearch 대체</h2>
+    <div class="psr">
+      <div><b>실험</b><p>13.5만 건 전체를 임베딩한 뒤 필드를 하나로 합친 벡터, 필드별 가중합, 유사도 가중합을 비교하고, 가중치는 0.1 간격 1,001개 조합을 탐색했습니다.</p></div>
+      <div><b>결정</b><p>튜닝셋과 시험셋을 분리해 과적합을 막고 제목과 설명을 0.5:0.5로 합친 벡터를 택했습니다. MRR@20이 튜닝셋 0.830 → <mark>0.850</mark>, 시험셋 0.736 → <mark>0.754</mark>. 청킹은 토큰 분포와 순위 변화를 분석한 결과 이득이 없어 적용하지 않았습니다.</p></div>
+      <div><b>대체 범위</b><p>운영팀 회신을 바탕으로 Elasticsearch가 실제로 쓰이던 경로 다섯 곳과 색인 배치에서 만료 상품이 빠지던 문제를 정리해, 무엇을 대체하고 무엇을 남길지 범위를 설계했습니다.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><small>03</small>검색 API 서버</h2>
+    <div class="psr">
+      <div><b>구현</b><p>인터페이스 정의서를 기준으로 FastAPI 서버를 새로 작성했습니다. 검색, AI 요약 스트리밍(SSE), 멀티턴 챗봇, 대화 이력, 관련 데이터셋 조회를 제공합니다.</p></div>
+      <div><b>검증</b><p>기존 서버와 같은 199문항을 돌려 hit@1 <mark>149 대 149</mark>로 동등함을 확인한 뒤 Docker 이미지로 운영 환경에 배포했습니다.</p></div>
+      <div><b>관측</b><p>요청마다 trace_id를 붙여 응답 시간, 에이전트 경로, LLM 토큰, MCP와 임베딩 호출 결과를 JSON 한 줄로 남기고, 이 로그에서 평가 지표를 바로 뽑게 했습니다.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <h2><small>04</small>검색 품질 평가</h2>
+    <p>hit@1, hit@3, F1@3, nDCG@3, 처리 시간을 기준으로 평가 체계와 채점 스크립트를 만들고, 기존 상용 RAG와 같은 100문항으로 비교했습니다.</p>
+    <figure>
+      <svg viewBox="0 0 720 300" role="img" aria-label="상용 RAG와 고도화 검색 비교: hit@1 71 대 86, hit@3 74 대 91, F1 0.521 대 0.690">
+        <line x1="60" y1="210" x2="700" y2="210" stroke="#161616"/>
+        <g stroke="#d4d0de" stroke-dasharray="3 3"><line x1="60" y1="120" x2="700" y2="120"/><line x1="60" y1="30" x2="700" y2="30"/></g>
+        <g font-size="11.5" fill="#666666" text-anchor="end"><text x="52" y="214">0</text><text x="52" y="124">50</text><text x="52" y="34">100</text></g>
+        <rect x="120" y="82.2" width="50" height="127.8" fill="#c9c6d2"/><rect x="178" y="55.2" width="50" height="154.8" fill="#6a3fbf"/>
+        <rect x="330" y="76.8" width="50" height="133.2" fill="#c9c6d2"/><rect x="388" y="46.2" width="50" height="163.8" fill="#6a3fbf"/>
+        <rect x="540" y="116.2" width="50" height="93.8" fill="#c9c6d2"/><rect x="598" y="85.8" width="50" height="124.2" fill="#6a3fbf"/>
+        <g font-size="12.5" font-weight="700" text-anchor="middle" fill="#161616">
+          <text x="145" y="76">71</text><text x="203" y="49" fill="#6a3fbf">86</text>
+          <text x="355" y="70">74</text><text x="413" y="40" fill="#6a3fbf">91</text>
+          <text x="565" y="110">0.521</text><text x="623" y="80" fill="#6a3fbf">0.690</text>
+        </g>
+        <g font-size="13" text-anchor="middle" fill="#161616"><text x="174" y="232">hit@1</text><text x="384" y="232">hit@3</text><text x="594" y="232">F1@3 (×100 축)</text></g>
+        <g font-size="12.5" fill="#161616"><rect x="240" y="262" width="14" height="14" fill="#c9c6d2"/><text x="260" y="274">기존 상용 RAG</text><rect x="380" y="262" width="14" height="14" fill="#6a3fbf"/><text x="400" y="274">고도화 검색</text></g>
+      </svg>
+      <figcaption>100문항 기준. 같은 문항에서 문항당 처리 시간은 14.8초에서 1.7초로 줄었습니다.</figcaption>
+    </figure>
+    <p class="note"><b>평가셋도 다시 설계했습니다.</b> 감리에서 평가셋의 독립성을 지적받아, 데이터 난이도 기준으로 99문항 시험 평가셋을 새로 만들고 사후 블라인드 판정 방식으로 바꿨습니다.</p>
+  </section>
+
+  <section>
+    <h2><small>05</small>폐쇄망 GPU 추론 서버</h2>
+    <div class="psr">
+      <div><b>구성</b><p>아웃바운드가 막힌 서버에 컨테이너 이미지와 가중치를 반입해 k3s 단일 노드로 vLLM을 띄웠습니다. EXAONE-4.0-32B-AWQ는 TP=2, bge-m3는 레플리카 2개로 GPU를 지정해 공존시켰습니다.</p></div>
+      <div><b>메모리</b><p>GPU 사용률 비율로 나누지 않고, 모델별로 필요한 KV 캐시 토큰 수를 계산해 메모리를 배분했습니다.</p></div>
+      <div><b>출력 제어</b><p>개발용 Qwen 모델이 한자와 가나를 섞어 쓰는 문제를 logits processor로 막았습니다. 어휘 24.8만 개 중 5.9만 토큰을 차단했고 한글 토큰 영향은 0이었습니다.</p></div>
+    </div>
+    <p>서빙 속도를 올린 투기 디코딩과 vLLM 패치는 착수 전 사전 실험에서 진행했습니다. <a href="serving32b.html">32B 서빙 최적화</a> 페이지에 정리했습니다.</p>
+  </section>
+
+  <section>
+    <h2><small>06</small>보안과 부하</h2>
+    <div class="psr">
+      <div><b>보안</b><p>OWASP LLM Top 10 (2026) 기준으로 입력과 외부 자료 정제, 프롬프트 안 자료 경계 태그, 도구 인자 검증, API 키 인증, 개인정보 로그 마스킹을 반영했습니다.</p></div>
+      <div><b>부하</b><p>측정 방법부터 설계했습니다. vLLM 프리픽스 캐시 효과를 무작위 프롬프트로 밀어내 제거하고, 같은 GPU를 쓰는 다른 작업에 오염된 표본을 분리한 뒤 부트스트랩 신뢰구간으로 산출했습니다.</p></div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 720 150" role="img" aria-label="동시 요청 수별 p95 응답 시간: 4건 12.4초, 8건 23.2초">
+        <g font-size="13" fill="#161616" text-anchor="end"><text x="120" y="48">동시 4건</text><text x="120" y="98">동시 8건</text></g>
+        <rect x="130" y="32" width="248" height="24" rx="2" fill="#6a3fbf"/>
+        <rect x="130" y="82" width="464" height="24" rx="2" fill="#c9c6d2"/>
+        <g font-size="12.5" font-weight="700"><text x="386" y="49" fill="#6a3fbf">p95 12.4초, 상한으로 채택</text><text x="602" y="99" fill="#161616">p95 23.2초</text></g>
+        <text x="130" y="138" font-size="12" fill="#666666">막대 길이는 같은 축척. 동시 8건에서 응답 시간이 두 배 가까이 뛰는 구간을 근거로 동시 처리 상한을 4로 정함</text>
+      </svg>
+    </figure>
+    <p class="note"><b>간헐적 500 오류.</b> 가끔만 나는 오류를 추적해 httpx와 vLLM의 keep-alive가 둘 다 5초라 연결 재사용 시점이 겹치는 경쟁 조건임을 찾았습니다. 4.996 ~ 4.999초 구간에서 재현해 원인을 확정하고 클라이언트 설정으로 해결했습니다.</p>
+  </section>
+
+  <section>
+    <h2><small>07</small>MCP 연동과 감리 대응</h2>
+    <div class="psr">
+      <div><b>MCP</b><p>외부 기관(한국산업인력공단)의 MCP 서버, 도구 45개를 챗봇에 MCP 클라이언트로 연동하는 시연을 구현했습니다. 질의 판정 25/25.</p></div>
+      <div><b>감리</b><p>인터페이스 정의서, 적합성 평가 계획서와 결과서, 모델 라우팅 기준서를 작성하고, 감리 지적 13건(양자화 근거, 컨테이너 운영, 평가셋 독립성, 모델 선정 근거 등)을 실측과 코드로 대조해 대응했습니다.</p></div>
+      <div><b>진행 중</b><p>시범 플랫폼 3곳 대상 메타데이터 정합성 규칙 검증, 공공데이터포털 오픈API 호출 URL을 만드는 에이전트의 파라미터 정확도 개선.</p></div>
+    </div>
+  </section>
+</div>
+
+<footer><a href="../index.html#projects">← 포트폴리오로 돌아가기</a></footer>
+</body>
+</html>

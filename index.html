@@ -37,22 +37,38 @@ mark { background: linear-gradient(transparent 55%, var(--lav-mark) 55%); color:
 
 .wrap { max-width: 1080px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); }
 
-/* 상단 메뉴 */
-.nav { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.95); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
-.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 56px; }
-.nav b { font-weight: 900; letter-spacing: -0.02em; }
-.nav ul { list-style: none; display: flex; gap: 22px; padding: 0; margin: 0; overflow-x: auto; }
+/* 상단 메뉴: 히어로 위에서는 투명, 아래로 내리면 흰 바탕 */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 10; transition: background .2s, border-color .2s; border-bottom: 1px solid transparent; }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 60px; }
+.nav b { font-weight: 900; letter-spacing: -0.02em; color: var(--white); }
+.nav ul { list-style: none; display: flex; gap: 24px; padding: 0; margin: 0; overflow-x: auto; }
 .nav li + li { margin-top: 0; }
-.nav a { color: var(--soft); text-decoration: none; font-size: 14px; font-weight: 500; white-space: nowrap; }
-.nav a:hover { color: var(--violet); }
+.nav a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14.5px; font-weight: 700; white-space: nowrap; }
+.nav a:hover { color: var(--lav); }
+.nav.solid { background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom-color: var(--line); }
+.nav.solid b { color: var(--ink); }
+.nav.solid a { color: var(--soft); }
+.nav.solid a:hover { color: var(--violet); }
 
-/* 히어로 */
-.hero { padding-block: 96px 72px; }
-.hero h1 { font-size: clamp(30px, 5vw, 50px); font-weight: 900; line-height: 1.3; letter-spacing: -0.03em; }
-.hero h1 .hl { box-shadow: inset 0 -0.34em 0 var(--lav); }
-.hero hr { width: 56px; height: 4px; border: 0; background: var(--ink); margin: 28px 0; }
-.hero p.sub { color: var(--soft); font-size: clamp(15px, 2vw, 18px); max-width: 52ch; }
-.stats { margin-top: 52px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+/* 히어로: 사진(images/hero.jpg)이 있으면 사진, 없으면 어텐션 행렬 무늬 위에 짙은 막 */
+.hero {
+  position: relative; color: var(--white); text-align: center;
+  padding-block: 150px 110px;
+  background:
+    linear-gradient(rgba(38, 30, 52, 0.82), rgba(38, 30, 52, 0.82)),
+    url("images/hero.jpg") center / cover no-repeat,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Crect width='160' height='160' fill='%23463a5c'/%3E%3Cg fill='%23c9b8f5'%3E%3Crect x='4' y='4' width='16' height='16' opacity='.9'/%3E%3Crect x='24' y='24' width='16' height='16' opacity='.75'/%3E%3Crect x='44' y='4' width='16' height='16' opacity='.25'/%3E%3Crect x='44' y='44' width='16' height='16' opacity='.8'/%3E%3Crect x='64' y='24' width='16' height='16' opacity='.3'/%3E%3Crect x='64' y='64' width='16' height='16' opacity='.7'/%3E%3Crect x='84' y='44' width='16' height='16' opacity='.2'/%3E%3Crect x='84' y='84' width='16' height='16' opacity='.85'/%3E%3Crect x='104' y='64' width='16' height='16' opacity='.35'/%3E%3Crect x='104' y='104' width='16' height='16' opacity='.6'/%3E%3Crect x='124' y='84' width='16' height='16' opacity='.2'/%3E%3Crect x='124' y='124' width='16' height='16' opacity='.9'/%3E%3Crect x='144' y='104' width='16' height='16' opacity='.3'/%3E%3Crect x='144' y='144' width='16' height='16' opacity='.7'/%3E%3Crect x='4' y='64' width='16' height='16' opacity='.15'/%3E%3Crect x='24' y='104' width='16' height='16' opacity='.2'/%3E%3Crect x='104' y='4' width='16' height='16' opacity='.15'/%3E%3Crect x='144' y='24' width='16' height='16' opacity='.18'/%3E%3C/g%3E%3C/svg%3E") repeat;
+}
+.hero .eyebrow { font-size: 15px; font-weight: 700; letter-spacing: 0.08em; color: var(--lav); }
+.hero h1 { margin-top: 10px; font-size: clamp(40px, 7vw, 68px); font-weight: 900; letter-spacing: -0.02em; line-height: 1.2; }
+.hero hr { width: 56px; height: 4px; border: 0; background: var(--lav); margin: 30px auto; }
+.hero p.sub { color: rgba(255,255,255,0.85); font-size: clamp(15px, 2vw, 18px); line-height: 1.8; }
+.hero .cta { display: inline-block; margin-top: 34px; background: var(--violet); color: var(--white); text-decoration: none; font-weight: 700; font-size: 15px; padding: 12px 28px; border-radius: 999px; }
+.hero .cta:hover { background: #5a32a8; }
+
+/* 히어로 아래 숫자 카드 */
+.stats-band { padding-block: 40px 8px; }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
 .stat { background: var(--grey); border-radius: 12px; padding: 18px; display: grid; gap: 4px; align-content: start; }
 .stat b { font-size: 22px; font-weight: 900; color: var(--violet); letter-spacing: -0.02em; }
 .stat span { font-size: 13px; color: var(--ink); line-height: 1.5; }
@@ -119,6 +135,7 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
 
 @media (max-width: 860px) {
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nav ul { gap: 16px; }
   .about { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .projects { grid-template-columns: minmax(0, 1fr); }
   .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -133,7 +150,8 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
   .flow { grid-template-columns: minmax(0, 1fr); }
   .step::after { content: none !important; }
   .sec { padding-block: 64px; }
-  .hero { padding-block: 64px 48px; }
+  .hero { padding-block: 120px 80px; }
+  .nav b { display: none; }
 }
 </style>
 </head>
@@ -153,9 +171,16 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
 
 <header class="hero">
   <div class="wrap">
-    <h1><span class="hl">LLM을 학습하고 운영하는</span><br>AI 개발자, 임영기입니다</h1>
+    <p class="eyebrow">AI ENGINEER PORTFOLIO</p>
+    <h1>임영기</h1>
     <hr>
-    <p class="sub">모델을 직접 학습하고, 폐쇄망과 NPU 같은 제약된 환경에서 서비스로 운영하며, 결과가 맞는지 수치로 확인합니다.</p>
+    <p class="sub">LLM을 직접 학습하고,<br>폐쇄망과 NPU 같은 제약된 환경에서 서비스로 운영하며,<br>결과가 맞는지 수치로 확인합니다.</p>
+    <a class="cta" href="#about">더 알아보기 ↓</a>
+  </div>
+</header>
+
+<div class="stats-band">
+  <div class="wrap">
     <div class="stats">
       <div class="stat"><b>14.8s → 1.7s</b><span>상용 RAG를 자체 검색으로 대체, 문항당 처리 시간</span><em>원윈도우 AI 검색</em></div>
       <div class="stat"><b>65 → 156 TPS</b><span>32B 모델 단일 사용자 생성 속도, 코드 생성 기준</span><em>32B 서빙 최적화</em></div>
@@ -163,9 +188,9 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
       <div class="stat"><b>논문 4편</b><span>1저자 2편, 저널 1편 포함</span><em>Papers</em></div>
     </div>
   </div>
-</header>
+</div>
 
-<section class="sec grey" id="about">
+<section class="sec" id="about">
   <div class="wrap">
     <div class="sec-head"><h2>ABOUT ME</h2></div>
     <div class="about">
@@ -192,7 +217,7 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
         <p class="summary">공공데이터 약 13.5만 건을 찾는 국가 서비스의 검색과 챗봇을 LLM 기반으로 고도화</p>
         <ul><li>LLM 검색어 확장, 키워드와 벡터 검색, LLM 재순위로 상용 RAG를 대체</li><li>외부 접속이 막힌 서버에 k3s와 vLLM으로 32B 모델과 임베딩 모델 서빙</li><li>간헐적 500 오류를 keep-alive 경쟁 조건으로 재현해 확정</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">검색 백엔드, GPU 추론 서버, 품질 평가 담당</p><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, k3s, FastAPI, pgvector, MCP</p></div>
+        <div class="foot"><p class="role">검색 백엔드, GPU 추론 서버, 품질 평가 담당</p><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, k3s, FastAPI, pgvector, MCP</p><div class="links"><a href="projects/onewindow.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
@@ -203,7 +228,7 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
         <p class="summary">상용 이미지 생성 모델의 저작권 침해를 그 출력으로 학습한 대리 모델에서 탐지할 수 있는지 검증</p>
         <ul><li>SD1.4, SD3.5 풀 파인튜닝. SD3.5 학습 코드를 직접 작성하고 45GB 안에 맞춘 메모리 설계</li><li>0.983이 나온 실험의 교란을 통제군으로 밝히고 조건을 바꿔 재입증</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">실험 설계, 학습, 평가 단독 수행</p><p class="stack">PyTorch, diffusers, accelerate, SD1.4, SD3.5</p></div>
+        <div class="foot"><p class="role">실험 설계, 학습, 평가 단독 수행</p><p class="stack">PyTorch, diffusers, accelerate, SD1.4, SD3.5</p><div class="links"><a href="projects/copyright.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
@@ -214,7 +239,7 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
         <p class="summary">32B 모델로 웹 검색 에이전트 채팅 서비스를 만들며 응답 속도와 출력 안정성 개선</p>
         <ul><li>투기 디코딩 적용, vLLM 소스 패치 2건 중 하나는 이후 업스트림에 같은 수정이 머지됨</li><li>bf16과 AWQ를 비교해 양자화 탓인 환각과 아닌 것을 분리</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">A100, H100 환경 성능 최적화 단독 수행</p><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, 투기 디코딩</p></div>
+        <div class="foot"><p class="role">A100, H100 환경 성능 최적화 단독 수행</p><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, 투기 디코딩</p><div class="links"><a href="projects/serving32b.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
@@ -236,7 +261,7 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
         <p class="summary">한국어 대화로 영상 생성 모델(CogVideoX)용 영어 프롬프트를 완성해 주는 챗봇</p>
         <ul><li>GPT 두 개를 대화시켜 학습 쌍 24,769건 합성 데이터 직접 구축</li><li>Qwen2.5-14B-Instruct 한국어 LoRA 학습, 1저자 논문 발표</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">합성 데이터 구축, LoRA 학습 담당</p><p class="stack">PyTorch, transformers, trl, peft</p></div>
+        <div class="foot"><p class="role">합성 데이터 구축, LoRA 학습 담당</p><p class="stack">PyTorch, transformers, trl, peft</p><div class="links"><a href="projects/vpeko.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
@@ -247,7 +272,7 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
         <p class="summary">트랜스포머를 밑바닥부터 구현한 한영 번역 소형 모델</p>
         <ul><li>어텐션을 minGRU 선형 순환으로 바꿔 긴 입력에서 메모리 약 2.5배 절감</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="stack">PyTorch, minGRU, apache-2.0</p><div class="links"><a href="https://github.com/wndaasa/ko-en-translator" target="_blank" rel="noopener">GitHub</a><a href="https://huggingface.co/Imsbee/ko-en-translator" target="_blank" rel="noopener">Hugging Face</a></div></div>
+        <div class="foot"><p class="stack">PyTorch, minGRU, apache-2.0</p><div class="links"><a href="projects/translator.html">자세히 보기 →</a><a href="https://github.com/wndaasa/ko-en-translator" target="_blank" rel="noopener">GitHub</a><a href="https://huggingface.co/Imsbee/ko-en-translator" target="_blank" rel="noopener">Hugging Face</a></div></div>
       </article>
 
     </div>
@@ -300,5 +325,14 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
 </section>
 
 <footer>© 2026 임영기</footer>
+<script>
+(function () {
+  var nav = document.querySelector(".nav");
+  var hero = document.querySelector(".hero");
+  function update() { nav.classList.toggle("solid", window.scrollY > hero.offsetHeight - 70); }
+  window.addEventListener("scroll", update, { passive: true });
+  update();
+})();
+</script>
 </body>
 </html>

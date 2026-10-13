@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="한국어 대화로 영상 생성 프롬프트를 완성하는 챗봇을 합성 데이터와 LoRA로 만든 과정">
+<title>VPE-Ko 한국어 영상 프롬프트 챗봇 | 임영기</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<link rel="stylesheet" href="detail.css">
+</head>
+<body>
+<nav class="nav"><div class="wrap"><a href="../index.html#projects">← 포트폴리오로</a><b>임영기</b></div></nav>
+
+<div class="wrap">
+  <header>
+    <div class="stages"><span class="on">데이터</span><span class="on">학습</span><span>서빙</span><span class="on">평가</span></div>
+    <h1>VPE-Ko 한국어 영상 프롬프트 챗봇</h1>
+    <p class="lead">영상 생성 모델은 대부분 영어 프롬프트를 전제로 만들어져, 한국어 사용자에게는 진입 장벽이 높습니다. 한국어로 대화만 하면 영상 생성용 영어 프롬프트를 완성해 주는 챗봇을, 학습 데이터부터 직접 만들었습니다.</p>
+    <dl class="facts">
+      <dt>기간</dt><dd>2024.11 ~ 2025.08</dd>
+      <dt>역할</dt><dd>팀 프로젝트 중 합성 데이터 구축, 한국어 LoRA 학습, 영상 생성 모델 스타일 LoRA 담당</dd>
+      <dt>환경</dt><dd>A100 80GB 1장</dd>
+      <dt>기술</dt><dd>PyTorch, transformers, trl, peft, Qwen2.5-14B-Instruct, CogVideoX, OpenAI API</dd>
+    </dl>
+    <div class="metrics">
+      <div><b>24,769</b><span>직접 만든 한국어 학습 쌍</span></div>
+      <div><b>3.6 → 4.9</b><span>G-Eval 프롬프트 품질</span></div>
+      <div><b>2.1 → 4.6</b><span>생성 영상 만족도 (5점)</span></div>
+      <div><b>1저자</b><span>제6회 한국 인공지능 학술대회</span></div>
+    </div>
+  </header>
+
+  <section>
+    <h2><small>OVERVIEW</small>대화로 프롬프트를 완성하는 흐름</h2>
+    <p>공식 문서를 분석해 영상 품질을 좌우하는 핵심 요소 다섯 가지(주요 객체, 카메라 구도, 카메라 종류, 영상 속도, 조명)를 정하고, 챗봇이 이 요소를 한국어 대화로 하나씩 모으게 했습니다. 다 모이면 영어 프롬프트, 부정 프롬프트, 한국어 번역, 개선 제안 네 가지를 내놓고, 사용자의 구어체 피드백을 받아 다시 고칩니다.</p>
+    <figure>
+      <svg viewBox="0 0 760 250" role="img" aria-label="대화 흐름: 주제 입력, 핵심 요소 질문, 충분히 모였는지 판단, 프롬프트 네 종류 출력, 개선 피드백 반복, 영상 생성">
+        <defs><marker id="a3" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#161616"/></marker></defs>
+        <g font-size="13" text-anchor="middle">
+          <rect x="10" y="80" width="100" height="56" rx="10" fill="#ffffff" stroke="#161616"/><text x="60" y="104" font-weight="700" fill="#161616">주제 입력</text><text x="60" y="122" font-size="11.5" fill="#444444">한국어</text>
+          <rect x="140" y="70" width="140" height="76" rx="10" fill="#e3d9fb" stroke="#6a3fbf"/><text x="210" y="98" font-weight="700" fill="#161616">핵심 요소 질문</text><text x="210" y="118" font-size="11" fill="#444444">객체, 구도, 카메라,</text><text x="210" y="134" font-size="11" fill="#444444">속도, 조명</text>
+          <path d="M345 80 L395 108 L345 136 L295 108 Z" fill="#ffffff" stroke="#161616"/><text x="345" y="112" font-size="12" font-weight="700" fill="#161616">충분?</text>
+          <rect x="420" y="70" width="150" height="76" rx="10" fill="#ffffff" stroke="#161616"/><text x="495" y="94" font-weight="700" fill="#161616">프롬프트 4종</text><text x="495" y="114" font-size="11" fill="#444444">영어, 부정, 번역,</text><text x="495" y="130" font-size="11" fill="#444444">개선 제안</text>
+          <rect x="620" y="80" width="130" height="56" rx="10" fill="#ffffff" stroke="#6a3fbf"/><text x="685" y="104" font-weight="700" fill="#6a3fbf">영상 생성</text><text x="685" y="122" font-size="11.5" fill="#444444">CogVideoX</text>
+        </g>
+        <g stroke="#161616" stroke-width="1.5" fill="none" marker-end="url(#a3)">
+          <path d="M110 108 H136"/><path d="M280 108 H291"/><path d="M395 108 H416"/><path d="M570 108 H616"/>
+          <path d="M345 136 V190 H210 V150"/>
+          <path d="M530 146 V200 H460 V150"/>
+        </g>
+        <g font-size="11.5" fill="#666666" text-anchor="middle">
+          <text x="276" y="206">부족하면 다시 질문</text>
+          <text x="495" y="220">사용자 구어체 피드백으로 개선</text>
+          <text x="405" y="100">예</text>
+        </g>
+      </svg>
+      <figcaption>멀티턴 대화는 이전 대화 전체를 다음 입력으로 넘겨 구현했습니다.</figcaption>
+    </figure>
+    <div class="ph"><b>이미지 자리: 챗봇 대화 화면</b><p>한국어로 주제를 말하고 질문에 답한 뒤 영어 프롬프트가 완성되는 대화 화면 캡처</p><p><code>projects/images/vpeko-chat.png</code></p></div>
+  </section>
+
+  <section>
+    <h2><small>01</small>합성 데이터 직접 구축</h2>
+    <div class="psr">
+      <div><b>문제</b><p>핵심 요소를 차례로 묻고 모으는 한국어 대화 데이터는 공개된 것이 없었습니다.</p></div>
+      <div><b>방법</b><p>GPT 두 개에 역할을 나눠 서로 대화시켰습니다. 질문자는 챗봇 역할로 핵심 요소를 하나씩 묻고, 답변자는 사용자 역할로 답합니다. 답변자에게는 사투리, 반말, 문학체 등 약 30가지 말투를 무작위로 주고 주제도 자동으로 만들어, 실제 사용자처럼 다양한 입력이 나오게 했습니다.</p></div>
+      <div><b>결과</b><p>대화 5천여 건을 만들어 <mark>학습 쌍 24,769건</mark>으로 펼쳤습니다.</p></div>
+    </div>
+    <figure>
+      <svg viewBox="0 0 760 220" role="img" aria-label="합성 데이터 생성 구조: 질문자 GPT와 답변자 GPT의 대화, 대화 5천여 건, 학습 쌍 24,769건, Qwen2.5-14B LoRA">
+        <defs><marker id="a4" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#161616"/></marker></defs>
+        <g font-size="13" text-anchor="middle">
+          <rect x="10" y="20" width="160" height="60" rx="10" fill="#ffffff" stroke="#161616"/><text x="90" y="46" font-weight="700" fill="#161616">질문자 GPT</text><text x="90" y="66" font-size="11.5" fill="#444444">챗봇 역할, 요소 수집</text>
+          <rect x="10" y="130" width="160" height="60" rx="10" fill="#ffffff" stroke="#161616"/><text x="90" y="156" font-weight="700" fill="#161616">답변자 GPT</text><text x="90" y="176" font-size="11.5" fill="#444444">사용자 역할, 약 30종 말투</text>
+          <rect x="240" y="75" width="140" height="60" rx="10" fill="#ffffff" stroke="#161616"/><text x="310" y="101" font-weight="700" fill="#161616">대화 5천여 건</text><text x="310" y="121" font-size="11.5" fill="#444444">주제 자동 생성</text>
+          <rect x="420" y="75" width="140" height="60" rx="10" fill="#e3d9fb" stroke="#6a3fbf"/><text x="490" y="101" font-weight="700" fill="#161616">학습 쌍</text><text x="490" y="121" font-weight="700" fill="#6a3fbf">24,769건</text>
+          <rect x="600" y="75" width="150" height="60" rx="10" fill="#ffffff" stroke="#6a3fbf"/><text x="675" y="101" font-weight="700" fill="#161616">LoRA SFT</text><text x="675" y="121" font-size="11.5" fill="#444444">Qwen2.5-14B-Instruct</text>
+        </g>
+        <g stroke="#161616" stroke-width="1.5" fill="none" marker-end="url(#a4)">
+          <path d="M70 80 V126"/><path d="M110 130 V84"/>
+          <path d="M170 50 L236 95"/><path d="M170 160 L236 115"/>
+          <path d="M380 105 H416"/><path d="M560 105 H596"/>
+        </g>
+        <text x="150" y="110" font-size="11" fill="#666666" text-anchor="middle">주고받기</text>
+      </svg>
+    </figure>
+  </section>
+
+  <section>
+    <h2><small>02</small>LoRA 학습</h2>
+    <div class="psr">
+      <div><b>설정</b><p>Qwen2.5-14B-Instruct에 LoRA(r=16, alpha=16, 모든 어텐션과 MLP 투영)를 bf16으로 붙여 trl SFTTrainer로 학습했습니다. 14B를 GPU 한 장에서 학습하도록 배치와 옵티마이저를 맞췄고, 추론 때는 LoRA 강도를 0.8 ~ 0.9로 낮춰 말투가 무너지지 않게 했습니다. 사전 단계로 Llama-3.1-8B와 Ministral-8B에 한국어 독해(KorQuAD) LoRA를 먼저 해 봤습니다.</p></div>
+      <div><b>연결</b><p>학습한 모델이 만든 영어 프롬프트를 CogVideoX에 바로 넘겨 영상까지 만드는 엔드투엔드 데모를 구성했습니다.</p></div>
+      <div><b>함께</b><p>영상 생성 모델 쪽에서는 CogVideoX-5B에 수묵화 스타일 LoRA를 학습했습니다. 수묵화 스캔 254장으로 영상 200편과 캡션을 구성했고, LoRA 강도를 0에서 1까지 바꿔 가며 비교 영상을 만들었습니다.</p></div>
+    </div>
+    <div class="ph"><b>이미지 자리: 수묵화 스타일 LoRA 결과</b><p>같은 프롬프트로 LoRA 적용 전과 후에 생성한 영상의 프레임 비교</p><p><code>projects/images/vpeko-inkwash.png</code></p></div>
+  </section>
+
+  <section>
+    <h2><small>03</small>평가</h2>
+    <p>영상 생성 모델을 써 본 적 없는 참가자 10명이 직접 쓴 프롬프트(A)와 챗봇으로 만든 프롬프트(B)를 비교했습니다. 프롬프트는 G-Eval과 만족도로, 각 프롬프트로 만든 영상은 만족도로 평가했습니다.</p>
+    <figure>
+      <svg viewBox="0 0 720 290" role="img" aria-label="A-B 평가: G-Eval 3.6 대 4.9, 프롬프트 만족도 3.6 대 4.5, 영상 만족도 2.1 대 4.6">
+        <line x1="60" y1="210" x2="700" y2="210" stroke="#161616"/>
+        <g stroke="#d4d0de" stroke-dasharray="3 3"><line x1="60" y1="120" x2="700" y2="120"/><line x1="60" y1="30" x2="700" y2="30"/></g>
+        <g font-size="11.5" fill="#666666" text-anchor="end"><text x="52" y="214">0</text><text x="52" y="124">2.5</text><text x="52" y="34">5</text></g>
+        <rect x="120" y="80.4" width="50" height="129.6" fill="#c9c6d2"/><rect x="178" y="33.6" width="50" height="176.4" fill="#6a3fbf"/>
+        <rect x="330" y="80.4" width="50" height="129.6" fill="#c9c6d2"/><rect x="388" y="48" width="50" height="162" fill="#6a3fbf"/>
+        <rect x="540" y="134.4" width="50" height="75.6" fill="#c9c6d2"/><rect x="598" y="44.4" width="50" height="165.6" fill="#6a3fbf"/>
+        <g font-size="12.5" font-weight="700" text-anchor="middle" fill="#161616">
+          <text x="145" y="74">3.6</text><text x="203" y="27" fill="#6a3fbf">4.9</text>
+          <text x="355" y="74">3.6</text><text x="413" y="42" fill="#6a3fbf">4.5</text>
+          <text x="565" y="128">2.1</text><text x="623" y="38" fill="#6a3fbf">4.6</text>
+        </g>
+        <g font-size="13" text-anchor="middle" fill="#161616"><text x="174" y="232">G-Eval</text><text x="384" y="232">프롬프트 만족도</text><text x="594" y="232">생성 영상 만족도</text></g>
+        <g font-size="12.5" fill="#161616"><rect x="230" y="256" width="14" height="14" fill="#c9c6d2"/><text x="250" y="268">사용자 직접 작성 (A)</text><rect x="410" y="256" width="14" height="14" fill="#6a3fbf"/><text x="430" y="268">챗봇 사용 (B)</text></g>
+      </svg>
+      <figcaption>영상 모델이 한국어를 이해하지 못해, 한국어로 쓴 프롬프트 A로는 의도와 무관한 영상이 나왔습니다. 국제학술대회판에서는 참가자 26명, 주제 5개로 늘려 G-Eval 2.2 → 4.6, 영상 만족도 1.72 → 4.34를 확인했습니다.</figcaption>
+    </figure>
+    <div class="ph"><b>이미지 자리: A-B 생성 영상 비교</b><p>"뜨겁게 타오르는 화산"처럼 같은 주제로 A 프롬프트와 B 프롬프트가 만든 영상 프레임을 나란히</p><p><code>projects/images/vpeko-ab.png</code></p></div>
+  </section>
+
+  <section>
+    <h2><small>04</small>후속 연구와 돌아보기</h2>
+    <div class="psr">
+      <div><b>후속</b><p>팀은 이 시스템을 생성된 영상이 의도와 어긋났을 때 원인을 진단하는 KoPESV-SD로 확장해 저널에 게재했고, 그중 생성이 끝나기 전에 실패를 경고하는 파트를 맡았습니다. 50스텝 중 11스텝까지만 생성한 중간 상태로 다섯 요소별 실패 가능성을 판정하는 방식입니다.</p></div>
+      <div><b>다시 한다면</b><p>대화 종료 조건 때문에 최종 프롬프트 예시가 학습 데이터에 빠진 점, 일부 데이터에서 챗봇과 사용자 역할이 뒤바뀐 점, 대화를 단일 턴으로 쪼개면서 앞 문맥이 사라진 점을 데이터 설계의 개선점으로 정리했습니다. 이후 학습에서는 학습 전에 데이터 통계와 형식을 먼저 확인하는 것을 습관으로 삼았습니다.</p></div>
+    </div>
+  </section>
+</div>
+
+<footer><a href="../index.html#projects">← 포트폴리오로 돌아가기</a></footer>
+</body>
+</html>
