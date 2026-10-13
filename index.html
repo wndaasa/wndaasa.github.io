@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
 /* 섹션마다 흰색과 연한 회색 배경을 번갈아 덩어리로 읽히게 하는 한 페이지 구성.
-   포인트는 연한 라벤더(밑줄, 배경)와 진한 보라(제목 알약, 숫자, 링크). 스킬 칩만 기술별 대표색 */
+   포인트는 연한 라벤더(밑줄, 배경)와 진한 보라(숫자, 단계 번호, 링크) 두 가지 */
 :root {
   --ink: #161616;
   --white: #ffffff;
@@ -72,20 +72,26 @@ mark { background: linear-gradient(transparent 55%, var(--lav-mark) 55%); color:
 .about b { font-weight: 700; font-size: 16px; }
 .about span { color: var(--soft); font-size: 14px; }
 
-/* Projects: 2열 카드 */
+/* Projects: 2열 카드. 위에 다룬 단계(데이터, 학습, 서빙, 평가), 가운데 대표 수치 하나 */
 .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
-.card { background: var(--white); border-radius: 16px; padding: 30px; box-shadow: 0 4px 18px rgba(40,20,80,0.09); display: flex; flex-direction: column; gap: 14px; }
-.pill { align-self: flex-start; background: var(--violet); color: var(--white); font-weight: 700; font-size: 16px; border-radius: 8px; padding: 3px 12px; }
-.card .meta { color: var(--soft); font-size: 13.5px; padding-bottom: 12px; border-bottom: 1px solid var(--line); }
-.card .summary { font-weight: 700; font-size: 16px; line-height: 1.6; }
+.card { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 28px 30px; display: flex; flex-direction: column; gap: 14px; }
+.stages { display: flex; gap: 6px; flex-wrap: wrap; }
+.stages span { font-size: 12px; font-weight: 700; border-radius: 999px; padding: 1px 10px; color: #b3b0bb; border: 1px solid var(--line); }
+.stages span.on { color: var(--ink); background: var(--lav-mark); border-color: var(--lav-mark); }
+.card h3 { font-size: 20px; font-weight: 900; letter-spacing: -0.02em; }
+.card .meta { color: var(--soft); font-size: 13.5px; margin-top: -8px; }
+.metric { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.metric b { font-size: 26px; font-weight: 900; color: var(--violet); letter-spacing: -0.02em; }
+.metric span { font-size: 13.5px; color: var(--soft); }
+.card .summary { font-weight: 700; font-size: 15.5px; line-height: 1.6; }
 .card ul { font-size: 14px; }
-.card li strong { font-weight: 700; }
-.card .role { border-left: 3px solid var(--violet); padding-left: 10px; font-size: 13.5px; color: var(--ink); }
-.card .stack { background: var(--lav-box); border: 1px solid var(--lav); border-radius: 8px; padding: 6px 12px; font-size: 13.5px; }
-.card .links { display: flex; flex-wrap: wrap; gap: 8px; }
-.card .links a { border: 1px solid var(--line); border-radius: 8px; padding: 3px 12px; font-size: 13.5px; font-weight: 500; color: var(--ink); text-decoration: none; }
-.card .links a:hover { border-color: var(--violet); color: var(--violet); }
 .card .fill { flex: 1; }
+.card .foot { display: grid; gap: 6px; font-size: 13px; }
+.card .role { font-weight: 700; }
+.card .stack { color: var(--soft); }
+.card .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.card .links a { border: 1px solid var(--line); border-radius: 8px; padding: 2px 12px; font-size: 13px; font-weight: 500; color: var(--ink); text-decoration: none; }
+.card .links a:hover { border-color: var(--violet); color: var(--violet); }
 
 /* 논문 */
 .papers { display: grid; gap: 14px; max-width: 900px; margin: 0 auto; }
@@ -96,14 +102,19 @@ mark { background: linear-gradient(transparent 55%, var(--lav-mark) 55%); color:
 .paper .v { color: var(--soft); font-size: 13.5px; }
 .note { text-align: center; color: var(--soft); font-size: 13px; margin-top: 18px; }
 
-/* Skills: 아이콘, 분류명, 기술별 색상 칩 */
-.skills { background: var(--lav-box); border-radius: 16px; padding: 30px 34px; display: grid; gap: 20px; box-shadow: 0 6px 20px rgba(40,20,80,0.08); max-width: 980px; margin: 0 auto; }
-.skill-row { display: grid; grid-template-columns: 34px 120px minmax(0, 1fr); gap: 12px; align-items: center; }
-.skill-row svg { width: 30px; height: 30px; stroke: var(--violet); fill: none; stroke-width: 1.6; }
-.skill-row b { font-weight: 700; font-size: 15.5px; }
-.chips { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { color: #fff; font-size: 13.5px; font-weight: 700; border-radius: 6px; padding: 3px 11px; line-height: 1.6; }
-.chip.dark-text { color: #161616; }
+/* Skills: LLM 라이프사이클 4단계 흐름. 단계마다 도구와 근거 프로젝트 */
+.flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.step { padding-right: 18px; display: grid; gap: 12px; align-content: start; }
+.step .no { display: flex; align-items: center; gap: 10px; }
+.step .no b { width: 34px; height: 34px; border-radius: 50%; background: var(--violet); color: var(--white); display: grid; place-items: center; font-size: 13px; font-weight: 900; flex: none; }
+.step .no i { flex: 1; height: 2px; background: var(--lav); }
+.step:last-child .no i { background: transparent; }
+.step h3 { font-size: 18px; font-weight: 900; }
+.step p { font-size: 13.5px; color: var(--soft); }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; }
+.tools span { font-size: 13px; font-weight: 500; background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 1px 9px; }
+.tools span.key { border-color: var(--violet); color: var(--violet); font-weight: 700; }
+.step .where { font-size: 12.5px; color: var(--soft); border-top: 1px dashed var(--line); padding-top: 8px; }
 
 footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px; padding-block: 28px; text-align: center; }
 
@@ -111,8 +122,8 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .about { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .projects { grid-template-columns: minmax(0, 1fr); }
-  .skill-row { grid-template-columns: 34px minmax(0, 1fr); }
-  .skill-row .chips { grid-column: 1 / -1; }
+  .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 0; }
+  .step:nth-child(2) .no i { background: transparent; }
 }
 @media (max-width: 520px) {
   .nav ul { gap: 14px; }
@@ -120,7 +131,8 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
   .about { grid-template-columns: minmax(0, 1fr); }
   .paper { grid-template-columns: minmax(0, 1fr); }
   .card { padding: 24px 20px; }
-  .skills { padding: 24px 20px; }
+  .flow { grid-template-columns: minmax(0, 1fr); }
+  .step .no i { display: none; }
   .sec { padding-block: 64px; }
   .hero { padding-block: 64px 48px; }
 }
@@ -174,85 +186,69 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
     <div class="projects">
 
       <article class="card">
-        <span class="pill">원윈도우 AI 검색 고도화</span>
-        <p class="meta">2026.09 ~ 12 예정 (NIA 사업, 폐쇄망 A100 2장)</p>
+        <div class="stages"><span class="on">데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
+        <h3>원윈도우 AI 검색 고도화</h3>
+        <p class="meta">2026.09 ~ 12 예정 / NIA 사업, 폐쇄망 A100 2장</p>
+        <div class="metric"><b>14.8s → 1.7s</b><span>상용 RAG 대비 문항당 처리 시간, hit@1 71 → 86 (100문항)</span></div>
         <p class="summary">공공데이터 약 13.5만 건을 찾는 국가 서비스의 검색과 챗봇을 LLM 기반으로 고도화</p>
-        <ul>
-          <li>상용 RAG를 자체 하이브리드 검색으로 대체: hit@1 <mark>71 → 86</mark>, 문항당 <mark>14.8초 → 1.7초</mark></li>
-          <li>외부 접속이 막힌 서버에 k3s와 vLLM으로 32B 모델과 임베딩 모델 서빙</li>
-          <li>간헐적 500 오류를 keep-alive 경쟁 조건으로 재현해 확정</li>
-        </ul>
+        <ul><li>LLM 검색어 확장, 키워드와 벡터 검색, LLM 재순위로 상용 RAG를 대체</li><li>외부 접속이 막힌 서버에 k3s와 vLLM으로 32B 모델과 임베딩 모델 서빙</li><li>간헐적 500 오류를 keep-alive 경쟁 조건으로 재현해 확정</li></ul>
         <span class="fill"></span>
-        <p class="role">검색 백엔드, GPU 추론 서버, 품질 평가 담당</p>
-        <p class="stack">vLLM, EXAONE-4.0-32B-AWQ, k3s, FastAPI, pgvector, MCP</p>
+        <div class="foot"><p class="role">검색 백엔드, GPU 추론 서버, 품질 평가 담당</p><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, k3s, FastAPI, pgvector, MCP</p></div>
       </article>
 
       <article class="card">
-        <span class="pill">생성 모델 저작권 탐지 연구</span>
-        <p class="meta">2026.08 (수주 과제, 1인 수행)</p>
+        <div class="stages"><span>데이터</span><span class="on">학습</span><span>서빙</span><span class="on">평가</span></div>
+        <h3>생성 모델 저작권 탐지 연구</h3>
+        <p class="meta">2026.08 / 수주 과제, A100 80GB</p>
+        <div class="metric"><b>AUC 0.848</b><span>구조가 다른 대리 모델에서의 암기 신호 탐지, 통제군 0.522</span></div>
         <p class="summary">상용 이미지 생성 모델의 저작권 침해를 그 출력으로 학습한 대리 모델에서 탐지할 수 있는지 검증</p>
-        <ul>
-          <li>SD1.4, SD3.5 풀 파인튜닝. SD3.5 학습 코드를 직접 작성하고 45GB 안에 맞춘 메모리 설계</li>
-          <li>구조가 다른 대리 모델에서도 탐지 AUC <mark>0.848</mark>, 통제군 0.522 대비 유의</li>
-          <li>0.983이 나온 실험의 교란을 통제군으로 밝히고 조건을 바꿔 재입증</li>
-        </ul>
+        <ul><li>SD1.4, SD3.5 풀 파인튜닝. SD3.5 학습 코드를 직접 작성하고 45GB 안에 맞춘 메모리 설계</li><li>0.983이 나온 실험의 교란을 통제군으로 밝히고 조건을 바꿔 재입증</li></ul>
         <span class="fill"></span>
-        <p class="role">실험 설계, 학습, 평가 전부 단독 수행</p>
-        <p class="stack">PyTorch, diffusers, accelerate, SD1.4, SD3.5</p>
+        <div class="foot"><p class="role">실험 설계, 학습, 평가 단독 수행</p><p class="stack">PyTorch, diffusers, accelerate, SD1.4, SD3.5</p></div>
       </article>
 
       <article class="card">
-        <span class="pill">32B 서빙 최적화</span>
-        <p class="meta">2026.07 ~ 08 (원윈도우 착수 전 사전 실험, A100 1장)</p>
+        <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
+        <h3>32B 서빙 최적화</h3>
+        <p class="meta">2026.07 ~ 08 / 원윈도우 착수 전 사전 실험, A100 1장</p>
+        <div class="metric"><b>65 → 156 TPS</b><span>32B 단일 사용자 생성 속도, 코드 기준 (일반 문장 81)</span></div>
         <p class="summary">32B 모델로 웹 검색 에이전트 채팅 서비스를 만들며 응답 속도와 출력 안정성 개선</p>
-        <ul>
-          <li>단일 사용자 생성 속도 65 → <mark>156 TPS</mark>(코드), 81 TPS(일반 문장), 투기 디코딩 적용</li>
-          <li>vLLM 소스 패치 2건, 그중 하나는 이후 업스트림에 같은 수정이 머지됨</li>
-          <li>bf16과 AWQ를 비교해 양자화 탓인 환각과 아닌 것을 분리</li>
-        </ul>
+        <ul><li>투기 디코딩 적용, vLLM 소스 패치 2건 중 하나는 이후 업스트림에 같은 수정이 머지됨</li><li>bf16과 AWQ를 비교해 양자화 탓인 환각과 아닌 것을 분리</li></ul>
         <span class="fill"></span>
-        <p class="stack">vLLM, EXAONE-4.0-32B-AWQ, 투기 디코딩</p>
+        <div class="foot"><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, 투기 디코딩</p></div>
       </article>
 
       <article class="card">
-        <span class="pill">NPU 온프레미스 LLM 추론 서비스</span>
-        <p class="meta">2026.06 ~ 운영 중 (1인 수행, Rebellions ATOM-Max)</p>
+        <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
+        <h3>NPU 온프레미스 LLM 추론 서비스</h3>
+        <p class="meta">2026.06 ~ 운영 중 / Rebellions ATOM-Max</p>
+        <div class="metric"><b>13.5s → 2.35s</b><span>이미지 10장 대화의 첫 토큰 지연, 비전 임베딩 캐시</span></div>
         <p class="summary">벤더가 지원하지 않는 33B 모델을 NPU에 직접 포팅해 상시 서비스로 운영</p>
-        <ul>
-          <li>EXAONE 4.5 33B 포팅, 원본 대비 <mark>프롬프트 12개 greedy 출력 일치</mark>, 76.5 tok/s</li>
-          <li>비전 임베딩 캐시로 첫 토큰 지연 <mark>13.5s → 2.35s</mark>, 임베딩 처리량 3.4배</li>
-          <li>LSTM이 오류 없이 틀린 값을 내는 NPU 결함을 대조군으로 격리</li>
-        </ul>
+        <ul><li>EXAONE 4.5 33B 포팅, 원본 대비 프롬프트 12개 greedy 출력 일치, 76.5 tok/s</li><li>임베딩 처리량 3.4배, LSTM이 오류 없이 틀린 값을 내는 NPU 결함을 대조군으로 격리</li></ul>
         <span class="fill"></span>
-        <p class="role">포팅, 최적화, 배포, 운영 전부 단독 수행</p>
-        <p class="stack">vllm-rbln, optimum-rbln, EXAONE 4.5 VL, bge-m3, PyTorch</p>
+        <div class="foot"><p class="role">포팅, 최적화, 배포, 운영 단독 수행</p><p class="stack">vllm-rbln, optimum-rbln, EXAONE 4.5 VL, bge-m3, PyTorch</p></div>
       </article>
 
       <article class="card">
-        <span class="pill">VPE-Ko 한국어 영상 프롬프트 챗봇</span>
-        <p class="meta">2024.11 ~ 2025.08 (팀 프로젝트, A100)</p>
+        <div class="stages"><span class="on">데이터</span><span class="on">학습</span><span>서빙</span><span class="on">평가</span></div>
+        <h3>VPE-Ko 한국어 영상 프롬프트 챗봇</h3>
+        <p class="meta">2024.11 ~ 2025.08 / 팀 프로젝트, A100</p>
+        <div class="metric"><b>G-Eval 3.6 → 4.9</b><span>비전문가 A-B 테스트, 생성 영상 만족도 2.1 → 4.6</span></div>
         <p class="summary">한국어 대화로 영상 생성 모델(CogVideoX)용 영어 프롬프트를 완성해 주는 챗봇</p>
-        <ul>
-          <li>GPT 두 개를 대화시켜 학습 쌍 <mark>24,769건</mark> 합성 데이터 직접 구축</li>
-          <li>Qwen2.5-14B-Instruct 한국어 LoRA 학습 후 영상 생성 모델과 연결</li>
-          <li>A-B 테스트 G-Eval 3.6 → 4.9, 영상 만족도 2.1 → 4.6, 1저자 논문 발표</li>
-        </ul>
+        <ul><li>GPT 두 개를 대화시켜 학습 쌍 24,769건 합성 데이터 직접 구축</li><li>Qwen2.5-14B-Instruct 한국어 LoRA 학습, 1저자 논문 발표</li></ul>
         <span class="fill"></span>
-        <p class="role">합성 데이터 구축, LoRA 학습 담당</p>
-        <p class="stack">PyTorch, transformers, trl, peft</p>
+        <div class="foot"><p class="role">합성 데이터 구축, LoRA 학습 담당</p><p class="stack">PyTorch, transformers, trl, peft</p></div>
       </article>
 
       <article class="card">
-        <span class="pill">ko-en-translator</span>
-        <p class="meta">2026.06 ~ 07 (개인 프로젝트, 공개 모델)</p>
+        <div class="stages"><span>데이터</span><span class="on">학습</span><span>서빙</span><span class="on">평가</span></div>
+        <h3>ko-en-translator</h3>
+        <p class="meta">2026.06 ~ 07 / 개인 프로젝트, 공개 모델</p>
+        <div class="metric"><b>BLEU 44.10</b><span>학술 도메인 파인튜닝 후 (전 7.36)</span></div>
         <p class="summary">트랜스포머를 밑바닥부터 구현한 한영 번역 소형 모델</p>
-        <ul>
-          <li>학술 도메인 파인튜닝으로 BLEU <mark>7.36 → 44.10</mark></li>
-          <li>어텐션을 minGRU 선형 순환으로 바꿔 긴 입력에서 메모리 약 2.5배 절감</li>
-        </ul>
+        <ul><li>어텐션을 minGRU 선형 순환으로 바꿔 긴 입력에서 메모리 약 2.5배 절감</li></ul>
         <span class="fill"></span>
-        <p class="stack">PyTorch, minGRU, apache-2.0</p>
-        <div class="links"><a href="https://github.com/wndaasa/ko-en-translator" target="_blank" rel="noopener">GitHub</a><a href="https://huggingface.co/Imsbee/ko-en-translator" target="_blank" rel="noopener">Hugging Face</a></div>
+        <div class="foot"><p class="stack">PyTorch, minGRU, apache-2.0</p><div class="links"><a href="https://github.com/wndaasa/ko-en-translator" target="_blank" rel="noopener">GitHub</a><a href="https://huggingface.co/Imsbee/ko-en-translator" target="_blank" rel="noopener">Hugging Face</a></div></div>
       </article>
 
     </div>
@@ -274,61 +270,35 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
 
 <section class="sec" id="skills">
   <div class="wrap">
-    <div class="sec-head"><h2>SKILLS</h2></div>
-    <div class="skills">
-      <div class="skill-row">
-        <svg viewBox="0 0 24 24"><path d="M12 3a4 4 0 0 0-4 4v1a4 4 0 0 0-2 7 4 4 0 0 0 6 4 4 4 0 0 0 6-4 4 4 0 0 0-2-7V7a4 4 0 0 0-4-4z"/><path d="M12 3v18"/></svg>
-        <b>Training</b>
-        <div class="chips">
-          <span class="chip" style="background:#ee4c2c">PyTorch</span>
-          <span class="chip dark-text" style="background:#ffd21e">Transformers</span>
-          <span class="chip dark-text" style="background:#ffe58a">TRL</span>
-          <span class="chip dark-text" style="background:#ffc94d">PEFT (LoRA)</span>
-          <span class="chip" style="background:#9c5b2e">Diffusers</span>
-          <span class="chip" style="background:#5a5a5a">Accelerate</span>
-        </div>
+    <div class="sec-head"><h2>SKILLS</h2><p>LLM을 만드는 네 단계와 단계마다 쓰는 도구</p></div>
+    <div class="flow">
+      <div class="step">
+        <div class="no"><b>01</b><i></i></div>
+        <h3>데이터</h3>
+        <p>학습 데이터를 만들고, 평가셋이 공정한지 따집니다.</p>
+        <div class="tools"><span class="key">합성 데이터 생성</span><span>평가셋 설계</span><span>블라인드 판정</span><span>데이터 통계 점검</span></div>
+        <p class="where">VPE-Ko, 원윈도우</p>
       </div>
-      <div class="skill-row">
-        <svg viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></svg>
-        <b>Serving</b>
-        <div class="chips">
-          <span class="chip" style="background:#f59e0b">vLLM</span>
-          <span class="chip" style="background:#6a3fbf">AWQ</span>
-          <span class="chip" style="background:#8b5cf6">Speculative Decoding</span>
-          <span class="chip" style="background:#e4002b">Rebellions NPU</span>
-        </div>
+      <div class="step">
+        <div class="no"><b>02</b><i></i></div>
+        <h3>학습</h3>
+        <p>LoRA부터 풀 파인튜닝까지, 학습 코드를 직접 씁니다.</p>
+        <div class="tools"><span class="key">PyTorch</span><span class="key">LoRA</span><span>transformers</span><span>trl</span><span>peft</span><span>diffusers</span><span>accelerate</span></div>
+        <p class="where">VPE-Ko, 저작권 탐지, ko-en-translator</p>
       </div>
-      <div class="skill-row">
-        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="6" rx="1"/><rect x="3" y="14" width="18" height="6" rx="1"/><path d="M7 7h.01M7 17h.01"/></svg>
-        <b>Infra</b>
-        <div class="chips">
-          <span class="chip" style="background:#326ce5">k3s</span>
-          <span class="chip" style="background:#2496ed">Docker</span>
-          <span class="chip" style="background:#76b900">NVIDIA A100</span>
-          <span class="chip" style="background:#374151">폐쇄망 배포</span>
-        </div>
+      <div class="step">
+        <div class="no"><b>03</b><i></i></div>
+        <h3>서빙</h3>
+        <p>폐쇄망과 NPU처럼 제약된 환경에 올리고 빠르게 만듭니다.</p>
+        <div class="tools"><span class="key">vLLM</span><span class="key">AWQ</span><span>투기 디코딩</span><span>Rebellions NPU</span><span>k3s</span><span>Docker</span><span>FastAPI</span><span>pgvector</span><span>MCP</span></div>
+        <p class="where">NPU 추론, 32B 서빙, 원윈도우</p>
       </div>
-      <div class="skill-row">
-        <svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>
-        <b>Evaluation</b>
-        <div class="chips">
-          <span class="chip" style="background:#0f766e">통제군 설계</span>
-          <span class="chip" style="background:#115e59">Bootstrap CI</span>
-          <span class="chip" style="background:#134e4a">순열검정</span>
-          <span class="chip" style="background:#10a37f">G-Eval</span>
-          <span class="chip" style="background:#52525b">hit@k, nDCG</span>
-        </div>
-      </div>
-      <div class="skill-row">
-        <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="8" ry="3"/><path d="M4 5v14c0 1.7 3.6 3 8 3s8-1.3 8-3V5M4 12c0 1.7 3.6 3 8 3s8-1.3 8-3"/></svg>
-        <b>Backend</b>
-        <div class="chips">
-          <span class="chip" style="background:#3776ab">Python</span>
-          <span class="chip" style="background:#009688">FastAPI</span>
-          <span class="chip" style="background:#336791">PostgreSQL</span>
-          <span class="chip" style="background:#4b5563">pgvector</span>
-          <span class="chip" style="background:#111111">MCP</span>
-        </div>
+      <div class="step">
+        <div class="no"><b>04</b><i></i></div>
+        <h3>평가</h3>
+        <p>개선이 진짜인지 통제군과 신뢰구간으로 확인합니다.</p>
+        <div class="tools"><span class="key">통제군 설계</span><span>Bootstrap CI</span><span>순열검정</span><span>G-Eval</span><span>hit@k, nDCG</span></div>
+        <p class="where">저작권 탐지, 원윈도우, VPE-Ko</p>
       </div>
     </div>
   </div>
