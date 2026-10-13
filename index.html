@@ -9,24 +9,24 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
-/* 섹션마다 배경을 바꿔 덩어리로 읽히게 하는 한 페이지 구성. 무채색 바탕에 포인트는 연한 라벤더(강조)와 진한 보라(링크) 두 가지 */
+/* 섹션마다 흰색과 연한 회색 배경을 번갈아 덩어리로 읽히게 하는 한 페이지 구성.
+   포인트는 연한 라벤더(밑줄, 배경)와 진한 보라(숫자, 링크) 두 가지 */
 :root {
-  --black: #111111;
+  --ink: #161616;
   --white: #ffffff;
-  --grey: #f3f3f1;
-  --line: #e2e2e2;
+  --grey: #f6f5f9;
+  --line: #e6e4ec;
   --soft: #666666;
   --lav: #c9b8f5;
-  --lav-soft: #efeafc;
-  --lav-mark: #ddd1fa;
-  --violet: #7344c4;
+  --lav-mark: #e3d9fb;
+  --violet: #6a3fbf;
   --font: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 html, body { margin: 0; }
-body { background: var(--white); color: var(--black); font-family: var(--font); font-size: 15px; line-height: 1.75; word-break: keep-all; overflow-wrap: anywhere; }
+body { background: var(--white); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.75; word-break: keep-all; overflow-wrap: anywhere; }
 a { color: var(--violet); text-underline-offset: 3px; }
 a:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
 h1, h2, h3, p { margin: 0; }
@@ -37,57 +37,47 @@ mark { background: linear-gradient(transparent 55%, var(--lav-mark) 55%); color:
 .wrap { max-width: 1040px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); }
 
 /* 상단 메뉴 */
-.nav { position: sticky; top: 0; z-index: 10; background: rgba(17,17,17,0.94); backdrop-filter: blur(6px); }
+.nav { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,0.95); backdrop-filter: blur(6px); border-bottom: 1px solid var(--line); }
 .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 56px; }
-.nav b { color: var(--white); font-weight: 900; letter-spacing: -0.02em; }
+.nav b { font-weight: 900; letter-spacing: -0.02em; }
 .nav ul { list-style: none; display: flex; gap: 22px; padding: 0; margin: 0; overflow-x: auto; }
 .nav li + li { margin-top: 0; }
-.nav a { color: #cfcfcf; text-decoration: none; font-size: 14px; font-weight: 500; white-space: nowrap; }
-.nav a:hover { color: var(--lav); }
+.nav a { color: var(--soft); text-decoration: none; font-size: 14px; font-weight: 500; white-space: nowrap; }
+.nav a:hover { color: var(--violet); }
 
 /* 히어로 */
-.hero { background: var(--black); color: var(--white); padding-block: 96px 64px; }
+.hero { padding-block: 96px 72px; }
 .hero h1 { font-size: clamp(30px, 5vw, 50px); font-weight: 900; line-height: 1.3; letter-spacing: -0.03em; }
-.hero h1 .hl { box-shadow: inset 0 -0.32em 0 rgba(201,184,245,0.45); }
-.hero hr { width: 56px; height: 4px; border: 0; background: var(--lav); margin: 28px 0; }
-.hero p.sub { color: #cfcfcf; font-size: clamp(15px, 2vw, 18px); max-width: 52ch; }
-.stats { margin-top: 56px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-.stat { border: 1px solid #333; border-radius: 12px; padding: 18px; display: grid; gap: 4px; align-content: start; }
-.stat b { font-size: 22px; font-weight: 900; color: var(--lav); letter-spacing: -0.02em; }
-.stat span { font-size: 13px; color: #cfcfcf; line-height: 1.5; }
-.stat em { font-style: normal; font-size: 12px; color: #8f8f8f; }
-.more { display: inline-block; margin-top: 40px; color: #cfcfcf; text-decoration: none; font-size: 14px; }
+.hero h1 .hl { box-shadow: inset 0 -0.34em 0 var(--lav); }
+.hero hr { width: 56px; height: 4px; border: 0; background: var(--ink); margin: 28px 0; }
+.hero p.sub { color: var(--soft); font-size: clamp(15px, 2vw, 18px); max-width: 52ch; }
+.stats { margin-top: 52px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.stat { background: var(--grey); border-radius: 12px; padding: 18px; display: grid; gap: 4px; align-content: start; }
+.stat b { font-size: 22px; font-weight: 900; color: var(--violet); letter-spacing: -0.02em; }
+.stat span { font-size: 13px; color: var(--ink); line-height: 1.5; }
+.stat em { font-style: normal; font-size: 12px; color: var(--soft); }
 
 /* 섹션 공통 */
 .sec { padding-block: 88px; }
 .sec.grey { background: var(--grey); }
-.sec.dark { background: var(--black); color: var(--white); }
-.sec.lavender { background: var(--lav-soft); }
 .sec-head { text-align: center; margin-bottom: 44px; }
-.sec-head h2 { display: inline-block; font-size: clamp(26px, 4vw, 34px); font-weight: 900; letter-spacing: 0.02em; padding-bottom: 8px; border-bottom: 4px solid currentColor; }
+.sec-head h2 { display: inline-block; font-size: clamp(26px, 4vw, 34px); font-weight: 900; letter-spacing: 0.02em; padding-bottom: 6px; box-shadow: inset 0 -0.3em 0 var(--lav); }
 .sec-head p { margin-top: 14px; color: var(--soft); font-size: 14px; }
-.dark .sec-head p { color: #a8a8a8; }
 
 /* About me */
 .about { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 24px; max-width: 900px; margin: 0 auto; }
 .about div { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 2px 12px; align-items: start; }
-.about svg { width: 32px; height: 32px; grid-row: span 2; stroke: var(--black); fill: none; stroke-width: 1.6; }
+.about svg { width: 32px; height: 32px; grid-row: span 2; stroke: var(--violet); fill: none; stroke-width: 1.6; }
 .about b { font-weight: 700; font-size: 16px; }
 .about span { color: var(--soft); font-size: 14px; }
 
-/* Skills */
-.skills { background: var(--white); border-radius: 16px; padding: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 28px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
-.skills h3 { font-size: 15px; font-weight: 900; padding-bottom: 8px; margin-bottom: 10px; border-bottom: 2px solid var(--black); }
-.skills ul { list-style: none; padding: 0; font-size: 14.5px; }
-.skills li + li { margin-top: 4px; }
-
 /* Projects */
-.projects { display: grid; gap: 28px; }
-.card { background: var(--white); color: var(--black); border-radius: 16px; padding: 36px; box-shadow: 0 8px 28px rgba(0,0,0,0.25); }
+.projects { display: grid; gap: 24px; }
+.card { background: var(--white); border-radius: 16px; padding: 36px; border: 1px solid var(--line); box-shadow: 0 6px 20px rgba(40,20,80,0.05); }
 .card-head { text-align: center; padding-bottom: 22px; margin-bottom: 26px; border-bottom: 1px solid var(--line); }
 .card-head h3 { font-size: clamp(21px, 3vw, 26px); font-weight: 900; letter-spacing: -0.02em; }
 .card-head .meta { margin-top: 6px; color: var(--soft); font-size: 14px; }
-.card-head .badge { display: inline-block; margin-top: 10px; font-size: 12.5px; font-weight: 700; background: var(--black); color: var(--white); border-radius: 999px; padding: 2px 12px; }
+.card-head .badge { display: inline-block; margin-top: 10px; font-size: 12.5px; font-weight: 700; background: var(--lav-mark); color: var(--ink); border-radius: 999px; padding: 2px 12px; }
 .card-body { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: 32px; }
 .card-body .summary { font-weight: 700; font-size: 16px; line-height: 1.65; }
 .card-body dl { margin: 18px 0 0; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 6px 10px; font-size: 13.5px; }
@@ -98,34 +88,26 @@ mark { background: linear-gradient(transparent 55%, var(--lav-mark) 55%); color:
 
 /* 논문 */
 .papers { display: grid; gap: 14px; max-width: 900px; margin: 0 auto; }
-.paper { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 4px 20px; padding: 20px 24px; border: 1px solid var(--line); border-radius: 12px; }
+.paper { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 4px 20px; padding: 20px 24px; border: 1px solid var(--line); border-radius: 12px; background: var(--white); }
 .paper .k { font-weight: 900; font-size: 14px; }
 .paper .k small { display: block; font-weight: 400; color: var(--soft); font-size: 12.5px; }
 .paper .t { font-weight: 700; }
 .paper .v { color: var(--soft); font-size: 13.5px; }
 .note { text-align: center; color: var(--soft); font-size: 13px; margin-top: 18px; }
 
-/* Career */
-.timeline { background: var(--white); border-radius: 16px; padding: 36px; box-shadow: 0 8px 28px rgba(0,0,0,0.08); display: grid; gap: 28px; }
-.co { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 8px 32px; }
-.co + .co { padding-top: 28px; border-top: 1px solid var(--line); }
-.co h3 { font-size: 20px; font-weight: 900; }
-.co .when { color: var(--soft); font-size: 14px; }
-.co .desc { color: var(--soft); margin-bottom: 14px; }
-.co ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; border-left: 2px solid var(--black); }
-.co ol li { position: relative; padding-left: 18px; margin: 0; }
-.co ol li::before { content: ""; position: absolute; left: -6px; top: 0.6em; width: 10px; height: 10px; border-radius: 50%; background: var(--lav); border: 2px solid var(--black); }
-.co ol span { color: var(--soft); font-size: 13px; margin-left: 8px; }
+/* Skills */
+.skills { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 28px; }
+.skills h3 { font-size: 15px; font-weight: 900; padding-bottom: 8px; margin-bottom: 10px; border-bottom: 2px solid var(--lav); }
+.skills ul { list-style: none; padding: 0; font-size: 14.5px; }
+.skills li + li { margin-top: 4px; }
 
-footer { background: var(--black); color: #8f8f8f; font-size: 13px; padding-block: 28px; text-align: center; }
+footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px; padding-block: 28px; text-align: center; }
 
 @media (max-width: 820px) {
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .about { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .card { padding: 26px 20px; }
   .card-body { grid-template-columns: minmax(0, 1fr); gap: 20px; }
-  .co { grid-template-columns: minmax(0, 1fr); }
-  .timeline { padding: 26px 20px; }
 }
 @media (max-width: 520px) {
   .nav ul { gap: 14px; }
@@ -144,10 +126,9 @@ footer { background: var(--black); color: #8f8f8f; font-size: 13px; padding-bloc
     <b>임영기</b>
     <ul>
       <li><a href="#about">About</a></li>
-      <li><a href="#skills">Skills</a></li>
       <li><a href="#projects">Projects</a></li>
       <li><a href="#papers">Papers</a></li>
-      <li><a href="#career">Career</a></li>
+      <li><a href="#skills">Skills</a></li>
     </ul>
   </div>
 </nav>
@@ -163,40 +144,26 @@ footer { background: var(--black); color: #8f8f8f; font-size: 13px; padding-bloc
       <div class="stat"><b>33B NPU 포팅</b><span>벤더 미지원 LLM을 직접 포팅, 원본과 출력 일치</span><em>NPU 추론 서비스</em></div>
       <div class="stat"><b>논문 4편</b><span>1저자 2편, 저널 1편 포함</span><em>Papers</em></div>
     </div>
-    <a class="more" href="#about">더 알아보기 ↓</a>
   </div>
 </header>
 
-<section class="sec" id="about">
+<section class="sec grey" id="about">
   <div class="wrap">
     <div class="sec-head"><h2>ABOUT ME</h2></div>
     <div class="about">
       <div><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><b>이름</b><span>임영기 (Younggi Lim)</span></div>
-      <div><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M10 21v-4h4v4"/></svg><b>소속</b><span>㈜피씨엔 R&amp;S본부, AI 개발자 (사원)</span></div>
-      <div><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><b>경력</b><span>2024.11 입사, 2년</span></div>
-      <div><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c2 2 10 2 12 0v-5"/></svg><b>학력</b><span>고려사이버대 AI데이터과학부 재학<br>유한대 컴퓨터소프트웨어공학과 졸업</span></div>
+      <div><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M10 21v-4h4v4"/></svg><b>소속</b><span>㈜피씨엔 R&amp;S본부<br>AI 개발자 (사원)</span></div>
+      <div><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><b>경력</b><span>2024.11 ~ 현재<br>정부 R&amp;D, 공공 AI 사업</span></div>
+      <div><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg><b>주력 분야</b><span>LLM 학습, 서빙 최적화, 평가 설계</span></div>
       <div><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><b>이메일</b><span><a href="mailto:younggi1105@gmail.com">younggi1105@gmail.com</a></span></div>
       <div><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><b>링크</b><span><a href="https://github.com/wndaasa" target="_blank" rel="noopener">GitHub</a>, <a href="https://huggingface.co/Imsbee" target="_blank" rel="noopener">Hugging Face</a></span></div>
     </div>
   </div>
 </section>
 
-<section class="sec grey" id="skills">
+<section class="sec" id="projects">
   <div class="wrap">
-    <div class="sec-head"><h2>SKILLS</h2></div>
-    <div class="skills">
-      <div><h3>학습</h3><ul><li>PyTorch</li><li>transformers, trl, peft(LoRA)</li><li>diffusers, accelerate</li></ul></div>
-      <div><h3>서빙, 최적화</h3><ul><li>vLLM (소스 패치)</li><li>AWQ, 투기 디코딩</li><li>Rebellions NPU</li></ul></div>
-      <div><h3>인프라</h3><ul><li>k3s, Docker</li><li>폐쇄망 배포</li><li>A100</li></ul></div>
-      <div><h3>평가</h3><ul><li>통제군 설계</li><li>부트스트랩 신뢰구간, 순열검정</li><li>G-Eval, hit@k</li></ul></div>
-      <div><h3>백엔드</h3><ul><li>Python, FastAPI</li><li>PostgreSQL, pgvector</li><li>MCP</li></ul></div>
-    </div>
-  </div>
-</section>
-
-<section class="sec dark" id="projects">
-  <div class="wrap">
-    <div class="sec-head"><h2>PROJECTS</h2><p>회사 프로젝트는 최신순, 마지막은 개인 프로젝트</p></div>
+    <div class="sec-head"><h2>PROJECTS</h2><p>㈜피씨엔에서 진행한 프로젝트를 최신순으로, 마지막은 개인 프로젝트</p></div>
     <div class="projects">
 
       <article class="card">
@@ -315,7 +282,7 @@ footer { background: var(--black); color: #8f8f8f; font-size: 13px; padding-bloc
   </div>
 </section>
 
-<section class="sec" id="papers">
+<section class="sec grey" id="papers">
   <div class="wrap">
     <div class="sec-head"><h2>PAPERS</h2><p>모두 게재 확정</p></div>
     <div class="papers">
@@ -328,32 +295,15 @@ footer { background: var(--black); color: #8f8f8f; font-size: 13px; padding-bloc
   </div>
 </section>
 
-<section class="sec lavender" id="career">
+<section class="sec" id="skills">
   <div class="wrap">
-    <div class="sec-head"><h2>CAREER</h2></div>
-    <div class="timeline">
-      <div class="co">
-        <div><h3>㈜피씨엔</h3><p class="when">R&amp;S본부, AI 개발자 (사원)<br>2024.11 ~ 현재</p></div>
-        <div>
-          <p class="desc">정부 R&amp;D와 공공 AI 사업에서 LLM 학습, 서빙, 평가를 맡고 있습니다.</p>
-          <ol>
-            <li>원윈도우 AI 검색 고도화<span>2026.09 ~ 12 예정</span></li>
-            <li>생성 모델 저작권 탐지 연구<span>2026.08</span></li>
-            <li>32B 서빙 최적화<span>2026.07 ~ 08</span></li>
-            <li>NPU 온프레미스 LLM 추론 서비스<span>2026.06 ~</span></li>
-            <li>VPE-Ko 한국어 영상 프롬프트 챗봇<span>2024.11 ~ 2025.08</span></li>
-          </ol>
-        </div>
-      </div>
-      <div class="co">
-        <div><h3>학력</h3></div>
-        <div>
-          <ol>
-            <li>고려사이버대학교 AI데이터과학부, 3학년 편입<span>2026.03 ~ 재학 중</span></li>
-            <li>유한대학교 컴퓨터소프트웨어공학과, 공학전문학사<span>2024 졸업</span></li>
-          </ol>
-        </div>
-      </div>
+    <div class="sec-head"><h2>SKILLS</h2></div>
+    <div class="skills">
+      <div><h3>학습</h3><ul><li>PyTorch</li><li>transformers, trl, peft(LoRA)</li><li>diffusers, accelerate</li></ul></div>
+      <div><h3>서빙, 최적화</h3><ul><li>vLLM (소스 패치)</li><li>AWQ, 투기 디코딩</li><li>Rebellions NPU</li></ul></div>
+      <div><h3>인프라</h3><ul><li>k3s, Docker</li><li>폐쇄망 배포</li><li>A100</li></ul></div>
+      <div><h3>평가</h3><ul><li>통제군 설계</li><li>부트스트랩 신뢰구간, 순열검정</li><li>G-Eval, hit@k</li></ul></div>
+      <div><h3>백엔드</h3><ul><li>Python, FastAPI</li><li>PostgreSQL, pgvector</li><li>MCP</li></ul></div>
     </div>
   </div>
 </section>
