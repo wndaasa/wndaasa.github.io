@@ -1,0 +1,29 @@
+/* 메인 페이지와 상세 페이지 공통: 색 토큰, 기본 요소, 단계 배지.
+   포인트는 연한 라벤더(밑줄, 배경)와 진한 보라(숫자, 단계 번호, 링크) 두 가지 */
+:root {
+  --ink: #161616;
+  --white: #ffffff;
+  --grey: #f6f5f9;
+  --line: #e6e4ec;
+  --soft: #666666;
+  --lav: #c9b8f5;
+  --lav-mark: #e3d9fb;
+  --lav-box: #f3eefd;
+  --violet: #6a3fbf;
+  --font: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--white); color: var(--ink); font-family: var(--font); font-size: 15px; line-height: 1.75; word-break: keep-all; overflow-wrap: anywhere; }
+a { color: var(--violet); text-underline-offset: 3px; }
+h1, h2, h3, p { margin: 0; }
+ul { margin: 0; padding-left: 1.1em; }
+li + li { margin-top: 0.3em; }
+mark { background: linear-gradient(transparent 55%, var(--lav-mark) 55%); color: inherit; font-weight: 700; padding: 0 1px; }
+
+.wrap { max-width: 1080px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); }
+
+/* 프로젝트가 다룬 단계(데이터, 학습, 서빙, 평가) 배지 */
+.stages { display: flex; gap: 6px; flex-wrap: wrap; }
+.stages span { font-size: 12px; font-weight: 700; border-radius: 999px; padding: 1px 10px; color: #b3b0bb; border: 1px solid var(--line); }
+.stages span.on { color: var(--ink); background: var(--lav-mark); border-color: var(--lav-mark); }

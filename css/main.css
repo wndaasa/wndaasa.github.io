@@ -1,0 +1,118 @@
+/* 메인 페이지(index.html). 섹션마다 흰색과 연한 회색 배경을 번갈아 덩어리로 읽히게 하는 한 페이지 구성 */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+a:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+
+/* 상단 메뉴: 히어로 위에서는 투명, 아래로 내리면 흰 바탕 */
+.nav { position: fixed; top: 0; left: 0; right: 0; z-index: 10; transition: background .2s, border-color .2s; border-bottom: 1px solid transparent; }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 60px; }
+.nav b { font-weight: 900; letter-spacing: -0.02em; color: var(--white); }
+.nav ul { list-style: none; display: flex; gap: 24px; padding: 0; margin: 0; overflow-x: auto; }
+.nav li + li { margin-top: 0; }
+.nav a { color: rgba(255,255,255,0.85); text-decoration: none; font-size: 14.5px; font-weight: 700; white-space: nowrap; }
+.nav a:hover { color: var(--lav); }
+.nav.solid { background: rgba(255,255,255,0.96); backdrop-filter: blur(6px); border-bottom-color: var(--line); }
+.nav.solid b { color: var(--ink); }
+.nav.solid a { color: var(--soft); }
+.nav.solid a:hover { color: var(--violet); }
+
+/* 히어로: 사진(images/hero.jpg)이 있으면 사진, 없으면 어텐션 행렬 무늬(images/pattern.svg) 위에 짙은 막 */
+.hero {
+  position: relative; color: var(--white); text-align: center;
+  padding-block: 150px 110px;
+  background:
+    linear-gradient(rgba(38, 30, 52, 0.82), rgba(38, 30, 52, 0.82)),
+    url("../images/hero.jpg") center / cover no-repeat,
+    url("../images/pattern.svg") repeat;
+}
+.hero .eyebrow { font-size: 15px; font-weight: 700; letter-spacing: 0.08em; color: var(--lav); }
+.hero h1 { margin-top: 10px; font-size: clamp(40px, 7vw, 68px); font-weight: 900; letter-spacing: -0.02em; line-height: 1.2; }
+.hero hr { width: 56px; height: 4px; border: 0; background: var(--lav); margin: 30px auto; }
+.hero p.sub { color: rgba(255,255,255,0.85); font-size: clamp(15px, 2vw, 18px); line-height: 1.8; }
+.hero .cta { display: inline-block; margin-top: 34px; background: var(--violet); color: var(--white); text-decoration: none; font-weight: 700; font-size: 15px; padding: 12px 28px; border-radius: 999px; }
+.hero .cta:hover { background: #5a32a8; }
+
+/* 히어로 아래 숫자 카드 */
+.stats-band { padding-block: 40px 8px; }
+.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.stat { background: var(--grey); border-radius: 12px; padding: 18px; display: grid; gap: 4px; align-content: start; }
+.stat b { font-size: 22px; font-weight: 900; color: var(--violet); letter-spacing: -0.02em; }
+.stat span { font-size: 13px; color: var(--ink); line-height: 1.5; }
+.stat em { font-style: normal; font-size: 12px; color: var(--soft); }
+
+/* 섹션 공통 */
+.sec { padding-block: 88px; }
+.sec.grey { background: var(--grey); }
+.sec-head { text-align: center; margin-bottom: 44px; }
+.sec-head h2 { display: inline-block; font-size: clamp(26px, 4vw, 34px); font-weight: 900; letter-spacing: 0.02em; padding-bottom: 6px; box-shadow: inset 0 -0.3em 0 var(--lav); }
+.sec-head p { margin-top: 14px; color: var(--soft); font-size: 14px; }
+
+/* About me */
+.about { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 24px; max-width: 900px; margin: 0 auto; }
+.about div { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 2px 12px; align-items: start; }
+.about svg { width: 32px; height: 32px; grid-row: span 2; stroke: var(--violet); fill: none; stroke-width: 1.6; }
+.about b { font-weight: 700; font-size: 16px; }
+.about span { color: var(--soft); font-size: 14px; }
+
+/* Projects: 2열 카드. 위에 다룬 단계(base.css 의 .stages), 가운데 대표 수치 하나 */
+.projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.card { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 28px 30px; display: flex; flex-direction: column; gap: 14px; }
+.card h3 { font-size: 20px; font-weight: 900; letter-spacing: -0.02em; }
+.card .meta { color: var(--soft); font-size: 13.5px; margin-top: -8px; }
+.metric { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.metric b { font-size: 26px; font-weight: 900; color: var(--violet); letter-spacing: -0.02em; }
+.metric span { font-size: 13.5px; color: var(--soft); }
+.card .summary { font-weight: 700; font-size: 15.5px; line-height: 1.6; }
+.card ul { font-size: 14px; }
+.card .fill { flex: 1; }
+.card .foot { display: grid; gap: 6px; font-size: 13px; }
+.card .role { font-weight: 700; }
+.card .stack { color: var(--soft); }
+.card .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+.card .links a { border: 1px solid var(--line); border-radius: 8px; padding: 2px 12px; font-size: 13px; font-weight: 500; color: var(--ink); text-decoration: none; }
+.card .links a:hover { border-color: var(--violet); color: var(--violet); }
+
+/* 논문 */
+.papers { display: grid; gap: 14px; max-width: 900px; margin: 0 auto; }
+.paper { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 4px 20px; padding: 20px 24px; border-radius: 12px; background: var(--white); box-shadow: 0 2px 10px rgba(40,20,80,0.05); }
+.paper .k { font-weight: 900; font-size: 14px; }
+.paper .k small { display: block; font-weight: 400; color: var(--soft); font-size: 12.5px; }
+.paper .t { font-weight: 700; }
+.paper .v { color: var(--soft); font-size: 13.5px; }
+.note { text-align: center; color: var(--soft); font-size: 13px; margin-top: 18px; }
+
+/* Skills: LLM 라이프사이클 4단계. 높이가 같은 카드에 근거 줄을 맨 아래로 고정해 점선 위치를 맞춤 */
+.flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; max-width: 1000px; margin: 0 auto; }
+.step { position: relative; background: var(--grey); border-radius: 14px; padding: 22px 20px; display: flex; flex-direction: column; gap: 12px; }
+.step:not(:last-child)::after { content: "→"; position: absolute; right: -21px; top: 26px; color: var(--violet); font-weight: 900; font-size: 16px; }
+.step .no { display: flex; align-items: center; gap: 10px; }
+.step .no b { width: 30px; height: 30px; border-radius: 50%; background: var(--violet); color: var(--white); display: grid; place-items: center; font-size: 12.5px; font-weight: 900; flex: none; }
+.step h3 { font-size: 18px; font-weight: 900; }
+.step p { font-size: 13.5px; color: var(--soft); }
+.tools { display: flex; flex-wrap: wrap; gap: 6px; }
+.tools span { font-size: 13px; font-weight: 500; background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 1px 9px; }
+.tools span.key { border-color: var(--violet); color: var(--violet); font-weight: 700; }
+.step .where { margin-top: auto; font-size: 12.5px; color: var(--soft); border-top: 1px dashed #d4d0de; padding-top: 10px; }
+
+footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px; padding-block: 28px; text-align: center; }
+
+@media (max-width: 860px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .nav ul { gap: 16px; }
+  .about { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .projects { grid-template-columns: minmax(0, 1fr); }
+  .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .step:nth-child(2)::after { content: none; }
+}
+@media (max-width: 520px) {
+  .nav ul { gap: 14px; }
+  .stats { grid-template-columns: minmax(0, 1fr); }
+  .about { grid-template-columns: minmax(0, 1fr); }
+  .paper { grid-template-columns: minmax(0, 1fr); }
+  .card { padding: 24px 20px; }
+  .flow { grid-template-columns: minmax(0, 1fr); }
+  .step::after { content: none !important; }
+  .sec { padding-block: 64px; }
+  .hero { padding-block: 120px 80px; }
+  .nav b { display: none; }
+}
