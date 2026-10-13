@@ -3,19 +3,18 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="임영기 포트폴리오: LLM 학습, 제약 하드웨어 서빙, 평가">
+<meta name="description" content="임영기 포트폴리오: LLM 학습, 폐쇄망과 NPU 환경의 서빙, 평가">
 <title>임영기 포트폴리오</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap">
 <style>
-/* 레이아웃: 흰 바탕, 검은 글자, 한 열 문서. 왼쪽 좁은 열에 기간과 역할. 포인트색은 핵심 수치 형광펜(노랑)과 링크(주황) 두 가지만 */
+/* 흰 바탕, 검은 글자, 한 열 문서. 왼쪽 좁은 열에 기간, 역할, 환경. 포인트색은 핵심 수치(노랑)와 링크(주황) 두 가지만 */
 :root {
   --bg: #ffffff;
   --ink: #111111;
   --soft: #666666;
   --rule: #e5e5e5;
-  --tile: #f7f7f7;
   --mark: #ffd84d;
   --mark-ink: #111111;
   --point: #d9480f;
@@ -23,13 +22,13 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #111111; --ink: #f2f2f2; --soft: #a3a3a3; --rule: #2e2e2e; --tile: #1a1a1a;
+    --bg: #111111; --ink: #f2f2f2; --soft: #a3a3a3; --rule: #2e2e2e;
     --mark: #7a6312; --mark-ink: #fff4c7; --point: #ff8a4c;
     color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #111111; --ink: #f2f2f2; --soft: #a3a3a3; --rule: #2e2e2e; --tile: #1a1a1a;
+  --bg: #111111; --ink: #f2f2f2; --soft: #a3a3a3; --rule: #2e2e2e;
   --mark: #7a6312; --mark-ink: #fff4c7; --point: #ff8a4c;
   color-scheme: dark;
 }
@@ -55,12 +54,13 @@ mark { background: linear-gradient(transparent 55%, var(--mark) 55%); color: var
 header { display: grid; gap: 20px; }
 .name { font-weight: 800; font-size: clamp(38px, 6.5vw, 54px); letter-spacing: -0.03em; }
 .name span { font-weight: 400; font-size: 0.32em; color: var(--soft); margin-left: 12px; letter-spacing: 0; }
-.lead { font-weight: 700; font-size: clamp(19px, 2.7vw, 22px); line-height: 1.55; max-width: 30ch; letter-spacing: -0.01em; }
+.lead { font-weight: 700; font-size: clamp(18px, 2.6vw, 21px); line-height: 1.6; max-width: 34ch; letter-spacing: -0.01em; }
 .meta { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 14px; }
 .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
 .facts div { padding: 16px 14px 16px 0; display: grid; gap: 4px; align-content: start; }
-.facts b { font-size: 21px; font-weight: 800; letter-spacing: -0.02em; }
+.facts b { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
 .facts span { font-size: 13px; color: var(--soft); line-height: 1.5; }
+.facts em { font-style: normal; color: var(--ink); font-weight: 500; }
 
 /* 섹션 */
 section { display: grid; gap: 22px; min-width: 0; }
@@ -68,27 +68,19 @@ section { display: grid; gap: 22px; min-width: 0; }
 .sec-title h2 { font-size: 21px; font-weight: 800; letter-spacing: -0.02em; }
 .sec-title p { font-size: 13px; color: var(--soft); }
 
-/* 경력 */
-.career { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 6px 36px; }
-.career .when { font-size: 14px; font-weight: 700; }
-.career h3 { font-size: 17px; font-weight: 800; }
-.career p { color: var(--soft); max-width: 62ch; }
-.career .sub { font-size: 14px; font-weight: 500; color: var(--soft); margin-left: 8px; }
-
-/* 업무별 프로젝트 */
-.fit { display: grid; border-top: 1px solid var(--rule); }
-.fit div { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 4px 24px; padding: 12px 0; border-bottom: 1px solid var(--rule); font-size: 14.5px; }
-.fit h3 { font-size: 14.5px; font-weight: 700; }
-.fit a { font-weight: 500; text-decoration: none; border-bottom: 1px solid currentColor; }
+/* 기간 | 내용 두 열 */
+.row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 6px 36px; }
+.row .when { font-size: 14px; font-weight: 700; }
+.row h3 { font-size: 17px; font-weight: 800; }
+.row .sub { font-size: 14px; font-weight: 500; color: var(--soft); margin-left: 8px; }
+.row p { color: var(--soft); max-width: 62ch; }
 
 /* 프로젝트 */
-.project { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 10px 36px; padding-top: 28px; border-top: 1px solid var(--rule); scroll-margin-top: 24px; }
+.project { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 10px 36px; padding-top: 28px; border-top: 1px solid var(--rule); }
 .project:first-of-type { border-top: 0; padding-top: 4px; }
-.p-side { display: grid; gap: 8px; align-content: start; font-size: 13px; color: var(--soft); }
-.p-side .when { color: var(--ink); font-weight: 700; }
+.p-side { display: grid; gap: 6px; align-content: start; font-size: 13px; color: var(--soft); }
+.p-side .when { color: var(--ink); font-weight: 700; font-size: 14px; }
 .p-side .role { color: var(--ink); }
-.tags { display: flex; flex-wrap: wrap; gap: 5px; }
-.tags span { font-size: 12px; border: 1px solid var(--ink); padding: 0 7px; color: var(--ink); }
 .p-main { display: grid; gap: 12px; min-width: 0; }
 .p-main h3 { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; }
 .p-main .what { color: var(--soft); max-width: 62ch; }
@@ -96,24 +88,19 @@ section { display: grid; gap: 22px; min-width: 0; }
 .p-main li strong { font-weight: 700; }
 .stack { font-size: 13px; color: var(--soft); }
 
-/* 논문 */
-.papers { display: grid; border-top: 1px solid var(--rule); }
-.paper { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 4px 36px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
-.paper .kind { font-size: 13px; font-weight: 700; }
-.paper .kind small { display: block; font-weight: 400; color: var(--soft); font-size: 12.5px; }
-.paper .t { font-weight: 700; }
-.paper .v { font-size: 13.5px; color: var(--soft); }
+/* 논문, 기술 */
+.list { display: grid; border-top: 1px solid var(--rule); }
+.item { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 4px 36px; padding: 13px 0; border-bottom: 1px solid var(--rule); font-size: 14.5px; }
+.item .k { font-size: 13px; font-weight: 700; }
+.item .k small { display: block; font-weight: 400; color: var(--soft); font-size: 12.5px; }
+.item .t { font-weight: 700; }
+.item .v { font-size: 13.5px; color: var(--soft); }
 .note { font-size: 13px; color: var(--soft); }
-
-/* 기술 */
-.skills { display: grid; border-top: 1px solid var(--rule); }
-.skill { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 4px 36px; padding: 12px 0; border-bottom: 1px solid var(--rule); font-size: 14.5px; }
-.skill h3 { font-size: 13.5px; font-weight: 700; color: var(--soft); padding-top: 1px; }
 
 @media (max-width: 760px) {
   .page { padding-block: 40px 64px; gap: 56px; }
   .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .career, .fit div, .project, .skill, .paper { grid-template-columns: minmax(0, 1fr); }
+  .row, .project, .item { grid-template-columns: minmax(0, 1fr); }
 }
 </style>
 </head>
@@ -121,136 +108,133 @@ section { display: grid; gap: 22px; min-width: 0; }
 <div class="page">
   <header>
     <h1 class="name">임영기<span>Younggi Lim</span></h1>
-    <p class="lead">LLM을 학습하고, 제약된 하드웨어에 올리고, 맞게 동작하는지 수치로 확인합니다.</p>
+    <p class="lead">LLM을 학습하고, 폐쇄망과 NPU 같은 제약된 환경에서 서비스로 운영하는 AI 개발자입니다.</p>
     <div class="meta">
       <a href="mailto:younggi1105@gmail.com">younggi1105@gmail.com</a>
       <a href="https://github.com/wndaasa" target="_blank" rel="noopener">github.com/wndaasa</a>
       <a href="https://huggingface.co/Imsbee" target="_blank" rel="noopener">huggingface.co/Imsbee</a>
     </div>
     <div class="facts">
-      <div><b>33B</b><span>벤더 미지원 LLM을 NPU에 직접 포팅해 운영</span></div>
-      <div><b>65 → 156 TPS</b><span>32B AWQ 단일 사용자, 투기 디코딩 적용 (코드 생성 기준)</span></div>
-      <div><b>14.8s → 1.7s</b><span>국가 서비스의 상용 RAG 대체, 문항당 처리 시간</span></div>
-      <div><b>논문 4편</b><span>1저자 2편, 저널 1편 포함</span></div>
+      <div><b>14.8s → 1.7s</b><span>상용 RAG를 자체 검색으로 대체, 문항당 처리 시간<br><em>원윈도우 AI 검색</em></span></div>
+      <div><b>65 → 156 TPS</b><span>32B 모델 단일 사용자 생성 속도, 코드 생성 기준<br><em>32B 서빙 최적화</em></span></div>
+      <div><b>33B</b><span>벤더 미지원 LLM을 NPU에 포팅, 원본과 출력 일치<br><em>NPU 추론 서비스</em></span></div>
+      <div><b>논문 4편</b><span>1저자 2편, 저널 1편 포함<br><em>논문</em></span></div>
     </div>
   </header>
 
   <section>
     <div class="sec-title"><h2>경력</h2></div>
-    <div class="career">
+    <div class="row">
       <span class="when">2024.11 ~ 현재</span>
       <div>
-        <h3>㈜피씨엔 R&amp;S본부 <span class="sub">AI 개발자, 사원</span></h3>
-        <p>정부 R&amp;D와 공공 AI 사업에서 LLM 학습, 서빙, 평가를 맡고 있습니다.</p>
+        <h3>㈜피씨엔 R&amp;S본부<span class="sub">AI 개발자, 사원</span></h3>
+        <p>정부 R&amp;D와 공공 AI 사업에서 LLM 학습, 서빙, 평가를 맡고 있습니다. 아래 프로젝트는 모두 이 회사에서 진행했습니다.</p>
       </div>
     </div>
   </section>
 
   <section>
-    <div class="sec-title"><h2>학력</h2></div>
-    <div class="career">
-      <span class="when">2026.03 ~ 재학 중</span>
-      <div><h3>고려사이버대학교 <span class="sub">AI데이터과학부, 3학년 편입</span></h3></div>
-      <span class="when">2024 졸업</span>
-      <div><h3>유한대학교 <span class="sub">컴퓨터소프트웨어공학과, 공학전문학사</span></h3></div>
-    </div>
-  </section>
+    <div class="sec-title"><h2>회사 프로젝트</h2><p>최신순</p></div>
 
-  <section>
-    <div class="sec-title"><h2>업무별 프로젝트</h2><p>AI Model 엔지니어 담당 업무와 자격 요건 기준</p></div>
-    <div class="fit">
-      <div><h3>sLLM 사후 학습과 평가</h3><p><a href="#p-sft">VPE-Ko 한국어 LoRA</a></p></div>
-      <div><h3>파인튜닝 파이프라인과 서빙</h3><p><a href="#p-onewindow">원윈도우 AI 검색</a>, <a href="#p-npu">NPU 추론 서비스</a></p></div>
-      <div><h3>경량화, 양자화, 추론 최적화</h3><p><a href="#p-onewindow">원윈도우 AI 검색</a>, <a href="#p-npu">NPU 추론 서비스</a></p></div>
-      <div><h3>오픈소스 모델과 가속기 검증</h3><p><a href="#p-npu">NPU 추론 서비스</a></p></div>
-      <div><h3>PyTorch 학습 코드, 평가 설계</h3><p><a href="#p-copyright">저작권 탐지 연구</a>, <a href="#p-translator">ko-en-translator</a></p></div>
-    </div>
-  </section>
+    <article class="project">
+      <div class="p-side">
+        <span class="when">2026.09 ~ 12 예정</span>
+        <span>NIA 사업</span>
+        <span>폐쇄망 A100 2장</span>
+        <span class="role">담당: 검색 백엔드, GPU 추론 서버, 품질 평가</span>
+      </div>
+      <div class="p-main">
+        <h3>원윈도우 AI 검색 고도화</h3>
+        <p class="what">공공데이터 약 13.5만 건을 찾는 국가 서비스의 검색과 챗봇을 LLM 기반으로 바꾸고 있습니다.</p>
+        <ul>
+          <li><strong>상용 RAG 대체</strong>: LLM 검색어 확장, 키워드와 벡터 검색, LLM 재순위로 구성. 100문항 기준 hit@1 <mark>71 → 86</mark>, 문항당 <mark>14.8초 → 1.7초</mark></li>
+          <li><strong>폐쇄망 추론 서버</strong>: 외부 접속이 막힌 서버에 k3s로 vLLM을 구성해 EXAONE-4.0-32B-AWQ와 임베딩 모델을 함께 서빙</li>
+          <li><strong>운영 문제 규명</strong>: 간헐적 500 오류를 keep-alive 경쟁 조건으로 재현해 확정하고, 부하 측정으로 동시 처리 상한 결정</li>
+        </ul>
+        <p class="stack">vLLM, EXAONE-4.0-32B-AWQ, k3s, FastAPI, pgvector, MCP</p>
+      </div>
+    </article>
 
-  <section>
-    <div class="sec-title"><h2>프로젝트</h2><p>공고와 맞닿은 것만</p></div>
+    <article class="project">
+      <div class="p-side">
+        <span class="when">2026.08</span>
+        <span>수주 과제</span>
+        <span>A100 80GB</span>
+        <span class="role">단독 수행</span>
+      </div>
+      <div class="p-main">
+        <h3>생성 모델 저작권 탐지 연구</h3>
+        <p class="what">가중치에 접근할 수 없는 상용 이미지 생성 모델의 저작권 침해를, 그 출력으로 학습한 대리 모델에서 탐지할 수 있는지 검증했습니다.</p>
+        <ul>
+          <li><strong>풀 파인튜닝</strong>: SD1.4와 SD3.5 학습. SD3.5 학습 코드를 직접 작성하고 공용 GPU의 45GB 안에 들어가도록 메모리 설계</li>
+          <li><strong>결과</strong>: 구조가 다른 대리 모델에서도 암기 신호 탐지 AUC <mark>0.848</mark>, 통제군 0.522 대비 유의</li>
+          <li><strong>교란 발견</strong>: 0.983이 나온 실험을 그대로 보고하지 않고 통제군으로 교란을 밝힌 뒤 조건을 바꿔 다시 입증</li>
+        </ul>
+        <p class="stack">PyTorch, diffusers, accelerate</p>
+      </div>
+    </article>
 
-    <article class="project" id="p-npu">
+    <article class="project">
+      <div class="p-side">
+        <span class="when">2026.07 ~ 08</span>
+        <span>원윈도우 착수 전 사전 실험</span>
+        <span>A100 80GB 1장</span>
+      </div>
+      <div class="p-main">
+        <h3>32B 서빙 최적화</h3>
+        <p class="what">A100 한 장에서 32B 모델로 웹 검색 에이전트 채팅 서비스를 만들며 응답 속도와 출력 안정성을 끌어올렸습니다.</p>
+        <ul>
+          <li><strong>생성 속도</strong>: 단일 사용자 기준 transformers 약 9 → vLLM AWQ 65 → 투기 디코딩 <mark>156 TPS</mark>(코드), 81 TPS(일반 문장)</li>
+          <li><strong>vLLM 소스 패치 2건</strong>: 투기 디코딩 보조 모델이 매번 느린 경로로 돌던 버그 수정, 이후 업스트림에 같은 수정이 머지됨</li>
+          <li><strong>출력 안정성</strong>: bf16과 AWQ를 비교해 양자화 탓인 환각과 아닌 것을 분리. 사고 태그가 닫히지 않는 문제를 2단계 생성으로 차단</li>
+        </ul>
+        <p class="stack">vLLM, EXAONE-4.0-32B-AWQ, 투기 디코딩</p>
+      </div>
+    </article>
+
+    <article class="project">
       <div class="p-side">
         <span class="when">2026.06 ~ 운영 중</span>
         <span>Rebellions ATOM-Max NPU</span>
         <span class="role">단독 수행</span>
-        <div class="tags"><span>가속기</span><span>VLM</span><span>추론 최적화</span></div>
       </div>
       <div class="p-main">
         <h3>NPU 온프레미스 LLM 추론 서비스</h3>
         <p class="what">벤더가 지원하지 않는 모델을 NPU에 직접 포팅해 상시 서비스로 운영합니다.</p>
         <ul>
           <li><strong>EXAONE 4.5 33B 포팅</strong>: 벤더 패키지가 지원하지 않는 구조를 패키지 수정 없이 구현. 원본 대비 <mark>프롬프트 12개 greedy 출력 일치</mark>, 76.5 tok/s, 32K 컨텍스트</li>
-          <li><strong>추론 최적화</strong>: 비전 임베딩 캐시로 이미지 10장 대화의 첫 토큰 지연 <mark>13.5s → 2.35s</mark>. 임베딩 스케줄러 패치로 처리량 <mark>3.4배</mark>, 결과는 원본과 동일</li>
+          <li><strong>추론 최적화</strong>: 비전 임베딩 캐시로 이미지 10장 대화의 첫 토큰 지연 <mark>13.5s → 2.35s</mark>. 임베딩 스케줄러 패치로 처리량 3.4배</li>
           <li><strong>가속기 검증</strong>: 비전 인코더를 추가하며 기존 응답 회귀 0으로 무중단 교체. LSTM이 오류 없이 틀린 값을 내는 NPU 결함을 대조군으로 격리</li>
         </ul>
         <p class="stack">vllm-rbln, optimum-rbln, EXAONE 4.5 VL, bge-m3, PyTorch</p>
       </div>
     </article>
 
-    <article class="project" id="p-onewindow">
-      <div class="p-side">
-        <span class="when">2026.07 ~ 12 예정</span>
-        <span>NIA 사업, 폐쇄망 A100×2</span>
-        <span class="role">담당: 검색 백엔드, GPU 추론 서버, 품질 평가</span>
-        <div class="tags"><span>서빙</span><span>양자화</span><span>k8s</span><span>평가</span></div>
-      </div>
-      <div class="p-main">
-        <h3>원윈도우 AI 검색 고도화</h3>
-        <p class="what">공공데이터 약 13.5만 건을 검색하는 국가 서비스의 검색과 챗봇을 LLM 기반으로 고도화하고 있습니다. 착수 전 두 달은 32B 서빙 사전 실험에 썼습니다.</p>
-        <ul>
-          <li><strong>상용 RAG 대체</strong>: 100문항 기준 hit@1 <mark>71 → 86</mark>, 문항당 <mark>14.8초 → 1.7초</mark>. 평가셋과 판정 방식은 감리 지적에 맞춰 블라인드 방식으로 재설계</li>
-          <li><strong>폐쇄망 서빙과 최적화</strong>: k3s에 vLLM으로 EXAONE-4.0-32B-AWQ 구성. 투기 디코딩으로 단일 사용자 생성 속도 65 → <mark>156 TPS</mark>(코드), 81 TPS(일반 문장). vLLM 소스 패치 2건</li>
-          <li><strong>운영 문제 규명</strong>: 간헐적 500 오류를 keep-alive 경쟁 조건으로 재현해 확정. bf16과 AWQ의 환각을 비교해 양자화 탓인 것과 아닌 것을 분리</li>
-        </ul>
-        <p class="stack">vLLM, EXAONE-4.0-32B-AWQ, k3s, FastAPI, pgvector, MCP</p>
-      </div>
-    </article>
-
-    <article class="project" id="p-sft">
+    <article class="project">
       <div class="p-side">
         <span class="when">2024.11 ~ 2025.08</span>
         <span>A100 80GB</span>
-        <span class="role">담당: 합성 데이터 구축, 한국어 LoRA 학습, 영상 생성 모델 스타일 LoRA</span>
-        <div class="tags"><span>LoRA SFT</span><span>합성 데이터</span></div>
+        <span class="role">담당: 합성 데이터 구축, LoRA 학습</span>
       </div>
       <div class="p-main">
-        <h3>VPE-Ko 한국어 대화형 영상 프롬프트 시스템</h3>
-        <p class="what">한국어 대화로 영상 생성 모델(CogVideoX)용 영어 프롬프트를 완성해 주는 챗봇 시스템입니다.</p>
+        <h3>VPE-Ko 한국어 영상 프롬프트 챗봇</h3>
+        <p class="what">한국어 대화로 영상 생성 모델(CogVideoX)용 영어 프롬프트를 완성해 주는 챗봇입니다.</p>
         <ul>
           <li><strong>합성 데이터 직접 구축</strong>: GPT 두 개에 질문자와 답변자 역할을 줘 다양한 말투의 대화 5천여 건, 학습 쌍 <mark>24,769건</mark> 생성</li>
-          <li><strong>LoRA SFT</strong>: Qwen2.5-14B-Instruct를 한국어 LoRA로 학습해 영상 생성 모델과 엔드투엔드로 연결. CogVideoX-5B 수묵화 스타일 LoRA도 함께 진행</li>
-          <li><strong>평가</strong>: 비전문가 A-B 테스트에서 G-Eval <mark>3.6 → 4.9</mark>, 생성 영상 만족도 2.1 → 4.6. 1저자 논문으로 발표</li>
+          <li><strong>LoRA SFT</strong>: Qwen2.5-14B-Instruct를 한국어 LoRA로 학습해 영상 생성 모델과 연결</li>
+          <li><strong>평가</strong>: 비전문가 A-B 테스트에서 G-Eval 3.6 → 4.9, 생성 영상 만족도 2.1 → 4.6. 1저자 논문으로 발표</li>
         </ul>
-        <p class="stack">trl, peft, transformers, PyTorch</p>
+        <p class="stack">PyTorch, transformers, trl, peft</p>
       </div>
     </article>
+  </section>
 
-    <article class="project" id="p-copyright">
-      <div class="p-side">
-        <span class="when">2026.08</span>
-        <span>수주 과제, A100 80GB</span>
-        <span class="role">단독 수행</span>
-        <div class="tags"><span>풀 파인튜닝</span><span>연구 설계</span></div>
-      </div>
-      <div class="p-main">
-        <h3>생성 모델 저작권 탐지 연구</h3>
-        <p class="what">가중치에 접근할 수 없는 상용 이미지 생성 모델의 저작권 침해를, 출력으로 학습한 대리 모델에서 탐지할 수 있는지 검증했습니다.</p>
-        <ul>
-          <li><strong>풀 파인튜닝</strong>: SD1.4와 SD3.5 학습. SD3.5 학습 코드를 직접 작성하고 공용 GPU의 45GB 안에 들어가도록 메모리 설계</li>
-          <li><strong>결과</strong>: 다른 아키텍처의 대리 모델에서도 암기 신호 탐지 AUC <mark>0.848</mark>, 통제군 0.522 대비 유의</li>
-          <li><strong>교란 발견</strong>: 0.983이 나온 실험을 그대로 보고하지 않고 통제군으로 교란을 밝힌 뒤, 조건을 바꿔 다시 입증</li>
-        </ul>
-        <p class="stack">diffusers, accelerate, PyTorch</p>
-      </div>
-    </article>
-
-    <article class="project" id="p-translator">
+  <section>
+    <div class="sec-title"><h2>개인 프로젝트</h2></div>
+    <article class="project">
       <div class="p-side">
         <span class="when">2026.06 ~ 07</span>
         <span>공개, apache-2.0</span>
-        <div class="tags"><span>PyTorch 구현</span><span>공개 모델</span></div>
       </div>
       <div class="p-main">
         <h3>ko-en-translator</h3>
@@ -266,23 +250,33 @@ section { display: grid; gap: 22px; min-width: 0; }
 
   <section>
     <div class="sec-title"><h2>논문</h2><p>모두 게재 확정</p></div>
-    <div class="papers">
-      <div class="paper"><div class="kind">1저자<small>2026</small></div><div><p class="t">멀티홉 질의응답을 위한 에이전트 기반 반복 검색</p><p class="v">한국인터넷정보학회 추계학술발표대회. 평균 EM 0.572, 단일 패스 RAG 대비 +12.8%p</p></div></div>
-      <div class="paper"><div class="kind">1저자<small>2025</small></div><div><p class="t">한국어 기반 Text-to-Video 프롬프트 엔지니어링 시스템 연구: CogVideoX를 중점으로</p><p class="v">제6회 한국 인공지능 학술대회</p></div></div>
-      <div class="paper"><div class="kind">저널, 3저자<small>2026</small></div><div><p class="t">KoPESV-SD: A Self-Diagnosing Korean-based Prompt Engineering System for Video Generation Model with a Complementary Dual Safety Net</p><p class="v">Journal of Internet Computing and Services. 생성 전 경고 파트 담당</p></div></div>
-      <div class="paper"><div class="kind">국제학술대회, 3저자<small>2025</small></div><div><p class="t">A Study on Korean-based Prompt Engineering System for Video Generation Model: Focusing on CogVideoX</p><p class="v">ICONI 2025</p></div></div>
+    <div class="list">
+      <div class="item"><div class="k">1저자<small>2026</small></div><div><p class="t">멀티홉 질의응답을 위한 에이전트 기반 반복 검색</p><p class="v">한국인터넷정보학회 추계학술발표대회. NPU에 올린 33B 모델로 실험, 평균 EM 0.572(단일 패스 RAG 대비 +12.8%p)</p></div></div>
+      <div class="item"><div class="k">1저자<small>2025</small></div><div><p class="t">한국어 기반 Text-to-Video 프롬프트 엔지니어링 시스템 연구: CogVideoX를 중점으로</p><p class="v">제6회 한국 인공지능 학술대회. VPE-Ko</p></div></div>
+      <div class="item"><div class="k">저널, 3저자<small>2026</small></div><div><p class="t">KoPESV-SD: A Self-Diagnosing Korean-based Prompt Engineering System for Video Generation Model with a Complementary Dual Safety Net</p><p class="v">Journal of Internet Computing and Services. 생성 전 경고 파트 담당</p></div></div>
+      <div class="item"><div class="k">국제학술대회, 3저자<small>2025</small></div><div><p class="t">A Study on Korean-based Prompt Engineering System for Video Generation Model: Focusing on CogVideoX</p><p class="v">ICONI 2025</p></div></div>
     </div>
     <p class="note">학회 논문집이 온라인에 공개되지 않아 검색되지 않습니다. 원문은 요청 시 제공합니다.</p>
   </section>
 
   <section>
     <div class="sec-title"><h2>기술</h2></div>
-    <div class="skills">
-      <div class="skill"><h3>학습</h3><p>PyTorch, transformers, trl, peft(LoRA), diffusers, accelerate</p></div>
-      <div class="skill"><h3>서빙, 최적화</h3><p>vLLM(소스 패치), AWQ, 투기 디코딩, Rebellions NPU 컴파일</p></div>
-      <div class="skill"><h3>인프라</h3><p>k3s, Docker, 폐쇄망 배포, A100</p></div>
-      <div class="skill"><h3>평가</h3><p>통제군 설계, 부트스트랩 신뢰구간, 순열검정, G-Eval, hit@k</p></div>
-      <div class="skill"><h3>백엔드</h3><p>Python, FastAPI, PostgreSQL, pgvector, MCP</p></div>
+    <div class="list">
+      <div class="item"><div class="k">학습</div><p>PyTorch, transformers, trl, peft(LoRA), diffusers, accelerate</p></div>
+      <div class="item"><div class="k">서빙, 최적화</div><p>vLLM(소스 패치), AWQ, 투기 디코딩, Rebellions NPU</p></div>
+      <div class="item"><div class="k">인프라</div><p>k3s, Docker, 폐쇄망 배포, A100</p></div>
+      <div class="item"><div class="k">평가</div><p>통제군 설계, 부트스트랩 신뢰구간, 순열검정, G-Eval, hit@k</p></div>
+      <div class="item"><div class="k">백엔드</div><p>Python, FastAPI, PostgreSQL, pgvector, MCP</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="sec-title"><h2>학력</h2></div>
+    <div class="row">
+      <span class="when">2026.03 ~ 재학 중</span>
+      <div><h3>고려사이버대학교<span class="sub">AI데이터과학부, 3학년 편입</span></h3></div>
+      <span class="when">2024 졸업</span>
+      <div><h3>유한대학교<span class="sub">컴퓨터소프트웨어공학과, 공학전문학사</span></h3></div>
     </div>
   </section>
 </div>
