@@ -102,19 +102,18 @@ mark { background: linear-gradient(transparent 55%, var(--lav-mark) 55%); color:
 .paper .v { color: var(--soft); font-size: 13.5px; }
 .note { text-align: center; color: var(--soft); font-size: 13px; margin-top: 18px; }
 
-/* Skills: LLM 라이프사이클 4단계 흐름. 단계마다 도구와 근거 프로젝트 */
-.flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.step { padding-right: 18px; display: grid; gap: 12px; align-content: start; }
+/* Skills: LLM 라이프사이클 4단계. 높이가 같은 카드에 근거 줄을 맨 아래로 고정해 점선 위치를 맞춤 */
+.flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; max-width: 1000px; margin: 0 auto; }
+.step { position: relative; background: var(--grey); border-radius: 14px; padding: 22px 20px; display: flex; flex-direction: column; gap: 12px; }
+.step:not(:last-child)::after { content: "→"; position: absolute; right: -21px; top: 26px; color: var(--violet); font-weight: 900; font-size: 16px; }
 .step .no { display: flex; align-items: center; gap: 10px; }
-.step .no b { width: 34px; height: 34px; border-radius: 50%; background: var(--violet); color: var(--white); display: grid; place-items: center; font-size: 13px; font-weight: 900; flex: none; }
-.step .no i { flex: 1; height: 2px; background: var(--lav); }
-.step:last-child .no i { background: transparent; }
+.step .no b { width: 30px; height: 30px; border-radius: 50%; background: var(--violet); color: var(--white); display: grid; place-items: center; font-size: 12.5px; font-weight: 900; flex: none; }
 .step h3 { font-size: 18px; font-weight: 900; }
 .step p { font-size: 13.5px; color: var(--soft); }
 .tools { display: flex; flex-wrap: wrap; gap: 6px; }
 .tools span { font-size: 13px; font-weight: 500; background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 1px 9px; }
 .tools span.key { border-color: var(--violet); color: var(--violet); font-weight: 700; }
-.step .where { font-size: 12.5px; color: var(--soft); border-top: 1px dashed var(--line); padding-top: 8px; }
+.step .where { margin-top: auto; font-size: 12.5px; color: var(--soft); border-top: 1px dashed #d4d0de; padding-top: 10px; }
 
 footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px; padding-block: 28px; text-align: center; }
 
@@ -122,8 +121,8 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
   .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .about { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .projects { grid-template-columns: minmax(0, 1fr); }
-  .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 0; }
-  .step:nth-child(2) .no i { background: transparent; }
+  .flow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .step:nth-child(2)::after { content: none; }
 }
 @media (max-width: 520px) {
   .nav ul { gap: 14px; }
@@ -132,7 +131,7 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
   .paper { grid-template-columns: minmax(0, 1fr); }
   .card { padding: 24px 20px; }
   .flow { grid-template-columns: minmax(0, 1fr); }
-  .step .no i { display: none; }
+  .step::after { content: none !important; }
   .sec { padding-block: 64px; }
   .hero { padding-block: 64px 48px; }
 }
@@ -182,7 +181,7 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
 
 <section class="sec" id="projects">
   <div class="wrap">
-    <div class="sec-head"><h2>PROJECTS</h2><p>㈜피씨엔에서 진행한 프로젝트를 최신순으로, 마지막은 개인 프로젝트</p></div>
+    <div class="sec-head"><h2>PROJECTS</h2></div>
     <div class="projects">
 
       <article class="card">
@@ -210,12 +209,12 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
       <article class="card">
         <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
         <h3>32B 서빙 최적화</h3>
-        <p class="meta">2026.07 ~ 08 / 원윈도우 착수 전 사전 실험, A100 1장</p>
+        <p class="meta">2026.07 ~ 08 / 원윈도우 착수 전 사전 실험, A100, H100</p>
         <div class="metric"><b>65 → 156 TPS</b><span>32B 단일 사용자 생성 속도, 코드 기준 (일반 문장 81)</span></div>
         <p class="summary">32B 모델로 웹 검색 에이전트 채팅 서비스를 만들며 응답 속도와 출력 안정성 개선</p>
         <ul><li>투기 디코딩 적용, vLLM 소스 패치 2건 중 하나는 이후 업스트림에 같은 수정이 머지됨</li><li>bf16과 AWQ를 비교해 양자화 탓인 환각과 아닌 것을 분리</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, 투기 디코딩</p></div>
+        <div class="foot"><p class="role">A100, H100 환경 성능 최적화 단독 수행</p><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, 투기 디코딩</p></div>
       </article>
 
       <article class="card">
@@ -226,7 +225,7 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
         <p class="summary">벤더가 지원하지 않는 33B 모델을 NPU에 직접 포팅해 상시 서비스로 운영</p>
         <ul><li>EXAONE 4.5 33B 포팅, 원본 대비 프롬프트 12개 greedy 출력 일치, 76.5 tok/s</li><li>임베딩 처리량 3.4배, LSTM이 오류 없이 틀린 값을 내는 NPU 결함을 대조군으로 격리</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">포팅, 최적화, 배포, 운영 단독 수행</p><p class="stack">vllm-rbln, optimum-rbln, EXAONE 4.5 VL, bge-m3, PyTorch</p></div>
+        <div class="foot"><p class="role">포팅, 최적화, 배포, 운영 단독 수행</p><p class="stack">vllm-rbln, optimum-rbln, EXAONE 4.5 VL, bge-m3, PyTorch</p><div class="links"><a href="projects/npu.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
@@ -257,7 +256,7 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
 
 <section class="sec grey" id="papers">
   <div class="wrap">
-    <div class="sec-head"><h2>PAPERS</h2><p>모두 게재 확정</p></div>
+    <div class="sec-head"><h2>PAPERS</h2></div>
     <div class="papers">
       <div class="paper"><div class="k">1저자<small>2026</small></div><div><p class="t">멀티홉 질의응답을 위한 에이전트 기반 반복 검색</p><p class="v">한국인터넷정보학회 추계학술발표대회. NPU에 올린 33B 모델로 실험, 평균 EM 0.572(단일 패스 RAG 대비 +12.8%p)</p></div></div>
       <div class="paper"><div class="k">1저자<small>2025</small></div><div><p class="t">한국어 기반 Text-to-Video 프롬프트 엔지니어링 시스템 연구: CogVideoX를 중점으로</p><p class="v">제6회 한국 인공지능 학술대회. VPE-Ko</p></div></div>
@@ -273,29 +272,25 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
     <div class="sec-head"><h2>SKILLS</h2><p>LLM을 만드는 네 단계와 단계마다 쓰는 도구</p></div>
     <div class="flow">
       <div class="step">
-        <div class="no"><b>01</b><i></i></div>
-        <h3>데이터</h3>
+        <div class="no"><b>01</b><h3>데이터</h3></div>
         <p>학습 데이터를 만들고, 평가셋이 공정한지 따집니다.</p>
         <div class="tools"><span class="key">합성 데이터 생성</span><span>평가셋 설계</span><span>블라인드 판정</span><span>데이터 통계 점검</span></div>
         <p class="where">VPE-Ko, 원윈도우</p>
       </div>
       <div class="step">
-        <div class="no"><b>02</b><i></i></div>
-        <h3>학습</h3>
+        <div class="no"><b>02</b><h3>학습</h3></div>
         <p>LoRA부터 풀 파인튜닝까지, 학습 코드를 직접 씁니다.</p>
         <div class="tools"><span class="key">PyTorch</span><span class="key">LoRA</span><span>transformers</span><span>trl</span><span>peft</span><span>diffusers</span><span>accelerate</span></div>
         <p class="where">VPE-Ko, 저작권 탐지, ko-en-translator</p>
       </div>
       <div class="step">
-        <div class="no"><b>03</b><i></i></div>
-        <h3>서빙</h3>
+        <div class="no"><b>03</b><h3>서빙</h3></div>
         <p>폐쇄망과 NPU처럼 제약된 환경에 올리고 빠르게 만듭니다.</p>
         <div class="tools"><span class="key">vLLM</span><span class="key">AWQ</span><span>투기 디코딩</span><span>Rebellions NPU</span><span>k3s</span><span>Docker</span><span>FastAPI</span><span>pgvector</span><span>MCP</span></div>
         <p class="where">NPU 추론, 32B 서빙, 원윈도우</p>
       </div>
       <div class="step">
-        <div class="no"><b>04</b><i></i></div>
-        <h3>평가</h3>
+        <div class="no"><b>04</b><h3>평가</h3></div>
         <p>개선이 진짜인지 통제군과 신뢰구간으로 확인합니다.</p>
         <div class="tools"><span class="key">통제군 설계</span><span>Bootstrap CI</span><span>순열검정</span><span>G-Eval</span><span>hit@k, nDCG</span></div>
         <p class="where">저작권 탐지, 원윈도우, VPE-Ko</p>
