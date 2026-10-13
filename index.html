@@ -7,278 +7,355 @@
 <title>임영기 포트폴리오</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;800&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
 <style>
-/* 흰 바탕, 검은 글자, 한 열 문서. 왼쪽 좁은 열에 기간, 역할, 환경. 포인트색은 핵심 수치(노랑)와 링크(주황) 두 가지만 */
+/* 섹션마다 배경을 바꿔 덩어리로 읽히게 하는 한 페이지 구성. 무채색 바탕에 포인트는 노랑(강조)과 주황(링크) 두 가지 */
 :root {
-  --bg: #ffffff;
-  --ink: #111111;
+  --black: #111111;
+  --white: #ffffff;
+  --grey: #f3f3f1;
+  --line: #e2e2e2;
   --soft: #666666;
-  --rule: #e5e5e5;
-  --mark: #ffd84d;
-  --mark-ink: #111111;
-  --point: #d9480f;
+  --yellow: #ffd84d;
+  --orange: #d9480f;
   --font: "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
 }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --bg: #111111; --ink: #f2f2f2; --soft: #a3a3a3; --rule: #2e2e2e;
-    --mark: #7a6312; --mark-ink: #fff4c7; --point: #ff8a4c;
-    color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --bg: #111111; --ink: #f2f2f2; --soft: #a3a3a3; --rule: #2e2e2e;
-  --mark: #7a6312; --mark-ink: #fff4c7; --point: #ff8a4c;
-  color-scheme: dark;
-}
-
 * { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 html, body { margin: 0; }
-body {
-  background: var(--bg); color: var(--ink);
-  font-family: var(--font); font-size: 15px; line-height: 1.75;
-  word-break: keep-all; overflow-wrap: anywhere; font-variant-numeric: tabular-nums;
-}
-a { color: var(--point); text-underline-offset: 3px; }
-a:focus-visible { outline: 2px solid var(--point); outline-offset: 2px; }
-h1, h2, h3 { margin: 0; line-height: 1.35; text-wrap: balance; }
-p { margin: 0; }
-ul { margin: 0; padding-left: 1.05em; }
+body { background: var(--white); color: var(--black); font-family: var(--font); font-size: 15px; line-height: 1.75; word-break: keep-all; overflow-wrap: anywhere; }
+a { color: var(--orange); text-underline-offset: 3px; }
+a:focus-visible { outline: 2px solid var(--orange); outline-offset: 2px; }
+h1, h2, h3, p { margin: 0; }
+ul { margin: 0; padding-left: 1.1em; }
 li + li { margin-top: 0.45em; }
-mark { background: linear-gradient(transparent 55%, var(--mark) 55%); color: var(--mark-ink); padding: 0 1px; font-weight: 700; }
+mark { background: linear-gradient(transparent 55%, var(--yellow) 55%); color: inherit; font-weight: 700; padding: 0 1px; }
 
-.page { max-width: 880px; margin: 0 auto; padding-inline: clamp(16px, 5vw, 56px); padding-block: 64px 88px; display: grid; gap: 72px; }
+.wrap { max-width: 1040px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); }
 
-/* 머리말 */
-header { display: grid; gap: 20px; }
-.name { font-weight: 800; font-size: clamp(38px, 6.5vw, 54px); letter-spacing: -0.03em; }
-.name span { font-weight: 400; font-size: 0.32em; color: var(--soft); margin-left: 12px; letter-spacing: 0; }
-.lead { font-weight: 700; font-size: clamp(18px, 2.6vw, 21px); line-height: 1.6; max-width: 34ch; letter-spacing: -0.01em; }
-.meta { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 14px; }
-.facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-top: 2px solid var(--ink); border-bottom: 1px solid var(--rule); }
-.facts div { padding: 16px 14px 16px 0; display: grid; gap: 4px; align-content: start; }
-.facts b { font-size: 20px; font-weight: 800; letter-spacing: -0.02em; }
-.facts span { font-size: 13px; color: var(--soft); line-height: 1.5; }
-.facts em { font-style: normal; color: var(--ink); font-weight: 500; }
+/* 상단 메뉴 */
+.nav { position: sticky; top: 0; z-index: 10; background: rgba(17,17,17,0.94); backdrop-filter: blur(6px); }
+.nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 16px; height: 56px; }
+.nav b { color: var(--white); font-weight: 900; letter-spacing: -0.02em; }
+.nav ul { list-style: none; display: flex; gap: 22px; padding: 0; margin: 0; overflow-x: auto; }
+.nav li + li { margin-top: 0; }
+.nav a { color: #cfcfcf; text-decoration: none; font-size: 14px; font-weight: 500; white-space: nowrap; }
+.nav a:hover { color: var(--yellow); }
 
-/* 섹션 */
-section { display: grid; gap: 22px; min-width: 0; }
-.sec-title { display: flex; align-items: baseline; flex-wrap: wrap; gap: 6px 14px; padding-bottom: 12px; border-bottom: 2px solid var(--ink); }
-.sec-title h2 { font-size: 21px; font-weight: 800; letter-spacing: -0.02em; }
-.sec-title p { font-size: 13px; color: var(--soft); }
+/* 히어로 */
+.hero { background: var(--black); color: var(--white); padding-block: 96px 64px; }
+.hero h1 { font-size: clamp(30px, 5vw, 50px); font-weight: 900; line-height: 1.3; letter-spacing: -0.03em; }
+.hero h1 .hl { box-shadow: inset 0 -0.32em 0 rgba(255,216,77,0.55); }
+.hero hr { width: 56px; height: 4px; border: 0; background: var(--yellow); margin: 28px 0; }
+.hero p.sub { color: #cfcfcf; font-size: clamp(15px, 2vw, 18px); max-width: 52ch; }
+.stats { margin-top: 56px; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.stat { border: 1px solid #333; border-radius: 12px; padding: 18px; display: grid; gap: 4px; align-content: start; }
+.stat b { font-size: 22px; font-weight: 900; color: var(--yellow); letter-spacing: -0.02em; }
+.stat span { font-size: 13px; color: #cfcfcf; line-height: 1.5; }
+.stat em { font-style: normal; font-size: 12px; color: #8f8f8f; }
+.more { display: inline-block; margin-top: 40px; color: #cfcfcf; text-decoration: none; font-size: 14px; }
 
-/* 기간 | 내용 두 열 */
-.row { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 6px 36px; }
-.row .when { font-size: 14px; font-weight: 700; }
-.row h3 { font-size: 17px; font-weight: 800; }
-.row .sub { font-size: 14px; font-weight: 500; color: var(--soft); margin-left: 8px; }
-.row p { color: var(--soft); max-width: 62ch; }
+/* 섹션 공통 */
+.sec { padding-block: 88px; }
+.sec.grey { background: var(--grey); }
+.sec.dark { background: var(--black); color: var(--white); }
+.sec.yellow { background: var(--yellow); }
+.sec-head { text-align: center; margin-bottom: 44px; }
+.sec-head h2 { display: inline-block; font-size: clamp(26px, 4vw, 34px); font-weight: 900; letter-spacing: 0.02em; padding-bottom: 8px; border-bottom: 4px solid currentColor; }
+.sec-head p { margin-top: 14px; color: var(--soft); font-size: 14px; }
+.dark .sec-head p { color: #a8a8a8; }
 
-/* 프로젝트 */
-.project { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 10px 36px; padding-top: 28px; border-top: 1px solid var(--rule); }
-.project:first-of-type { border-top: 0; padding-top: 4px; }
-.p-side { display: grid; gap: 6px; align-content: start; font-size: 13px; color: var(--soft); }
-.p-side .when { color: var(--ink); font-weight: 700; font-size: 14px; }
-.p-side .role { color: var(--ink); }
-.p-main { display: grid; gap: 12px; min-width: 0; }
-.p-main h3 { font-size: 19px; font-weight: 800; letter-spacing: -0.02em; }
-.p-main .what { color: var(--soft); max-width: 62ch; }
-.p-main ul { max-width: 64ch; }
-.p-main li strong { font-weight: 700; }
-.stack { font-size: 13px; color: var(--soft); }
+/* About me */
+.about { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 24px; max-width: 900px; margin: 0 auto; }
+.about div { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 2px 12px; align-items: start; }
+.about svg { width: 32px; height: 32px; grid-row: span 2; stroke: var(--black); fill: none; stroke-width: 1.6; }
+.about b { font-weight: 700; font-size: 16px; }
+.about span { color: var(--soft); font-size: 14px; }
 
-/* 논문, 기술 */
-.list { display: grid; border-top: 1px solid var(--rule); }
-.item { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 4px 36px; padding: 13px 0; border-bottom: 1px solid var(--rule); font-size: 14.5px; }
-.item .k { font-size: 13px; font-weight: 700; }
-.item .k small { display: block; font-weight: 400; color: var(--soft); font-size: 12.5px; }
-.item .t { font-weight: 700; }
-.item .v { font-size: 13.5px; color: var(--soft); }
-.note { font-size: 13px; color: var(--soft); }
+/* Skills */
+.skills { background: var(--white); border-radius: 16px; padding: 32px; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 28px; box-shadow: 0 6px 24px rgba(0,0,0,0.06); }
+.skills h3 { font-size: 15px; font-weight: 900; padding-bottom: 8px; margin-bottom: 10px; border-bottom: 2px solid var(--black); }
+.skills ul { list-style: none; padding: 0; font-size: 14.5px; }
+.skills li + li { margin-top: 4px; }
 
-@media (max-width: 760px) {
-  .page { padding-block: 40px 64px; gap: 56px; }
-  .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .row, .project, .item { grid-template-columns: minmax(0, 1fr); }
+/* Projects */
+.projects { display: grid; gap: 28px; }
+.card { background: var(--white); color: var(--black); border-radius: 16px; padding: 36px; box-shadow: 0 8px 28px rgba(0,0,0,0.25); }
+.card-head { text-align: center; padding-bottom: 22px; margin-bottom: 26px; border-bottom: 1px solid var(--line); }
+.card-head h3 { font-size: clamp(21px, 3vw, 26px); font-weight: 900; letter-spacing: -0.02em; }
+.card-head .meta { margin-top: 6px; color: var(--soft); font-size: 14px; }
+.card-head .badge { display: inline-block; margin-top: 10px; font-size: 12.5px; font-weight: 700; background: var(--black); color: var(--white); border-radius: 999px; padding: 2px 12px; }
+.card-body { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr); gap: 32px; }
+.card-body .summary { font-weight: 700; font-size: 16px; line-height: 1.65; }
+.card-body dl { margin: 18px 0 0; display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 6px 10px; font-size: 13.5px; }
+.card-body dt { font-weight: 700; }
+.card-body dd { margin: 0; color: var(--soft); }
+.card-body ul { font-size: 14.5px; }
+.card-body li strong { font-weight: 700; }
+
+/* 논문 */
+.papers { display: grid; gap: 14px; max-width: 900px; margin: 0 auto; }
+.paper { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 4px 20px; padding: 20px 24px; border: 1px solid var(--line); border-radius: 12px; }
+.paper .k { font-weight: 900; font-size: 14px; }
+.paper .k small { display: block; font-weight: 400; color: var(--soft); font-size: 12.5px; }
+.paper .t { font-weight: 700; }
+.paper .v { color: var(--soft); font-size: 13.5px; }
+.note { text-align: center; color: var(--soft); font-size: 13px; margin-top: 18px; }
+
+/* Career */
+.timeline { background: var(--white); border-radius: 16px; padding: 36px; box-shadow: 0 8px 28px rgba(0,0,0,0.08); display: grid; gap: 28px; }
+.co { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 8px 32px; }
+.co + .co { padding-top: 28px; border-top: 1px solid var(--line); }
+.co h3 { font-size: 20px; font-weight: 900; }
+.co .when { color: var(--soft); font-size: 14px; }
+.co .desc { color: var(--soft); margin-bottom: 14px; }
+.co ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; border-left: 2px solid var(--black); }
+.co ol li { position: relative; padding-left: 18px; margin: 0; }
+.co ol li::before { content: ""; position: absolute; left: -6px; top: 0.6em; width: 10px; height: 10px; border-radius: 50%; background: var(--yellow); border: 2px solid var(--black); }
+.co ol span { color: var(--soft); font-size: 13px; margin-left: 8px; }
+
+footer { background: var(--black); color: #8f8f8f; font-size: 13px; padding-block: 28px; text-align: center; }
+
+@media (max-width: 820px) {
+  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .about { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .card { padding: 26px 20px; }
+  .card-body { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .co { grid-template-columns: minmax(0, 1fr); }
+  .timeline { padding: 26px 20px; }
+}
+@media (max-width: 520px) {
+  .nav ul { gap: 14px; }
+  .stats { grid-template-columns: minmax(0, 1fr); }
+  .about { grid-template-columns: minmax(0, 1fr); }
+  .paper { grid-template-columns: minmax(0, 1fr); }
+  .sec { padding-block: 64px; }
+  .hero { padding-block: 64px 48px; }
 }
 </style>
 </head>
 <body>
-<div class="page">
-  <header>
-    <h1 class="name">임영기<span>Younggi Lim</span></h1>
-    <p class="lead">LLM을 학습하고, 폐쇄망과 NPU 같은 제약된 환경에서 서비스로 운영하는 AI 개발자입니다.</p>
-    <div class="meta">
-      <a href="mailto:younggi1105@gmail.com">younggi1105@gmail.com</a>
-      <a href="https://github.com/wndaasa" target="_blank" rel="noopener">github.com/wndaasa</a>
-      <a href="https://huggingface.co/Imsbee" target="_blank" rel="noopener">huggingface.co/Imsbee</a>
+
+<nav class="nav">
+  <div class="wrap">
+    <b>임영기</b>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#papers">Papers</a></li>
+      <li><a href="#career">Career</a></li>
+    </ul>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1><span class="hl">LLM을 학습하고 운영하는</span><br>AI 개발자, 임영기입니다</h1>
+    <hr>
+    <p class="sub">모델을 직접 학습하고, 폐쇄망과 NPU 같은 제약된 환경에서 서비스로 운영하며, 결과가 맞는지 수치로 확인합니다.</p>
+    <div class="stats">
+      <div class="stat"><b>14.8s → 1.7s</b><span>상용 RAG를 자체 검색으로 대체, 문항당 처리 시간</span><em>원윈도우 AI 검색</em></div>
+      <div class="stat"><b>65 → 156 TPS</b><span>32B 모델 단일 사용자 생성 속도, 코드 생성 기준</span><em>32B 서빙 최적화</em></div>
+      <div class="stat"><b>33B NPU 포팅</b><span>벤더 미지원 LLM을 직접 포팅, 원본과 출력 일치</span><em>NPU 추론 서비스</em></div>
+      <div class="stat"><b>논문 4편</b><span>1저자 2편, 저널 1편 포함</span><em>Papers</em></div>
     </div>
-    <div class="facts">
-      <div><b>14.8s → 1.7s</b><span>상용 RAG를 자체 검색으로 대체, 문항당 처리 시간<br><em>원윈도우 AI 검색</em></span></div>
-      <div><b>65 → 156 TPS</b><span>32B 모델 단일 사용자 생성 속도, 코드 생성 기준<br><em>32B 서빙 최적화</em></span></div>
-      <div><b>33B</b><span>벤더 미지원 LLM을 NPU에 포팅, 원본과 출력 일치<br><em>NPU 추론 서비스</em></span></div>
-      <div><b>논문 4편</b><span>1저자 2편, 저널 1편 포함<br><em>논문</em></span></div>
+    <a class="more" href="#about">더 알아보기 ↓</a>
+  </div>
+</header>
+
+<section class="sec" id="about">
+  <div class="wrap">
+    <div class="sec-head"><h2>ABOUT ME</h2></div>
+    <div class="about">
+      <div><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><b>이름</b><span>임영기 (Younggi Lim)</span></div>
+      <div><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M10 21v-4h4v4"/></svg><b>소속</b><span>㈜피씨엔 R&amp;S본부, AI 개발자 (사원)</span></div>
+      <div><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><b>경력</b><span>2024.11 입사, 2년</span></div>
+      <div><svg viewBox="0 0 24 24"><path d="M2 9l10-5 10 5-10 5z"/><path d="M6 11v5c2 2 10 2 12 0v-5"/></svg><b>학력</b><span>고려사이버대 AI데이터과학부 재학<br>유한대 컴퓨터소프트웨어공학과 졸업</span></div>
+      <div><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><b>이메일</b><span><a href="mailto:younggi1105@gmail.com">younggi1105@gmail.com</a></span></div>
+      <div><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><b>링크</b><span><a href="https://github.com/wndaasa" target="_blank" rel="noopener">GitHub</a>, <a href="https://huggingface.co/Imsbee" target="_blank" rel="noopener">Hugging Face</a></span></div>
     </div>
-  </header>
+  </div>
+</section>
 
-  <section>
-    <div class="sec-title"><h2>경력</h2></div>
-    <div class="row">
-      <span class="when">2024.11 ~ 현재</span>
-      <div>
-        <h3>㈜피씨엔 R&amp;S본부<span class="sub">AI 개발자, 사원</span></h3>
-        <p>정부 R&amp;D와 공공 AI 사업에서 LLM 학습, 서빙, 평가를 맡고 있습니다. 아래 프로젝트는 모두 이 회사에서 진행했습니다.</p>
-      </div>
+<section class="sec grey" id="skills">
+  <div class="wrap">
+    <div class="sec-head"><h2>SKILLS</h2></div>
+    <div class="skills">
+      <div><h3>학습</h3><ul><li>PyTorch</li><li>transformers, trl, peft(LoRA)</li><li>diffusers, accelerate</li></ul></div>
+      <div><h3>서빙, 최적화</h3><ul><li>vLLM (소스 패치)</li><li>AWQ, 투기 디코딩</li><li>Rebellions NPU</li></ul></div>
+      <div><h3>인프라</h3><ul><li>k3s, Docker</li><li>폐쇄망 배포</li><li>A100</li></ul></div>
+      <div><h3>평가</h3><ul><li>통제군 설계</li><li>부트스트랩 신뢰구간, 순열검정</li><li>G-Eval, hit@k</li></ul></div>
+      <div><h3>백엔드</h3><ul><li>Python, FastAPI</li><li>PostgreSQL, pgvector</li><li>MCP</li></ul></div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section>
-    <div class="sec-title"><h2>회사 프로젝트</h2><p>최신순</p></div>
+<section class="sec dark" id="projects">
+  <div class="wrap">
+    <div class="sec-head"><h2>PROJECTS</h2><p>회사 프로젝트는 최신순, 마지막은 개인 프로젝트</p></div>
+    <div class="projects">
 
-    <article class="project">
-      <div class="p-side">
-        <span class="when">2026.09 ~ 12 예정</span>
-        <span>NIA 사업</span>
-        <span>폐쇄망 A100 2장</span>
-        <span class="role">담당: 검색 백엔드, GPU 추론 서버, 품질 평가</span>
-      </div>
-      <div class="p-main">
-        <h3>원윈도우 AI 검색 고도화</h3>
-        <p class="what">공공데이터 약 13.5만 건을 찾는 국가 서비스의 검색과 챗봇을 LLM 기반으로 바꾸고 있습니다.</p>
-        <ul>
-          <li><strong>상용 RAG 대체</strong>: LLM 검색어 확장, 키워드와 벡터 검색, LLM 재순위로 구성. 100문항 기준 hit@1 <mark>71 → 86</mark>, 문항당 <mark>14.8초 → 1.7초</mark></li>
-          <li><strong>폐쇄망 추론 서버</strong>: 외부 접속이 막힌 서버에 k3s로 vLLM을 구성해 EXAONE-4.0-32B-AWQ와 임베딩 모델을 함께 서빙</li>
-          <li><strong>운영 문제 규명</strong>: 간헐적 500 오류를 keep-alive 경쟁 조건으로 재현해 확정하고, 부하 측정으로 동시 처리 상한 결정</li>
-        </ul>
-        <p class="stack">vLLM, EXAONE-4.0-32B-AWQ, k3s, FastAPI, pgvector, MCP</p>
-      </div>
-    </article>
+      <article class="card">
+        <div class="card-head">
+          <h3>원윈도우 AI 검색 고도화</h3>
+          <p class="meta">2026.09 ~ 12 예정 / NIA 사업</p>
+          <span class="badge">검색 백엔드, GPU 추론 서버, 품질 평가 담당</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <p class="summary">공공데이터 약 13.5만 건을 찾는 국가 서비스의 검색과 챗봇을 LLM 기반으로 바꾸고 있습니다.</p>
+            <dl><dt>환경</dt><dd>폐쇄망 A100 2장</dd><dt>기술</dt><dd>vLLM, EXAONE-4.0-32B-AWQ, k3s, FastAPI, pgvector, MCP</dd></dl>
+          </div>
+          <ul>
+            <li><strong>상용 RAG 대체</strong>: LLM 검색어 확장, 키워드와 벡터 검색, LLM 재순위로 구성. 100문항 기준 hit@1 <mark>71 → 86</mark>, 문항당 <mark>14.8초 → 1.7초</mark></li>
+            <li><strong>폐쇄망 추론 서버</strong>: 외부 접속이 막힌 서버에 k3s로 vLLM을 구성해 32B 모델과 임베딩 모델을 함께 서빙</li>
+            <li><strong>운영 문제 규명</strong>: 간헐적 500 오류를 keep-alive 경쟁 조건으로 재현해 확정하고, 부하 측정으로 동시 처리 상한 결정</li>
+          </ul>
+        </div>
+      </article>
 
-    <article class="project">
-      <div class="p-side">
-        <span class="when">2026.08</span>
-        <span>수주 과제</span>
-        <span>A100 80GB</span>
-        <span class="role">단독 수행</span>
-      </div>
-      <div class="p-main">
-        <h3>생성 모델 저작권 탐지 연구</h3>
-        <p class="what">가중치에 접근할 수 없는 상용 이미지 생성 모델의 저작권 침해를, 그 출력으로 학습한 대리 모델에서 탐지할 수 있는지 검증했습니다.</p>
-        <ul>
-          <li><strong>풀 파인튜닝</strong>: SD1.4와 SD3.5 학습. SD3.5 학습 코드를 직접 작성하고 공용 GPU의 45GB 안에 들어가도록 메모리 설계</li>
-          <li><strong>결과</strong>: 구조가 다른 대리 모델에서도 암기 신호 탐지 AUC <mark>0.848</mark>, 통제군 0.522 대비 유의</li>
-          <li><strong>교란 발견</strong>: 0.983이 나온 실험을 그대로 보고하지 않고 통제군으로 교란을 밝힌 뒤 조건을 바꿔 다시 입증</li>
-        </ul>
-        <p class="stack">PyTorch, diffusers, accelerate</p>
-      </div>
-    </article>
+      <article class="card">
+        <div class="card-head">
+          <h3>생성 모델 저작권 탐지 연구</h3>
+          <p class="meta">2026.08 / 수주 과제</p>
+          <span class="badge">단독 수행</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <p class="summary">가중치에 접근할 수 없는 상용 이미지 생성 모델의 저작권 침해를, 그 출력으로 학습한 대리 모델에서 탐지할 수 있는지 검증했습니다.</p>
+            <dl><dt>환경</dt><dd>A100 80GB 1장</dd><dt>기술</dt><dd>PyTorch, diffusers, accelerate</dd></dl>
+          </div>
+          <ul>
+            <li><strong>풀 파인튜닝</strong>: SD1.4와 SD3.5 학습. SD3.5 학습 코드를 직접 작성하고 공용 GPU의 45GB 안에 들어가도록 메모리 설계</li>
+            <li><strong>결과</strong>: 구조가 다른 대리 모델에서도 암기 신호 탐지 AUC <mark>0.848</mark>, 통제군 0.522 대비 유의</li>
+            <li><strong>교란 발견</strong>: 0.983이 나온 실험을 그대로 보고하지 않고 통제군으로 교란을 밝힌 뒤 조건을 바꿔 다시 입증</li>
+          </ul>
+        </div>
+      </article>
 
-    <article class="project">
-      <div class="p-side">
-        <span class="when">2026.07 ~ 08</span>
-        <span>원윈도우 착수 전 사전 실험</span>
-        <span>A100 80GB 1장</span>
-      </div>
-      <div class="p-main">
-        <h3>32B 서빙 최적화</h3>
-        <p class="what">A100 한 장에서 32B 모델로 웹 검색 에이전트 채팅 서비스를 만들며 응답 속도와 출력 안정성을 끌어올렸습니다.</p>
-        <ul>
-          <li><strong>생성 속도</strong>: 단일 사용자 기준 transformers 약 9 → vLLM AWQ 65 → 투기 디코딩 <mark>156 TPS</mark>(코드), 81 TPS(일반 문장)</li>
-          <li><strong>vLLM 소스 패치 2건</strong>: 투기 디코딩 보조 모델이 매번 느린 경로로 돌던 버그 수정, 이후 업스트림에 같은 수정이 머지됨</li>
-          <li><strong>출력 안정성</strong>: bf16과 AWQ를 비교해 양자화 탓인 환각과 아닌 것을 분리. 사고 태그가 닫히지 않는 문제를 2단계 생성으로 차단</li>
-        </ul>
-        <p class="stack">vLLM, EXAONE-4.0-32B-AWQ, 투기 디코딩</p>
-      </div>
-    </article>
+      <article class="card">
+        <div class="card-head">
+          <h3>32B 서빙 최적화</h3>
+          <p class="meta">2026.07 ~ 08 / 원윈도우 착수 전 사전 실험</p>
+        </div>
+        <div class="card-body">
+          <div>
+            <p class="summary">A100 한 장에서 32B 모델로 웹 검색 에이전트 채팅 서비스를 만들며 응답 속도와 출력 안정성을 끌어올렸습니다.</p>
+            <dl><dt>환경</dt><dd>A100 80GB 1장</dd><dt>기술</dt><dd>vLLM, EXAONE-4.0-32B-AWQ, 투기 디코딩</dd></dl>
+          </div>
+          <ul>
+            <li><strong>생성 속도</strong>: 단일 사용자 기준 transformers 약 9 → vLLM AWQ 65 → 투기 디코딩 <mark>156 TPS</mark>(코드), 81 TPS(일반 문장)</li>
+            <li><strong>vLLM 소스 패치 2건</strong>: 투기 디코딩 보조 모델이 매번 느린 경로로 돌던 버그 수정, 이후 업스트림에 같은 수정이 머지됨</li>
+            <li><strong>출력 안정성</strong>: bf16과 AWQ를 비교해 양자화 탓인 환각과 아닌 것을 분리. 사고 태그가 닫히지 않는 문제를 2단계 생성으로 차단</li>
+          </ul>
+        </div>
+      </article>
 
-    <article class="project">
-      <div class="p-side">
-        <span class="when">2026.06 ~ 운영 중</span>
-        <span>Rebellions ATOM-Max NPU</span>
-        <span class="role">단독 수행</span>
-      </div>
-      <div class="p-main">
-        <h3>NPU 온프레미스 LLM 추론 서비스</h3>
-        <p class="what">벤더가 지원하지 않는 모델을 NPU에 직접 포팅해 상시 서비스로 운영합니다.</p>
-        <ul>
-          <li><strong>EXAONE 4.5 33B 포팅</strong>: 벤더 패키지가 지원하지 않는 구조를 패키지 수정 없이 구현. 원본 대비 <mark>프롬프트 12개 greedy 출력 일치</mark>, 76.5 tok/s, 32K 컨텍스트</li>
-          <li><strong>추론 최적화</strong>: 비전 임베딩 캐시로 이미지 10장 대화의 첫 토큰 지연 <mark>13.5s → 2.35s</mark>. 임베딩 스케줄러 패치로 처리량 3.4배</li>
-          <li><strong>가속기 검증</strong>: 비전 인코더를 추가하며 기존 응답 회귀 0으로 무중단 교체. LSTM이 오류 없이 틀린 값을 내는 NPU 결함을 대조군으로 격리</li>
-        </ul>
-        <p class="stack">vllm-rbln, optimum-rbln, EXAONE 4.5 VL, bge-m3, PyTorch</p>
-      </div>
-    </article>
+      <article class="card">
+        <div class="card-head">
+          <h3>NPU 온프레미스 LLM 추론 서비스</h3>
+          <p class="meta">2026.06 ~ 운영 중</p>
+          <span class="badge">단독 수행</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <p class="summary">벤더가 지원하지 않는 모델을 NPU에 직접 포팅해 상시 서비스로 운영합니다.</p>
+            <dl><dt>환경</dt><dd>Rebellions ATOM-Max NPU</dd><dt>기술</dt><dd>vllm-rbln, optimum-rbln, EXAONE 4.5 VL, bge-m3, PyTorch</dd></dl>
+          </div>
+          <ul>
+            <li><strong>EXAONE 4.5 33B 포팅</strong>: 벤더 패키지가 지원하지 않는 구조를 패키지 수정 없이 구현. 원본 대비 <mark>프롬프트 12개 greedy 출력 일치</mark>, 76.5 tok/s, 32K 컨텍스트</li>
+            <li><strong>추론 최적화</strong>: 비전 임베딩 캐시로 이미지 10장 대화의 첫 토큰 지연 <mark>13.5s → 2.35s</mark>. 임베딩 스케줄러 패치로 처리량 3.4배</li>
+            <li><strong>가속기 검증</strong>: 비전 인코더를 추가하며 기존 응답 회귀 0으로 무중단 교체. LSTM이 오류 없이 틀린 값을 내는 NPU 결함을 대조군으로 격리</li>
+          </ul>
+        </div>
+      </article>
 
-    <article class="project">
-      <div class="p-side">
-        <span class="when">2024.11 ~ 2025.08</span>
-        <span>A100 80GB</span>
-        <span class="role">담당: 합성 데이터 구축, LoRA 학습</span>
-      </div>
-      <div class="p-main">
-        <h3>VPE-Ko 한국어 영상 프롬프트 챗봇</h3>
-        <p class="what">한국어 대화로 영상 생성 모델(CogVideoX)용 영어 프롬프트를 완성해 주는 챗봇입니다.</p>
-        <ul>
-          <li><strong>합성 데이터 직접 구축</strong>: GPT 두 개에 질문자와 답변자 역할을 줘 다양한 말투의 대화 5천여 건, 학습 쌍 <mark>24,769건</mark> 생성</li>
-          <li><strong>LoRA SFT</strong>: Qwen2.5-14B-Instruct를 한국어 LoRA로 학습해 영상 생성 모델과 연결</li>
-          <li><strong>평가</strong>: 비전문가 A-B 테스트에서 G-Eval 3.6 → 4.9, 생성 영상 만족도 2.1 → 4.6. 1저자 논문으로 발표</li>
-        </ul>
-        <p class="stack">PyTorch, transformers, trl, peft</p>
-      </div>
-    </article>
-  </section>
+      <article class="card">
+        <div class="card-head">
+          <h3>VPE-Ko 한국어 영상 프롬프트 챗봇</h3>
+          <p class="meta">2024.11 ~ 2025.08</p>
+          <span class="badge">합성 데이터 구축, LoRA 학습 담당</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <p class="summary">한국어 대화로 영상 생성 모델(CogVideoX)용 영어 프롬프트를 완성해 주는 챗봇입니다.</p>
+            <dl><dt>환경</dt><dd>A100 80GB</dd><dt>기술</dt><dd>PyTorch, transformers, trl, peft</dd></dl>
+          </div>
+          <ul>
+            <li><strong>합성 데이터 직접 구축</strong>: GPT 두 개에 질문자와 답변자 역할을 줘 다양한 말투의 대화 5천여 건, 학습 쌍 <mark>24,769건</mark> 생성</li>
+            <li><strong>LoRA SFT</strong>: Qwen2.5-14B-Instruct를 한국어 LoRA로 학습해 영상 생성 모델과 연결</li>
+            <li><strong>평가</strong>: 비전문가 A-B 테스트에서 G-Eval 3.6 → 4.9, 생성 영상 만족도 2.1 → 4.6. 1저자 논문으로 발표</li>
+          </ul>
+        </div>
+      </article>
 
-  <section>
-    <div class="sec-title"><h2>개인 프로젝트</h2></div>
-    <article class="project">
-      <div class="p-side">
-        <span class="when">2026.06 ~ 07</span>
-        <span>공개, apache-2.0</span>
-      </div>
-      <div class="p-main">
-        <h3>ko-en-translator</h3>
-        <p class="what">트랜스포머를 밑바닥부터 구현한 한영 번역 소형 모델입니다.</p>
-        <ul>
-          <li>학술 도메인 파인튜닝으로 BLEU <mark>7.36 → 44.10</mark></li>
-          <li>어텐션을 minGRU 선형 순환으로 바꿔 같은 크기에서 비슷한 품질, 긴 입력에서 메모리 약 2.5배 절감</li>
-        </ul>
-        <p class="stack"><a href="https://github.com/wndaasa/ko-en-translator" target="_blank" rel="noopener">GitHub</a>, <a href="https://huggingface.co/Imsbee/ko-en-translator" target="_blank" rel="noopener">Hugging Face</a></p>
-      </div>
-    </article>
-  </section>
+      <article class="card">
+        <div class="card-head">
+          <h3>ko-en-translator</h3>
+          <p class="meta">2026.06 ~ 07 / 개인 프로젝트</p>
+          <span class="badge">공개 모델, apache-2.0</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <p class="summary">트랜스포머를 밑바닥부터 구현한 한영 번역 소형 모델입니다.</p>
+            <dl><dt>기술</dt><dd>PyTorch, minGRU</dd><dt>링크</dt><dd><a href="https://github.com/wndaasa/ko-en-translator" target="_blank" rel="noopener">GitHub</a>, <a href="https://huggingface.co/Imsbee/ko-en-translator" target="_blank" rel="noopener">Hugging Face</a></dd></dl>
+          </div>
+          <ul>
+            <li>학술 도메인 파인튜닝으로 BLEU <mark>7.36 → 44.10</mark></li>
+            <li>어텐션을 minGRU 선형 순환으로 바꿔 같은 크기에서 비슷한 품질, 긴 입력에서 메모리 약 2.5배 절감</li>
+          </ul>
+        </div>
+      </article>
 
-  <section>
-    <div class="sec-title"><h2>논문</h2><p>모두 게재 확정</p></div>
-    <div class="list">
-      <div class="item"><div class="k">1저자<small>2026</small></div><div><p class="t">멀티홉 질의응답을 위한 에이전트 기반 반복 검색</p><p class="v">한국인터넷정보학회 추계학술발표대회. NPU에 올린 33B 모델로 실험, 평균 EM 0.572(단일 패스 RAG 대비 +12.8%p)</p></div></div>
-      <div class="item"><div class="k">1저자<small>2025</small></div><div><p class="t">한국어 기반 Text-to-Video 프롬프트 엔지니어링 시스템 연구: CogVideoX를 중점으로</p><p class="v">제6회 한국 인공지능 학술대회. VPE-Ko</p></div></div>
-      <div class="item"><div class="k">저널, 3저자<small>2026</small></div><div><p class="t">KoPESV-SD: A Self-Diagnosing Korean-based Prompt Engineering System for Video Generation Model with a Complementary Dual Safety Net</p><p class="v">Journal of Internet Computing and Services. 생성 전 경고 파트 담당</p></div></div>
-      <div class="item"><div class="k">국제학술대회, 3저자<small>2025</small></div><div><p class="t">A Study on Korean-based Prompt Engineering System for Video Generation Model: Focusing on CogVideoX</p><p class="v">ICONI 2025</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" id="papers">
+  <div class="wrap">
+    <div class="sec-head"><h2>PAPERS</h2><p>모두 게재 확정</p></div>
+    <div class="papers">
+      <div class="paper"><div class="k">1저자<small>2026</small></div><div><p class="t">멀티홉 질의응답을 위한 에이전트 기반 반복 검색</p><p class="v">한국인터넷정보학회 추계학술발표대회. NPU에 올린 33B 모델로 실험, 평균 EM 0.572(단일 패스 RAG 대비 +12.8%p)</p></div></div>
+      <div class="paper"><div class="k">1저자<small>2025</small></div><div><p class="t">한국어 기반 Text-to-Video 프롬프트 엔지니어링 시스템 연구: CogVideoX를 중점으로</p><p class="v">제6회 한국 인공지능 학술대회. VPE-Ko</p></div></div>
+      <div class="paper"><div class="k">저널, 3저자<small>2026</small></div><div><p class="t">KoPESV-SD: A Self-Diagnosing Korean-based Prompt Engineering System for Video Generation Model with a Complementary Dual Safety Net</p><p class="v">Journal of Internet Computing and Services. 생성 전 경고 파트 담당</p></div></div>
+      <div class="paper"><div class="k">국제학술대회, 3저자<small>2025</small></div><div><p class="t">A Study on Korean-based Prompt Engineering System for Video Generation Model: Focusing on CogVideoX</p><p class="v">ICONI 2025</p></div></div>
     </div>
     <p class="note">학회 논문집이 온라인에 공개되지 않아 검색되지 않습니다. 원문은 요청 시 제공합니다.</p>
-  </section>
+  </div>
+</section>
 
-  <section>
-    <div class="sec-title"><h2>기술</h2></div>
-    <div class="list">
-      <div class="item"><div class="k">학습</div><p>PyTorch, transformers, trl, peft(LoRA), diffusers, accelerate</p></div>
-      <div class="item"><div class="k">서빙, 최적화</div><p>vLLM(소스 패치), AWQ, 투기 디코딩, Rebellions NPU</p></div>
-      <div class="item"><div class="k">인프라</div><p>k3s, Docker, 폐쇄망 배포, A100</p></div>
-      <div class="item"><div class="k">평가</div><p>통제군 설계, 부트스트랩 신뢰구간, 순열검정, G-Eval, hit@k</p></div>
-      <div class="item"><div class="k">백엔드</div><p>Python, FastAPI, PostgreSQL, pgvector, MCP</p></div>
+<section class="sec yellow" id="career">
+  <div class="wrap">
+    <div class="sec-head"><h2>CAREER</h2></div>
+    <div class="timeline">
+      <div class="co">
+        <div><h3>㈜피씨엔</h3><p class="when">R&amp;S본부, AI 개발자 (사원)<br>2024.11 ~ 현재</p></div>
+        <div>
+          <p class="desc">정부 R&amp;D와 공공 AI 사업에서 LLM 학습, 서빙, 평가를 맡고 있습니다.</p>
+          <ol>
+            <li>원윈도우 AI 검색 고도화<span>2026.09 ~ 12 예정</span></li>
+            <li>생성 모델 저작권 탐지 연구<span>2026.08</span></li>
+            <li>32B 서빙 최적화<span>2026.07 ~ 08</span></li>
+            <li>NPU 온프레미스 LLM 추론 서비스<span>2026.06 ~</span></li>
+            <li>VPE-Ko 한국어 영상 프롬프트 챗봇<span>2024.11 ~ 2025.08</span></li>
+          </ol>
+        </div>
+      </div>
+      <div class="co">
+        <div><h3>학력</h3></div>
+        <div>
+          <ol>
+            <li>고려사이버대학교 AI데이터과학부, 3학년 편입<span>2026.03 ~ 재학 중</span></li>
+            <li>유한대학교 컴퓨터소프트웨어공학과, 공학전문학사<span>2024 졸업</span></li>
+          </ol>
+        </div>
+      </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section>
-    <div class="sec-title"><h2>학력</h2></div>
-    <div class="row">
-      <span class="when">2026.03 ~ 재학 중</span>
-      <div><h3>고려사이버대학교<span class="sub">AI데이터과학부, 3학년 편입</span></h3></div>
-      <span class="when">2024 졸업</span>
-      <div><h3>유한대학교<span class="sub">컴퓨터소프트웨어공학과, 공학전문학사</span></h3></div>
-    </div>
-  </section>
-</div>
+<footer>© 2026 임영기</footer>
 </body>
 </html>
