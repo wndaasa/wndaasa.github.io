@@ -32,14 +32,6 @@ a:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
 .hero .cta { display: inline-block; margin-top: 34px; background: var(--violet); color: var(--white); text-decoration: none; font-weight: 700; font-size: 15px; padding: 12px 28px; border-radius: 999px; }
 .hero .cta:hover { background: #5a32a8; }
 
-/* 히어로 아래 숫자 카드 */
-.stats-band { padding-block: 40px 8px; }
-.stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-.stat { background: var(--grey); border-radius: 12px; padding: 18px; display: grid; gap: 4px; align-content: start; }
-.stat b { font-size: 22px; font-weight: 900; color: var(--violet); letter-spacing: -0.02em; }
-.stat span { font-size: 13px; color: var(--ink); line-height: 1.5; }
-.stat em { font-style: normal; font-size: 12px; color: var(--soft); }
-
 /* 섹션 공통 */
 .sec { padding-block: 88px; }
 .sec.grey { background: var(--grey); }
@@ -49,7 +41,7 @@ a:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
 
 /* About me */
 .about { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px 24px; max-width: 900px; margin: 0 auto; }
-.about div { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 2px 12px; align-items: start; }
+.about div { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 2px 12px; align-items: start; align-content: start; }
 .about svg { width: 32px; height: 32px; grid-row: span 2; stroke: var(--violet); fill: none; stroke-width: 1.6; }
 .about b { font-weight: 700; font-size: 16px; }
 .about span { color: var(--soft); font-size: 14px; }
@@ -59,7 +51,7 @@ a:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
 .card { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 28px 30px; display: flex; flex-direction: column; gap: 14px; }
 .card h3 { font-size: 20px; font-weight: 900; letter-spacing: -0.02em; }
 .card .meta { color: var(--soft); font-size: 13.5px; margin-top: -8px; }
-.metric { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 12px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.metric { display: flex; flex-direction: column; gap: 4px; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 .metric b { font-size: 26px; font-weight: 900; color: var(--violet); letter-spacing: -0.02em; }
 .metric span { font-size: 13.5px; color: var(--soft); }
 .card .summary { font-weight: 700; font-size: 15.5px; line-height: 1.6; }
@@ -71,6 +63,12 @@ a:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
 .card .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
 .card .links a { border: 1px solid var(--line); border-radius: 8px; padding: 2px 12px; font-size: 13px; font-weight: 500; color: var(--ink); text-decoration: none; }
 .card .links a:hover { border-color: var(--violet); color: var(--violet); }
+/* 같은 줄 두 카드가 행 높이를 공유해 구분선 위치를 맞춤 */
+@supports (grid-template-rows: subgrid) {
+  .card { display: grid; grid-row: span 7; grid-template-rows: subgrid; }
+  .card .fill { display: none; }
+  .card .foot { align-self: end; }
+}
 
 /* 논문 */
 .papers { display: grid; gap: 14px; max-width: 900px; margin: 0 auto; }
@@ -81,7 +79,7 @@ a:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
 .paper .v { color: var(--soft); font-size: 13.5px; }
 .note { text-align: center; color: var(--soft); font-size: 13px; margin-top: 18px; }
 
-/* Skills: LLM 라이프사이클 4단계. 높이가 같은 카드에 근거 줄을 맨 아래로 고정해 점선 위치를 맞춤 */
+/* Skills: LLM 라이프사이클 4단계. 근거 줄이 두 줄로 넘어가도 점선 위치가 같도록 카드끼리 행 높이를 공유 */
 .flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 28px; max-width: 1000px; margin: 0 auto; }
 .step { position: relative; background: var(--grey); border-radius: 14px; padding: 22px 20px; display: flex; flex-direction: column; gap: 12px; }
 .step:not(:last-child)::after { content: "→"; position: absolute; right: -21px; top: 26px; color: var(--violet); font-weight: 900; font-size: 16px; }
@@ -93,11 +91,15 @@ a:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
 .tools span { font-size: 13px; font-weight: 500; background: var(--white); border: 1px solid var(--line); border-radius: 6px; padding: 1px 9px; }
 .tools span.key { border-color: var(--violet); color: var(--violet); font-weight: 700; }
 .step .where { margin-top: auto; font-size: 12.5px; color: var(--soft); border-top: 1px dashed #d4d0de; padding-top: 10px; }
+@supports (grid-template-rows: subgrid) {
+  .step { display: grid; grid-row: span 4; grid-template-rows: subgrid; }
+  .step .where { margin-top: 0; }
+  .step .tools { align-content: flex-start; }
+}
 
 footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px; padding-block: 28px; text-align: center; }
 
 @media (max-width: 860px) {
-  .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .nav ul { gap: 16px; }
   .about { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .projects { grid-template-columns: minmax(0, 1fr); }
@@ -106,7 +108,6 @@ footer { border-top: 1px solid var(--line); color: var(--soft); font-size: 13px;
 }
 @media (max-width: 520px) {
   .nav ul { gap: 14px; }
-  .stats { grid-template-columns: minmax(0, 1fr); }
   .about { grid-template-columns: minmax(0, 1fr); }
   .paper { grid-template-columns: minmax(0, 1fr); }
   .card { padding: 24px 20px; }
