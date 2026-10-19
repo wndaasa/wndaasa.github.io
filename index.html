@@ -99,6 +99,28 @@
       </article>
 
       <article class="card">
+        <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
+        <h3>AI 협업 문서 플랫폼</h3>
+        <p class="meta">2026.05 ~ / 미공개 사내 제품, 사내 운영 배포</p>
+        <div class="metric"><b>에디터부터 LLM까지</b><span>실시간 공동 편집 에디터와 LLM 기능을 갖춘 제품, 사내 운영 배포 v1.1.0</span></div>
+        <p class="summary">여러 사람이 실시간으로 함께 쓰는 문서 위에서 LLM이 문서를 읽고 제안하는 사내 협업 플랫폼</p>
+        <ul><li>Tiptap, Yjs 기반 실시간 협업 에디터의 블록 시스템, 버전 히스토리, 표 편집기 개발</li><li>댓글 @AI 블록 제안, 채팅 이미지 멀티모달, WhisperX 화자 분리 STT 회의록</li><li>httpOnly 쿠키와 리프레시 토큰 회전으로 인증 개편, OWASP LLM Top 10 기준 보안 하드닝</li></ul>
+        <span class="fill"></span>
+        <div class="foot"><p class="role">프론트엔드, 백엔드, LLM 서빙 연동 담당</p><p class="stack">React, Tiptap, Yjs, Express, PostgreSQL, pgvector, vLLM</p></div>
+      </article>
+
+      <article class="card">
+        <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span>평가</span></div>
+        <h3>newbie 데스크톱 에이전트 앱</h3>
+        <p class="meta">2026.08 ~ / 3인 사이드 프로젝트, 공개 저장소</p>
+        <div class="metric"><b>로컬 LLM 에이전트</b><span>Ollama, llama.cpp, vLLM 로컬 모델과 OpenAI, Anthropic을 한 화면에서 전환</span></div>
+        <p class="summary">파일을 읽고 고치고 명령을 실행하며 작업하는 Windows 데스크톱 에이전트 앱</p>
+        <ul><li>작은 컨텍스트 창을 위한 이력 압축, 프롬프트 캐시를 깨지 않는 요청 구성</li><li>HWP, PDF, XLSX, DOCX 문서 파싱, 보조 에이전트 위임</li><li>허용 목록 밖 셸 명령을 LLM 분류기로 판정해 실행하는 자동 모드</li></ul>
+        <span class="fill"></span>
+        <div class="foot"><p class="role">에이전트 코어, 프로바이더 연동, 자동 모드, 배포 담당</p><p class="stack">TypeScript, Electron, GitHub Actions</p><div class="links"><a href="https://github.com/wndaasa/newbie-harness" target="_blank" rel="noopener">GitHub</a></div></div>
+      </article>
+
+      <article class="card">
         <div class="stages"><span class="on">데이터</span><span class="on">학습</span><span>서빙</span><span class="on">평가</span></div>
         <h3>VPE-Ko 한국어 영상 프롬프트 챗봇</h3>
         <p class="meta">2024.11 ~ 2025.08 / 팀 프로젝트, A100</p>
@@ -123,10 +145,11 @@
     </div>
 
     <div class="more">
-      <h3>그 밖의 공공 사업</h3>
+      <h3>그 외 프로젝트</h3>
       <div class="papers">
         <div class="paper"><div class="k">2025.07 ~ 12<small>공공데이터 개방</small></div><div><p class="t">한국청소년정책연구원 아동, 청소년, 청년 조사 데이터 개방체계 구축</p><ul class="v"><li>사업 종료 후 유지보수 기간에 "API 접근이 안 된다"는 기관 요청을 받아 원인 분석부터 수정까지 단독 처리</li><li>NIA 중앙형 오픈API 전환 점검에서 보유 오픈API 전건 정상화, 모범 정상화 사례로 소개 (<a href="https://zdnet.co.kr/view/?no=20260622222111" target="_blank" rel="noopener">관련 기사</a>)</li><li>Apache Hop ETL로 원시 데이터 → 원천 DB → 개방 DB 적재 자동화, 적재 시간 30분 → 10분 이내</li><li>설문 검색용 PoC 챗봇 개발</li></ul><p class="stack">Apache Hop, PostgreSQL, Python, Docker</p></div></div>
-        <div class="paper"><div class="k">2025.11 ~ 2026.02<small>문화비 소득공제</small></div><div><p class="t">문화비 소득공제 시스템 고도화, 검색 챗봇</p><ul class="v"><li>문화비 DB와 연계한 검색 챗봇의 검색과 DB 연계 담당, FastAPI로 API 제공 (화면은 다른 담당자)</li><li>BM25 키워드 검색과 유사도 검색을 결합한 하이브리드 검색으로 문화비 사이트에서 실서비스</li></ul><p class="stack">Python, FastAPI, BM25</p></div></div>
+        <div class="paper"><div class="k">2025.11 ~ 2026.02<small>문화비 소득공제</small></div><div><p class="t">문화비 소득공제 시스템 고도화, 검색 챗봇</p><ul class="v"><li>문화비 DB와 연계한 검색 챗봇의 검색과 DB 연계 담당, FastAPI로 API 제공</li><li>BM25 키워드 검색과 유사도 검색을 결합한 하이브리드 검색으로 문화비 사이트에서 실서비스</li></ul><p class="stack">Python, FastAPI, BM25</p></div></div>
+        <div class="paper"><div class="k">2025.07 ~ 12<small>초거대 AI</small></div><div><p class="t">NIA 초거대 AI, 비주얼 4K 영상 및 3D 에셋</p><ul class="v"><li>사업 수행 계획서 작성</li><li>FVD 점수 계산 코드를 작성해 영상 생성 모델 성능 검증</li><li>text-to-3D 모델 파인튜닝과 가이드 문서 작성</li></ul><p class="stack">Python, PyTorch</p></div></div>
       </div>
     </div>
   </div>
