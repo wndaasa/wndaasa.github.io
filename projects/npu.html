@@ -22,7 +22,7 @@
     <dl class="facts">
       <dt>기간</dt><dd>2026.06 ~ 운영 중</dd>
       <dt>역할</dt><dd>포팅, 최적화, 배포, 운영 단독 수행</dd>
-      <dt>환경</dt><dd>Rebellions ATOM-Max 8장 (장당 15.7GiB)</dd>
+      <dt>환경</dt><dd>Rebellions ATOM-Max 2장 (장당 4칩, 총 8칩, 칩당 15.7GiB)</dd>
       <dt>기술</dt><dd>optimum-rbln, rebel-compiler, vLLM + vllm-rbln, EXAONE 4.5 VL, bge-m3, PyTorch</dd>
     </dl>
     <div class="metrics">
@@ -35,9 +35,9 @@
 
   <section>
     <h2><small>OVERVIEW</small>서비스 구성</h2>
-    <p>NPU 서버 한 대에 서비스 세 개가 함께 올라가 있습니다. 33B 모델은 8장에 나눠 올리고, 임베딩 서비스는 그중 4장을 함께 씁니다. 번역기는 NPU 서비스의 호스트 CPU를 방해하지 않도록 스레드를 제한해 CPU에서 돌립니다.</p>
+    <p>NPU 서버 한 대에 서비스 세 개가 함께 올라가 있습니다. 33B 모델은 8칩에 나눠 올리고, 임베딩 서비스는 그중 4칩을 함께 씁니다. 번역기는 NPU 서비스의 호스트 CPU를 방해하지 않도록 스레드를 제한해 CPU에서 돌립니다.</p>
     <figure>
-      <svg viewBox="0 0 760 330" role="img" aria-label="서비스 구성도: 앱이 OpenAI 호환 API로 세 서비스에 요청, NPU 0~7번 카드 중 0~7은 EXAONE, 4~7은 bge-m3와 공유, 번역기는 CPU">
+      <svg viewBox="0 0 760 330" role="img" aria-label="서비스 구성도: 앱이 OpenAI 호환 API로 세 서비스에 요청, NPU 0~7번 칩 중 0~7은 EXAONE, 4~7은 bge-m3와 공유, 번역기는 CPU">
         <rect x="10" y="110" width="150" height="70" rx="10" fill="#ffffff" stroke="#161616"/>
         <text x="85" y="140" text-anchor="middle" font-size="15" font-weight="700" fill="#161616">사내 앱</text>
         <text x="85" y="162" text-anchor="middle" font-size="12" fill="#666666">OpenAI 호환 요청</text>
@@ -53,7 +53,7 @@
         <rect x="250" y="220" width="490" height="70" rx="10" fill="#ffffff" stroke="#9a9a9a"/>
         <text x="268" y="248" font-size="15" font-weight="700" fill="#161616">한영 번역기 (CPU)</text>
         <text x="268" y="270" font-size="12.5" fill="#444444">자작 268M 모델, 스레드 제한으로 NPU 호스트 CPU 보호</text>
-        <text x="10" y="318" font-size="12" fill="#666666">NPU 카드</text>
+        <text x="10" y="318" font-size="12" fill="#666666">NPU 칩</text>
         <g font-size="11" font-weight="700" text-anchor="middle">
           <rect x="80" y="302" width="76" height="22" rx="4" fill="#e3d9fb" stroke="#6a3fbf"/><text x="118" y="317" fill="#161616">0 + 비전</text>
           <rect x="162" y="302" width="76" height="22" rx="4" fill="#e3d9fb" stroke="#6a3fbf"/><text x="200" y="317" fill="#161616">1</text>
@@ -65,7 +65,7 @@
           <rect x="654" y="302" width="76" height="22" rx="4" fill="#e3d9fb" stroke="#6a3fbf" stroke-dasharray="4 3" stroke-width="2"/><text x="692" y="317" fill="#161616">7 공유</text>
         </g>
       </svg>
-      <figcaption>실선 보라는 33B 모델, 점선 테두리는 임베딩 서비스와 함께 쓰는 카드입니다. 비전 타워는 0번 카드에 통째로 올라갑니다.</figcaption>
+      <figcaption>실선 보라는 33B 모델, 점선 테두리는 임베딩 서비스와 함께 쓰는 칩입니다. 비전 타워는 0번 칩에 통째로 올라갑니다.</figcaption>
     </figure>
   </section>
 
@@ -162,7 +162,7 @@
       </svg>
       <figcaption>막대 길이는 같은 축척입니다. 캐시 적용 후 남은 2.35초는 디코더 프리필 누적과 일치해, 반복 인코딩 비용이 사라졌음을 보여 줍니다. 캐시 전후 텍스트 응답은 바이트 단위로 같았습니다.</figcaption>
     </figure>
-    <p class="note"><b>빨라 보였지만 버린 방안.</b> 비전 인코더를 남는 카드 다섯 장에 복제해 병렬로 돌리는 구조는 모든 검증을 통과했고 CPU 모의 실험에서 4.9배가 나왔지만, 실제 NPU에서는 이득이 0이었습니다. 런타임 호출이 파이썬 GIL을 쥔 채 동기로 돌아 스레드가 직렬화된 것이 원인이었고, 카드 메모리만 차지하는 구조라 배포에서 뺐습니다.</p>
+    <p class="note"><b>빨라 보였지만 버린 방안.</b> 비전 인코더를 남는 칩 다섯 개에 복제해 병렬로 돌리는 구조는 모든 검증을 통과했고 CPU 모의 실험에서 4.9배가 나왔지만, 실제 NPU에서는 이득이 0이었습니다. 런타임 호출이 파이썬 GIL을 쥔 채 동기로 돌아 스레드가 직렬화된 것이 원인이었고, NPU 메모리만 차지하는 구조라 배포에서 뺐습니다.</p>
   </section>
 
   <section>
