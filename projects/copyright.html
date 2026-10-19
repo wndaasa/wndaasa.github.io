@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="상용 이미지 생성 모델의 암기 신호가 대리 모델로 전이되는지 검증한 연구">
+<meta name="description" content="블랙박스 이미지 생성 모델의 암기 신호가 대리 모델로 전이되는지 검증한 연구">
 <title>생성 모델 저작권 탐지 연구 | 임영기</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -18,24 +18,24 @@
   <header>
     <div class="stages"><span>데이터</span><span class="on">학습</span><span>서빙</span><span class="on">평가</span></div>
     <h1>생성 모델 저작권 탐지 연구</h1>
-    <p class="lead">가중치를 볼 수 없는 상용 이미지 생성 모델이 특정 이미지를 외워서 내놓는지, 그 모델의 출력만으로 학습한 대리 모델에서 알아낼 수 있는지 검증했습니다.</p>
+    <p class="lead">블랙박스 이미지 생성 모델이 특정 이미지를 외워서 내놓는지, 그 모델의 출력만으로 학습한 대리 모델에서 알아낼 수 있는지 검증했습니다.</p>
     <dl class="facts">
-      <dt>기간</dt><dd>2026.08 (약 2주)</dd>
-      <dt>역할</dt><dd>문제 재설계, 실험 설계, 학습, 측정, 통계 분석 단독 수행</dd>
-      <dt>환경</dt><dd>공용 A100 80GB 1장</dd>
+      <dt>기간</dt><dd>2026.08</dd>
+      <dt>역할</dt><dd>문제 재설계, 실험 설계, 학습, 측정, 통계 분석 수행</dd>
+      <dt>환경</dt><dd>A100 80GB 1장</dd>
       <dt>기술</dt><dd>PyTorch, diffusers, accelerate, Stable Diffusion 1.4, Stable Diffusion 3.5-medium, CLIP, SSCD</dd>
     </dl>
     <div class="metrics">
       <div><b>AUC 0.848</b><span>구조가 다른 대리 모델에서 암기 탐지</span></div>
-      <div><b>0.522</b><span>통제군 (원본 이미지로 학습한 학생)</span></div>
-      <div><b>0.971</b><span>자연 암기, 교란 없는 학생 (기준 0.386)</span></div>
+      <div><b>0.522</b><span>원본 이미지로 학습한 통제군</span></div>
+      <div><b>0.971</b><span>자연 암기, 교란 없는 학생</span></div>
       <div><b>0건</b><span>24시간 무인 실험 중 OOM, NaN</span></div>
     </div>
   </header>
 
   <section>
     <h2><small>QUESTION</small>문제를 다시 정의하기</h2>
-    <p>수주 과제의 목표는 미드저니 같은 상용 모델의 저작권 침해 탐지와 언러닝이었습니다. 하지만 상용 모델은 가중치에 접근할 수 없어서, 기존 화이트박스 탐지 기법을 그대로 쓸 수 없습니다. 그래서 과제 범위를 <mark>"출력만으로 증류한 대리 모델에서 탐지한다"</mark>로 다시 설계했고, 그 전제가 성립하는지를 1단계 연구 질문으로 삼았습니다.</p>
+    <p>수주 과제의 목표는 미드저니 같은 블랙박스 모델의 저작권 침해 탐지와 언러닝이었습니다. 블랙박스 모델은 가중치에 접근할 수 없어 기존 화이트박스 탐지 기법을 그대로 쓸 수 없습니다. 그래서 과제 범위를 <mark>"출력만으로 증류한 대리 모델에서 탐지한다"</mark>로 다시 설계하고, 그 전제가 성립하는지를 1단계 연구 질문으로 삼았습니다.</p>
     <p class="note"><b>연구 질문.</b> 타겟 모델이 외운 샘플의 화이트박스 신호(TCNP, Wen et al. ICLR'24)가 구조가 다른 대리 모델로도 옮겨 가는가. 가설은 "타겟의 다양성이 무너져 같은 프롬프트로 여러 장을 생성하면 학생 데이터에 암묵적인 중복이 생기고, 그 중복이 암기를 옮긴다"였습니다.</p>
     <figure>
       <svg viewBox="0 0 760 270" role="img" aria-label="실험 설계: 암기시킨 타겟 모델이 생성한 이미지로 학생 모델을 학습, 같은 구조 학생과 다른 구조 학생과 원본 이미지 통제군을 비교해 TCNP로 탐지">
@@ -62,7 +62,7 @@
   <section>
     <h2><small>01</small>풀 파인튜닝과 메모리 설계</h2>
     <div class="psr">
-      <div><b>학습</b><p>LoRA 없이 풀 파인튜닝했습니다. SD1.4는 UNet만, SD3.5는 transformer만 학습하고 VAE와 텍스트 인코더는 고정했습니다. SD3.5 학습 코드는 flow matching과 logit-normal 타임스텝을 포함해 직접 작성했습니다.</p></div>
+      <div><b>학습</b><p>LoRA 없이 풀 파인튜닝했습니다. SD1.4는 UNet만, SD3.5는 transformer만 학습하고 VAE와 텍스트 인코더는 고정했습니다. SD3.5 학습 코드는 flow matching과 logit-normal 타임스텝을 포함해 작성했습니다.</p></div>
       <div><b>메모리</b><p>GPU를 다른 서비스와 함께 써야 해서, VAE latent와 텍스트 임베딩을 미리 계산해 두고 인코더 네 개를 GPU에서 뺐습니다. 배치와 누적 단계를 조정해 SD3.5 학습을 <mark>약 45GB</mark> 안에 넣었습니다.</p></div>
       <div><b>데이터</b><p>공개 이미지-텍스트 쌍 1만 개를 암기용 200, 미암기 비교용 500, 나머지 9,300으로 고정 시드 분할. 통제군을 뺀 학생의 학습 데이터는 전부 타겟이 생성한 합성 이미지입니다.</p></div>
     </div>
@@ -114,15 +114,15 @@
         <g fill="#6a3fbf"><circle cx="140" cy="208.4" r="4.5"/><circle cx="300" cy="191.2" r="4.5"/><circle cx="460" cy="131.2" r="4.5"/><circle cx="620" cy="61.2" r="4.5"/></g>
         <g font-size="12" font-weight="700"><text x="632" y="36" fill="#666666">타겟 0.995</text><text x="632" y="66" fill="#6a3fbf">학생 0.922</text></g>
       </svg>
-      <figcaption>타겟이 많이 외울수록 학생도 그만큼 따라 외웠습니다. 병목은 학생이 아니라 타겟의 암기 여부라는 결론입니다.</figcaption>
+      <figcaption>타겟이 많이 외울수록 학생도 그만큼 따라 외웠습니다. 병목은 학생이 아니라 타겟의 암기 여부입니다.</figcaption>
     </figure>
   </section>
 
   <section>
-    <h2><small>03</small>좋은 숫자를 그대로 믿지 않기</h2>
+    <h2><small>03</small>자연 암기 실험과 교란 통제</h2>
     <div class="psr">
-      <div><b>의심</b><p>인위적으로 암기시킨 실험만으로는 "실험실 현상"이라는 반론이 남습니다. 그래서 순정 모델이 원래 외우고 있는 공개 프롬프트 500개로 같은 실험을 했고, SD1.4 학생에서 AUC <mark>0.983</mark>이 나왔습니다.</p></div>
-      <div><b>교란</b><p>이 숫자를 그대로 쓰지 않았습니다. 학생도 순정 SD1.4에서 출발하니 원래 외우던 것을 그대로 갖고 있을 수 있었고, 통제군을 두 종류 추가해 보니 통제군도 0.931이 나왔습니다.</p></div>
+      <div><b>의심</b><p>인위적으로 암기시킨 실험만으로는 "실험실 현상"이라는 반론이 남아, 순정 모델이 원래 외우고 있는 공개 프롬프트 500개로 같은 실험을 했습니다. SD1.4 학생에서 AUC <mark>0.983</mark>이 나왔습니다.</p></div>
+      <div><b>교란</b><p>학생도 순정 SD1.4에서 출발해 원래 외우던 것을 그대로 갖고 있을 수 있었습니다. 통제군 두 종류를 추가하자 통제군도 0.931이 나왔습니다.</p></div>
       <div><b>재입증</b><p>출발점이 다른 SD3.5 학생으로 다시 실험해 AUC 0.971, 순정 SD3.5 기준선 0.386 대비 +0.585로 교란 없이 전이를 입증했습니다.</p></div>
     </div>
     <div class="tbl">
@@ -136,7 +136,6 @@
         </tbody>
       </table>
     </div>
-    <div class="ph"><b>이미지 자리: 암기 샘플 예시</b><p>타겟이 외운 원본 이미지와, 그 데이터로 학습한 학생이 같은 프롬프트로 생성한 이미지를 나란히 놓은 비교. 저작권 문제가 없는 이미지로</p><p><code>projects/images/copyright-memorization.png</code></p></div>
   </section>
 </div>
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="임영기 포트폴리오: LLM 학습, 폐쇄망과 NPU 환경의 서빙, 평가">
+<meta name="description" content="임영기 포트폴리오: LLM 학습, NPU 환경의 서빙 및 평가">
 <title>임영기 포트폴리오</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +30,7 @@
     <p class="eyebrow">AI ENGINEER PORTFOLIO</p>
     <h1>임영기</h1>
     <hr>
-    <p class="sub">LLM을 직접 학습하고,<br>폐쇄망과 NPU 같은 제약된 환경에서 서비스로 운영하며,<br>결과가 맞는지 수치로 확인합니다.</p>
+    <p class="sub">LLM을 직접 학습하고,<br>NPU와 같은 제약된 환경에서 서비스로 운영하며,<br>결과가 맞는지 수치로 확인합니다.</p>
     <a class="cta" href="#about">더 알아보기 ↓</a>
   </div>
 </header>
@@ -57,52 +57,52 @@
       <article class="card">
         <div class="stages"><span class="on">데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
         <h3>원윈도우 AI 검색 고도화</h3>
-        <p class="meta">2026.09 ~ 현재 / NIA 사업, 폐쇄망 A100 2장</p>
-        <div class="metric"><b>14.8s → 1.7s</b><span>상용 RAG 대비 문항당 처리 시간, hit@1 71 → 86 (100문항)</span></div>
-        <p class="summary">공공데이터 약 13.5만 건을 찾는 국가 서비스의 검색과 챗봇을 LLM 기반으로 고도화</p>
-        <ul><li>LLM 검색어 확장, 키워드와 벡터 검색, LLM 재순위로 상용 RAG를 대체</li><li>외부 접속이 막힌 서버에 k3s와 vLLM으로 32B 모델과 임베딩 모델 서빙</li><li>간헐적 500 오류를 keep-alive 경쟁 조건으로 재현해 확정</li></ul>
+        <p class="meta">2026.09 ~ 현재</p>
+        <div class="metric"><b>14.8s → 1.7s</b><span>현행 검색 시스템 대비 문항당 처리 시간</span></div>
+        <p class="summary">공공데이터 약 13만 건을 찾는 국가 서비스의 검색과 챗봇 시스템 고도화</p>
+        <ul><li>LLM 검색어 확장, 키워드와 벡터 검색, LLM 재순위로 현행 검색 시스템을 대체</li><li>k3s와 vLLM으로 32B 모델과 임베딩 모델 서빙</li><li>간헐적 500 오류를 keep-alive 경쟁 조건으로 재현해 확정</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">검색 백엔드, GPU 추론 서버, 품질 평가 담당</p><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, k3s, FastAPI, pgvector, MCP</p><div class="links"><a href="projects/onewindow.html">자세히 보기 →</a></div></div>
+        <div class="foot"><p class="role">검색 백엔드, GPU 추론 서버, 품질 평가, 카탈로그 품질 자동 점검 담당</p><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, k3s, docker, FastAPI, pgvector, MCP</p><div class="links"><a href="projects/onewindow.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
         <div class="stages"><span>데이터</span><span class="on">학습</span><span>서빙</span><span class="on">평가</span></div>
         <h3>생성 모델 저작권 탐지 연구</h3>
-        <p class="meta">2026.08 / 수주 과제, A100 80GB</p>
+        <p class="meta">2026.08</p>
         <div class="metric"><b>AUC 0.848</b><span>구조가 다른 대리 모델에서의 암기 신호 탐지, 통제군 0.522</span></div>
-        <p class="summary">상용 이미지 생성 모델의 저작권 침해를 그 출력으로 학습한 대리 모델에서 탐지할 수 있는지 검증</p>
-        <ul><li>SD1.4, SD3.5 풀 파인튜닝. SD3.5 학습 코드를 직접 작성하고 45GB 안에 맞춘 메모리 설계</li><li>0.983이 나온 실험의 교란을 통제군으로 밝히고 조건을 바꿔 재입증</li></ul>
+        <p class="summary">블랙박스 이미지 생성 모델의 저작권 침해를 그 출력으로 학습한 대리 모델에서 탐지할 수 있는지 검증</p>
+        <ul><li>SD1.4, SD3.5 풀 파인튜닝. SD3.5 학습 코드를 작성하여 45GB 안에 맞춘 메모리 설계</li><li>0.983이 나온 실험의 교란을 통제군으로 밝히고 조건을 바꿔 재입증</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">실험 설계, 학습, 평가 단독 수행</p><p class="stack">PyTorch, diffusers, accelerate, SD1.4, SD3.5</p><div class="links"><a href="projects/copyright.html">자세히 보기 →</a></div></div>
+        <div class="foot"><p class="role">실험 설계, 학습, 평가 수행</p><p class="stack">PyTorch, diffusers, accelerate, SD1.4, SD3.5</p><div class="links"><a href="projects/copyright.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
         <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
         <h3>32B 서빙 최적화</h3>
-        <p class="meta">2026.07 ~ 08 / 원윈도우 착수 전 사전 실험, A100, H100</p>
-        <div class="metric"><b>65 → 156 TPS</b><span>32B 단일 사용자 생성 속도, 코드 기준 (일반 문장 81)</span></div>
-        <p class="summary">32B 모델로 웹 검색 에이전트 채팅 서비스를 만들며 응답 속도와 출력 안정성 개선</p>
+        <p class="meta">2026.07 ~ 08</p>
+        <div class="metric"><b>65 → 156 TPS</b><span>32B 단일 사용자 생성 속도, 코드 텍스트 생성 기준</span></div>
+        <p class="summary">32B 모델로 멀티턴 채팅 서비스를 만들며 응답 속도와 출력 안정성 개선</p>
         <ul><li>투기 디코딩 적용, vLLM 소스 패치 2건 중 하나는 이후 업스트림에 같은 수정이 머지됨</li><li>bf16과 AWQ를 비교해 양자화 탓인 환각과 아닌 것을 분리</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">A100, H100 환경 성능 최적화 단독 수행</p><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, 투기 디코딩</p><div class="links"><a href="projects/serving32b.html">자세히 보기 →</a></div></div>
+        <div class="foot"><p class="role">A100, H100 환경 성능 최적화 수행</p><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, 투기 디코딩</p><div class="links"><a href="projects/serving32b.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
         <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
         <h3>NPU 온프레미스 LLM 추론 서비스</h3>
-        <p class="meta">2026.06 ~ 운영 중 / Rebellions ATOM-Max</p>
+        <p class="meta">2026.06 ~ 운영 중</p>
         <div class="metric"><b>13.5s → 2.35s</b><span>이미지 10장 대화의 첫 토큰 지연, 비전 임베딩 캐시</span></div>
-        <p class="summary">벤더가 지원하지 않는 33B 모델을 NPU에 직접 포팅해 상시 서비스로 운영</p>
+        <p class="summary">벤더가 지원하지 않는 33B 모델을 NPU에 포팅해 상시 서비스로 운영</p>
         <ul><li>EXAONE 4.5 33B 포팅, 원본 대비 프롬프트 12개 greedy 출력 일치, 76.5 tok/s</li><li>임베딩 처리량 3.4배, LSTM이 오류 없이 틀린 값을 내는 NPU 결함을 대조군으로 격리</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">포팅, 최적화, 배포, 운영 단독 수행</p><p class="stack">vllm-rbln, optimum-rbln, EXAONE 4.5 VL, bge-m3, PyTorch</p><div class="links"><a href="projects/npu.html">자세히 보기 →</a></div></div>
+        <div class="foot"><p class="role">포팅, 최적화, 배포, 운영 수행</p><p class="stack">vllm-rbln, optimum-rbln, EXAONE 4.5 VL, bge-m3, PyTorch</p><div class="links"><a href="projects/npu.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
         <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
         <h3>AI 협업 문서 플랫폼</h3>
-        <p class="meta">2026.05 ~ / 미공개 사내 제품, 사내 운영 배포</p>
-        <div class="metric"><b>에디터부터 LLM까지</b><span>실시간 공동 편집 에디터와 LLM 기능을 갖춘 제품, 사내 운영 배포 v1.1.0</span></div>
+        <p class="meta">2026.05 ~ 현재</p>
+        <div class="metric"><b>에디터부터 LLM까지</b><span>실시간 공동 편집 에디터와 LLM 기능을 갖춘 제품</span></div>
         <p class="summary">여러 사람이 실시간으로 함께 쓰는 문서 위에서 LLM이 문서를 읽고 제안하는 사내 협업 플랫폼</p>
         <ul><li>Tiptap, Yjs 기반 실시간 협업 에디터의 블록 시스템, 버전 히스토리, 표 편집기 개발</li><li>댓글 @AI 블록 제안, 채팅 이미지 멀티모달, WhisperX 화자 분리 STT 회의록</li><li>httpOnly 쿠키와 리프레시 토큰 회전으로 인증 개편, OWASP LLM Top 10 기준 보안 하드닝</li></ul>
         <span class="fill"></span>
@@ -112,7 +112,7 @@
       <article class="card">
         <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span>평가</span></div>
         <h3>newbie 데스크톱 에이전트 앱</h3>
-        <p class="meta">2026.08 ~ / 3인 사이드 프로젝트, 공개 저장소</p>
+        <p class="meta">2026.04 ~ 09</p>
         <div class="metric"><b>로컬 LLM 에이전트</b><span>Ollama, llama.cpp, vLLM 로컬 모델과 OpenAI, Anthropic을 한 화면에서 전환</span></div>
         <p class="summary">파일을 읽고 고치고 명령을 실행하며 작업하는 Windows 데스크톱 에이전트 앱</p>
         <ul><li>작은 컨텍스트 창을 위한 이력 압축, 프롬프트 캐시를 깨지 않는 요청 구성</li><li>HWP, PDF, XLSX, DOCX 문서 파싱, 보조 에이전트 위임</li><li>허용 목록 밖 셸 명령을 LLM 분류기로 판정해 실행하는 자동 모드</li></ul>
@@ -123,10 +123,10 @@
       <article class="card">
         <div class="stages"><span class="on">데이터</span><span class="on">학습</span><span>서빙</span><span class="on">평가</span></div>
         <h3>VPE-Ko 한국어 영상 프롬프트 챗봇</h3>
-        <p class="meta">2024.11 ~ 2025.08 / 팀 프로젝트, A100</p>
+        <p class="meta">2024.11 ~ 2025.08</p>
         <div class="metric"><b>G-Eval 3.6 → 4.9</b><span>비전문가 A-B 테스트, 생성 영상 만족도 2.1 → 4.6</span></div>
-        <p class="summary">한국어 대화로 영상 생성 모델(CogVideoX)용 영어 프롬프트를 완성해 주는 챗봇</p>
-        <ul><li>GPT 두 개를 대화시켜 학습 쌍 24,769건 합성 데이터 직접 구축</li><li>Qwen2 한국어 LoRA 학습, 1저자 논문 발표</li></ul>
+        <p class="summary">한국어 대화로 영상 생성 모델(CogVideoX)용 영어 프롬프트를 완성해 주는 멀티턴 기반 챗봇 시스템</p>
+        <ul><li>GPT 두 개를 대화시켜 학습 쌍 24,769건 합성 데이터 구축</li><li>Qwen2 한국어 LoRA 학습, 1저자 논문 발표</li></ul>
         <span class="fill"></span>
         <div class="foot"><p class="role">합성 데이터 구축, LoRA 학습 담당</p><p class="stack">PyTorch, transformers, trl, peft</p><div class="links"><a href="projects/vpeko.html">자세히 보기 →</a></div></div>
       </article>
@@ -134,12 +134,12 @@
       <article class="card">
         <div class="stages"><span class="on">데이터</span><span class="on">학습</span><span class="on">서빙</span><span class="on">평가</span></div>
         <h3>ko-en-translator</h3>
-        <p class="meta">2026.06 ~ 07 / 개인 프로젝트, 공개 모델</p>
+        <p class="meta">2026.06 ~ 07</p>
         <div class="metric"><b>BLEU 44.10</b><span>학술 도메인 파인튜닝 후 (전 7.36)</span></div>
-        <p class="summary">트랜스포머를 밑바닥부터 구현한 한영 번역 소형 모델</p>
+        <p class="summary">트랜스포머를 직접 구현한 한영 번역 소형 모델</p>
         <ul><li>어텐션을 minGRU 선형 순환으로 바꿔 긴 입력에서 메모리 약 2.5배 절감</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">구현, 학습, 평가, 서빙 단독 수행</p><p class="stack">PyTorch, minGRU, apache-2.0</p><div class="links"><a href="projects/translator.html">자세히 보기 →</a><a href="https://github.com/wndaasa/ko-en-translator" target="_blank" rel="noopener">GitHub</a><a href="https://huggingface.co/Imsbee/ko-en-translator" target="_blank" rel="noopener">Hugging Face</a></div></div>
+        <div class="foot"><p class="role">구현, 학습, 평가, 서빙 수행</p><p class="stack">PyTorch, minGRU, apache-2.0</p><div class="links"><a href="projects/translator.html">자세히 보기 →</a><a href="https://github.com/wndaasa/ko-en-translator" target="_blank" rel="noopener">GitHub</a><a href="https://huggingface.co/Imsbee/ko-en-translator" target="_blank" rel="noopener">Hugging Face</a></div></div>
       </article>
 
     </div>
@@ -147,9 +147,9 @@
     <div class="more">
       <h3>그 외 프로젝트</h3>
       <div class="papers">
-        <div class="paper"><div class="k">2025.07 ~ 12<small>공공데이터 개방</small></div><div><p class="t">한국청소년정책연구원 아동, 청소년, 청년 조사 데이터 개방체계 구축</p><ul class="v"><li>사업 종료 후 유지보수 기간에 "API 접근이 안 된다"는 기관 요청을 받아 원인 분석부터 수정까지 단독 처리</li><li>NIA 중앙형 오픈API 전환 점검에서 보유 오픈API 전건 정상화, 모범 정상화 사례로 소개 (<a href="https://zdnet.co.kr/view/?no=20260622222111" target="_blank" rel="noopener">관련 기사</a>)</li><li>Apache Hop ETL로 원시 데이터 → 원천 DB → 개방 DB 적재 자동화, 적재 시간 30분 → 10분 이내</li><li>설문 검색용 PoC 챗봇 개발</li></ul><p class="stack">Apache Hop, PostgreSQL, Python, Docker</p></div></div>
+        <div class="paper"><div class="k">2025.07 ~ 12<small>공공데이터 개방</small></div><div><p class="t">한국청소년정책연구원 아동, 청소년, 청년 조사 데이터 개방체계 구축</p><ul class="v"><li>NIA 중앙형 오픈API 전환 점검에서 보유 오픈API 전건 정상화, 모범 정상화 사례로 소개 (<a href="https://zdnet.co.kr/view/?no=20260622222111" target="_blank" rel="noopener">관련 기사</a>)</li><li>Apache Hop ETL로 원시 데이터 → 원천 DB → 개방 DB 적재 자동화, 적재 시간 30분 → 10분 이내</li><li>설문 검색용 PoC 챗봇 개발</li></ul><p class="stack">Apache Hop, PostgreSQL, Python, Docker</p></div></div>
         <div class="paper"><div class="k">2025.11 ~ 2026.02<small>문화비 소득공제</small></div><div><p class="t">문화비 소득공제 시스템 고도화, 검색 챗봇</p><ul class="v"><li>문화비 DB와 연계한 검색 챗봇의 검색과 DB 연계 담당, FastAPI로 API 제공</li><li>BM25 키워드 검색과 유사도 검색을 결합한 하이브리드 검색으로 문화비 사이트에서 실서비스</li></ul><p class="stack">Python, FastAPI, BM25</p></div></div>
-        <div class="paper"><div class="k">2025.07 ~ 12<small>초거대 AI</small></div><div><p class="t">NIA 초거대 AI, 비주얼 4K 영상 및 3D 에셋</p><ul class="v"><li>사업 수행 계획서 작성</li><li>FVD 점수 계산 코드를 작성해 영상 생성 모델 성능 검증</li><li>text-to-3D 모델 파인튜닝과 가이드 문서 작성</li></ul><p class="stack">Python, PyTorch</p></div></div>
+        <div class="paper"><div class="k">2025.07 ~ 12<small>초거대 AI</small></div><div><p class="t">NIA 초거대 AI, 비주얼 4K 영상 및 3D 에셋</p><ul class="v"><li>FVD 점수 계산 코드를 작성해 영상 생성 모델 성능 검증</li><li>text-to-3D 모델 파인튜닝과 가이드 문서 작성</li></ul><p class="stack">Python, PyTorch</p></div></div>
       </div>
     </div>
   </div>
@@ -174,25 +174,25 @@
     <div class="flow">
       <div class="step">
         <div class="no"><b>01</b><h3>데이터</h3></div>
-        <p>학습 데이터를 만들고, 평가셋이 공정한지 따집니다.</p>
+        <p>학습 데이터 생성과 평가셋 설계</p>
         <div class="tools"><span class="key">합성 데이터 생성</span><span>평가셋 설계</span><span>블라인드 판정</span><span>데이터 통계 점검</span></div>
         <p class="where">VPE-Ko, 원윈도우</p>
       </div>
       <div class="step">
         <div class="no"><b>02</b><h3>학습</h3></div>
-        <p>LoRA부터 풀 파인튜닝까지, 학습 코드를 직접 씁니다.</p>
+        <p>LoRA와 풀 파인튜닝</p>
         <div class="tools"><span class="key">PyTorch</span><span class="key">LoRA</span><span>transformers</span><span>trl</span><span>peft</span><span>diffusers</span><span>accelerate</span></div>
         <p class="where">VPE-Ko, 저작권 탐지, ko-en-translator</p>
       </div>
       <div class="step">
         <div class="no"><b>03</b><h3>서빙</h3></div>
-        <p>폐쇄망과 NPU처럼 제약된 환경에 올리고 빠르게 만듭니다.</p>
+        <p>NPU 등 제약된 환경의 서빙과 속도 최적화</p>
         <div class="tools"><span class="key">vLLM</span><span class="key">AWQ</span><span>투기 디코딩</span><span>Rebellions NPU</span><span>k3s</span><span>Docker</span><span>FastAPI</span><span>pgvector</span><span>MCP</span></div>
         <p class="where">NPU 추론, 32B 서빙, 원윈도우</p>
       </div>
       <div class="step">
         <div class="no"><b>04</b><h3>평가</h3></div>
-        <p>개선이 진짜인지 통제군과 신뢰구간으로 확인합니다.</p>
+        <p>통제군과 신뢰구간으로 개선 검증</p>
         <div class="tools"><span class="key">통제군 설계</span><span>Bootstrap CI</span><span>순열검정</span><span>G-Eval</span><span>hit@k, nDCG</span></div>
         <p class="where">저작권 탐지, 원윈도우, VPE-Ko</p>
       </div>

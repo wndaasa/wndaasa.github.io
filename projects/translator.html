@@ -18,11 +18,11 @@
   <header>
     <div class="stages"><span class="on">데이터</span><span class="on">학습</span><span class="on">서빙</span><span class="on">평가</span></div>
     <h1>ko-en-translator</h1>
-    <p class="lead">PyTorch로 트랜스포머를 밑바닥부터 구현해 한영 번역 소형 모델을 만들었습니다. 재현에서 멈추지 않고 가설, 통제 실험, 결론의 순서로 6단계를 밟아, 작은 GPU 한 장으로 논문 단위 번역을 학습하는 데까지 갔습니다.</p>
+    <p class="lead">PyTorch로 트랜스포머를 직접 구현해 한영 번역 소형 모델을 만들었습니다. 6단계 실험을 거쳐 GPU 한 장에서 논문 단위 번역까지 학습했습니다.</p>
     <dl class="facts">
       <dt>기간</dt><dd>2026.06 ~ 07</dd>
       <dt>공개</dt><dd><a href="https://github.com/wndaasa/ko-en-translator" target="_blank" rel="noopener">GitHub</a>, <a href="https://huggingface.co/Imsbee/ko-en-translator" target="_blank" rel="noopener">Hugging Face</a> (apache-2.0)</dd>
-      <dt>환경</dt><dd>로컬 AMD GPU(WSL2 + ROCm)에서 시작해 RTX 4090(24GB)으로 이전</dd>
+      <dt>환경</dt><dd>AMD GPU, RTX 4090(24GB)</dd>
       <dt>기술</dt><dd>PyTorch, 직접 구현한 BPE 토크나이저, Transformer, minGRU</dd>
     </dl>
     <div class="metrics">
@@ -45,7 +45,7 @@
           <rect x="510" y="30" width="112" height="110" rx="10" fill="#e3d9fb" stroke="#6a3fbf"/><text x="566" y="54" font-weight="900" fill="#6a3fbf">5</text><text x="566" y="78" font-weight="700" fill="#161616">도메인 혼합</text><text x="566" y="98" font-size="11" fill="#444444">격식체 + 일상체</text><text x="566" y="126" font-size="11" font-weight="700" fill="#6a3fbf">양성</text>
           <rect x="634" y="30" width="112" height="110" rx="10" fill="#e3d9fb" stroke="#6a3fbf"/><text x="690" y="54" font-weight="900" fill="#6a3fbf">6</text><text x="690" y="78" font-weight="700" fill="#161616">문서 번역</text><text x="690" y="98" font-size="11" fill="#444444">268M, 2단계 학습</text><text x="690" y="126" font-size="11" font-weight="700" fill="#6a3fbf">BLEU 35.46</text>
         </g>
-        <text x="14" y="174" font-size="12" fill="#666666">점선은 가설이 기각된 단계. 음성 결과도 원인 분석과 함께 기록</text>
+        <text x="14" y="174" font-size="12" fill="#666666">점선은 가설이 기각된 단계</text>
       </svg>
     </figure>
   </section>
@@ -53,8 +53,8 @@
   <section>
     <h2><small>01</small>직접 구현</h2>
     <div class="psr">
-      <div><b>구성</b><p>한영 공용 BPE 토크나이저(32k, 번역 방향 태그 포함), 인코더-디코더 트랜스포머, 형태소 합성 인코더, minGRU 선형 순환 seq2seq, 학습 루프, 문서 단위 디코딩, 외부 의존성 없는 CPU 서빙 서버까지 직접 작성했습니다.</p></div>
-      <div><b>minGRU</b><p>선형 점화식을 로그 공간 병렬 스캔으로 구현해 학습은 병렬로, 추론은 KV 캐시 없이 O(1) 메모리로 돌게 했습니다. 병렬 스캔과 순차 계산의 결과가 <mark>최대 오차 1.6e-6</mark>으로 같음을 테스트로 보장해, 학습과 추론이 어긋날 여지를 없앴습니다.</p></div>
+      <div><b>구성</b><p>번역 방향 태그를 포함한 한영 공용 BPE 토크나이저(32k), 인코더-디코더 트랜스포머, 형태소 합성 인코더, minGRU 선형 순환 seq2seq, 학습 루프, 문서 단위 디코딩, CPU 서빙 서버를 작성했습니다.</p></div>
+      <div><b>minGRU</b><p>선형 점화식을 로그 공간 병렬 스캔으로 구현해 학습은 병렬로, 추론은 KV 캐시 없이 O(1) 메모리로 돌게 했습니다. 병렬 스캔과 순차 계산의 결과가 <mark>최대 오차 1.6e-6</mark>으로 일치함을 테스트로 확인했습니다.</p></div>
     </div>
     <figure>
       <svg viewBox="0 0 720 150" role="img" aria-label="ko에서 en BLEU 변화: OPUS-100 학습 후 7.36, 학술 논문 파인튜닝 후 44.10">
@@ -72,8 +72,8 @@
     <h2><small>02</small>공정한 비교로 구조 바꾸기</h2>
     <div class="psr">
       <div><b>설계</b><p>"같은 크기, 다른 구조"만 비교하도록 파라미터 수를 60,521,472 대 60,524,544로 맞추고, 같은 데이터, 같은 스텝, 같은 평가로 비교했습니다.</p></div>
-      <div><b>결과</b><p>minGRU가 10번의 평가 내내 앞섰고(2만 스텝 val_loss 4.15 대 4.36), 길이 4096 디코딩에서 메모리는 약 2.5배 적고 속도는 2.2배 빨랐습니다.</p></div>
-      <div><b>기각</b><p>형태소 합성 인코더 가설은 11번의 평가 모두 열세였고 학습 속도도 1,150에서 225 ex/s로 떨어져 기각했습니다. 원인이 ROCm 라이브러리가 가변 합성곱 배치마다 커널을 다시 탐색하는 데 있다는 것까지 밝혀 기록했습니다.</p></div>
+      <div><b>결과</b><p>minGRU가 10번의 평가 내내 앞섰고 2만 스텝 val_loss는 4.15 대 4.36이었습니다. 길이 4096 디코딩에서 메모리는 약 2.5배 적고 속도는 2.2배 빨랐습니다.</p></div>
+      <div><b>기각</b><p>형태소 합성 인코더 가설은 11번의 평가 모두 열세였고 학습 속도도 1,150에서 225 ex/s로 떨어져 기각했습니다. 속도 저하는 ROCm 라이브러리가 가변 합성곱 배치마다 커널을 다시 탐색하기 때문이었습니다.</p></div>
     </div>
     <figure>
       <svg viewBox="0 0 720 130" role="img" aria-label="실제 학습 최대 메모리: minGRU 10.60GB, 트랜스포머 16.26GB">
@@ -90,16 +90,15 @@
     <h2><small>03</small>문서 단위 번역</h2>
     <div class="psr">
       <div><b>설계</b><p>문장 구분자로 새 토큰을 만들지 않고 기존 종료 토큰을 재사용해 어휘와 임베딩을 그대로 살렸습니다. minGRU는 위치 임베딩이 없어서 최대 길이를 128에서 1024로 늘려도 파라미터가 같았고, 문장 단위로 학습한 체크포인트를 문서 학습의 출발점으로 그대로 쓸 수 있었습니다.</p></div>
-      <div><b>학습</b><p>268M 모델을 OPUS 1,699만 쌍으로 먼저 학습한 뒤, 논문 60,483편에서 만든 179,136개 윈도우로 이어 학습해 val_loss 0.906, 문서 모드 BLEU <mark>35.46</mark>.</p></div>
-      <div><b>한계</b><p>BLEU 35.46은 짧은 문서 20개 표본의 참고치이고, 긴 문서 디코딩이 O(L²)라 전수 평가는 하지 않았으며 단일 시드입니다.</p></div>
+      <div><b>학습</b><p>268M 모델을 OPUS 1,699만 쌍으로 먼저 학습한 뒤, 논문 60,483편에서 만든 179,136개 윈도우로 이어 학습해 val_loss 0.906, 문서 모드 BLEU <mark>35.46</mark>을 얻었습니다.</p></div>
+      <div><b>한계</b><p>BLEU 35.46은 짧은 문서 20개 표본의 참고치입니다. 긴 문서 디코딩이 O(L²)라 전수 평가는 하지 않았고, 단일 시드 결과입니다.</p></div>
     </div>
-    <p class="note"><b>손실은 좋은데 BLEU가 0.03.</b> 문맥 학습 뒤 val_loss는 2.14로 좋았는데 BLEU가 무너졌습니다. 모델이 아니라 평가 코드를 의심했고, 문장용 디코딩이 첫 종료 토큰에서 멈추는 것을 찾아 입력 문장 수만큼 생성하고 멈추는 디코더를 따로 구현했습니다.</p>
+    <p class="note">문맥 학습 뒤 val_loss는 2.14였지만 BLEU는 0.03이었습니다. 문장용 디코딩이 첫 종료 토큰에서 멈추는 것이 원인이어서, 입력 문장 수만큼 생성하고 멈추는 디코더를 따로 구현했습니다.</p>
   </section>
 
   <section>
     <h2><small>04</small>서빙</h2>
-    <p>외부 의존성 없는 CPU 서버에 일반용과 문서용 두 모델을 함께 올리고, 번역 방향과 입력 길이(토큰 70개 기준)로 모델을 고르게 했습니다. 문서 디코딩이 느린 긴 입력은 문장별로 나눠 타임아웃을 피하고, 같은 서버의 NPU 서비스 호스트 CPU를 굶기지 않도록 스레드를 8개로 제한했습니다.</p>
-    <div class="ph"><b>이미지 자리: 번역 예시</b><p>논문 문단을 넣었을 때의 번역 결과 화면이나, Hugging Face 모델 카드 캡처</p><p><code>projects/images/translator-demo.png</code></p></div>
+    <p>외부 의존성 없는 CPU 서버에 일반용과 문서용 두 모델을 함께 올리고, 번역 방향과 입력 길이로 모델을 고르게 했습니다. 입력 길이 기준은 토큰 70개입니다. 문서 디코딩이 느린 긴 입력은 문장별로 나눠 타임아웃을 피했습니다. 같은 서버의 NPU 서비스가 쓸 호스트 CPU가 부족해지지 않도록 스레드는 8개로 제한했습니다.</p>
   </section>
 </div>
 
