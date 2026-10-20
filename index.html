@@ -56,24 +56,24 @@
 
       <article class="card">
         <div class="stages"><span class="on">데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
-        <h3>원윈도우 AI 검색 고도화</h3>
+        <h3>원윈도우 AI 검색 시스템 고도화</h3>
         <p class="meta">2026.09 ~ 현재</p>
-        <div class="metric"><b>14.8s → 1.7s</b><span>현행 검색 시스템 대비 문항당 처리 시간</span></div>
-        <p class="summary">공공데이터 약 13만 건을 찾는 국가 서비스의 검색과 챗봇 시스템 고도화</p>
-        <ul><li>LLM 검색어 확장, 키워드와 벡터 검색, LLM 재순위로 현행 검색 시스템을 대체</li><li>k3s와 vLLM으로 32B 모델과 임베딩 모델 서빙</li><li>간헐적 500 오류를 keep-alive 경쟁 조건으로 재현해 확정</li></ul>
+        <div class="metric"><b>14.8초 → 1.7초</b><span>현행 검색 시스템 대비 문항당 처리 시간</span></div>
+        <p class="summary">공공 데이터 약 13만 건을 대상으로 검색 및 멀티턴 챗봇 시스템을 구축하는 국가 인프라 고도화 사업</p>
+        <ul><li>LLM 검색어 확장, 키워드와 벡터 검색, LLM 재순위로 현행 검색 시스템을 대체</li><li>k3s와 vLLM으로 32B LLM 모델 및 임베딩 모델 서빙</li><li>간헐적 500 에러를 keep-alive 경쟁 조건으로 재현하여 에러 원인 확정</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">검색 백엔드, GPU 추론 서버, 품질 평가, 카탈로그 품질 자동 점검 담당</p><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, k3s, docker, FastAPI, pgvector, MCP</p><div class="links"><a href="projects/onewindow.html">자세히 보기 →</a></div></div>
+        <div class="foot"><p class="role">검색 API 구축, 카탈로그 품질 자동 점검 API 구축</p><p class="stack">MCP, PostgreSQL, pgvector, FastAPI, SSE, Docker, k3s, vLLM, httpx</p><div class="links"><a href="projects/onewindow.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
         <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
         <h3>NPU 온프레미스 LLM 추론 서비스</h3>
-        <p class="meta">2026.06 ~ 운영 중</p>
-        <div class="metric"><b>13.5s → 2.35s</b><span>이미지 10장 대화의 첫 토큰 지연, 비전 임베딩 캐시</span></div>
+        <p class="meta">2026.06 ~ 현재</p>
+        <div class="metric"><b>13.5초 → 2.35초</b><span>이미지 10장 대화의 첫 토큰 지연, 비전 임베딩 캐시</span></div>
         <p class="summary">벤더가 지원하지 않는 33B 모델을 NPU에 포팅해 상시 서비스로 운영</p>
-        <ul><li>EXAONE 4.5 33B 포팅, 원본 대비 프롬프트 12개 greedy 출력 일치, 76.5 tok/s</li><li>임베딩 처리량 3.4배, LSTM이 오류 없이 틀린 값을 내는 NPU 결함을 대조군으로 격리</li></ul>
+        <ul><li>EXAONE 4.5 33B 포팅, 원본과 출력이 갈린 곳은 모두 1, 2위 후보가 bf16 동률인 토큰</li><li>동시 4요청 합계 73.3 tok/s, 임베딩 처리량 3.4배</li><li>LSTM이 오류 없이 틀린 값을 내는 NPU 결함을 대조군으로 격리</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">포팅, 최적화, 배포, 운영 수행</p><p class="stack">vllm-rbln, optimum-rbln, EXAONE 4.5 VL, bge-m3, PyTorch</p><div class="links"><a href="projects/npu.html">자세히 보기 →</a></div></div>
+        <div class="foot"><p class="role">LLM 포팅과 서빙, 이미지 입력 확장, 임베딩 서빙 최적화</p><p class="stack">optimum-rbln, rebel-compiler, vLLM, vllm-rbln, PyTorch</p><div class="links"><a href="projects/npu.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
@@ -84,7 +84,7 @@
         <p class="summary">여러 사람이 실시간으로 함께 쓰는 문서 위에서 LLM이 문서를 읽고 제안하는 사내 협업 플랫폼</p>
         <ul><li>Tiptap, Yjs 기반 실시간 협업 에디터의 블록 시스템, 버전 히스토리, 표 편집기 개발</li><li>댓글 @AI 블록 제안, 채팅 이미지 멀티모달, WhisperX 화자 분리 STT 회의록</li><li>httpOnly 쿠키와 리프레시 토큰 회전으로 인증 개편, OWASP LLM Top 10 기준 보안 하드닝</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">프론트엔드, 백엔드, LLM 서빙 연동 담당</p><p class="stack">React, Tiptap, Yjs, Express, PostgreSQL, pgvector, vLLM</p></div>
+        <div class="foot"><p class="role">프론트엔드, 백엔드, LLM 서빙 연동 담당</p><p class="stack">React, Tiptap, Yjs, Express, PostgreSQL, pgvector, vLLM</p><div class="links"><a href="projects/npu.html">LLM 서빙: NPU 추론 서비스 →</a></div></div>
       </article>
 
       <article class="card">
@@ -102,11 +102,11 @@
         <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
         <h3>32B 서빙 최적화</h3>
         <p class="meta">2026.07 ~ 08</p>
-        <div class="metric"><b>65 → 156 TPS</b><span>32B 단일 사용자 생성 속도, 코드 텍스트 생성 기준</span></div>
+        <div class="metric"><b>65 → 156 tok/s</b><span>32B 단일 사용자 생성 속도, 코드 텍스트 생성 기준</span></div>
         <p class="summary">32B 모델로 멀티턴 채팅 서비스를 만들며 응답 속도와 출력 안정성 개선</p>
         <ul><li>투기 디코딩 적용, vLLM 소스 패치 2건 중 하나는 이후 업스트림에 같은 수정이 머지됨</li><li>bf16과 AWQ를 비교해 양자화 탓인 환각과 아닌 것을 분리</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">A100, H100 환경 성능 최적화 수행</p><p class="stack">vLLM, EXAONE-4.0-32B-AWQ, 투기 디코딩</p><div class="links"><a href="projects/serving32b.html">자세히 보기 →</a></div></div>
+        <div class="foot"><p class="role">vLLM 서빙 설정과 패치, 채팅 앱 개발, 벤치마크와 분석</p><p class="stack">vLLM, AWQ, 투기 디코딩, Triton</p><div class="links"><a href="projects/serving32b.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
@@ -117,7 +117,7 @@
         <p class="summary">블랙박스 이미지 생성 모델의 저작권 침해를 그 출력으로 학습한 대리 모델에서 탐지할 수 있는지 검증</p>
         <ul><li>SD1.4, SD3.5 풀 파인튜닝. SD3.5 학습 코드를 작성하여 45GB 안에 맞춘 메모리 설계</li><li>0.983이 나온 실험의 교란을 통제군으로 밝히고 조건을 바꿔 재입증</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">실험 설계, 학습, 평가 수행</p><p class="stack">PyTorch, diffusers, accelerate, SD1.4, SD3.5</p><div class="links"><a href="projects/copyright.html">자세히 보기 →</a></div></div>
+        <div class="foot"><p class="role">실험 설계, 학습, 평가 수행</p><p class="stack">PyTorch, diffusers, accelerate</p><div class="links"><a href="projects/copyright.html">자세히 보기 →</a></div></div>
       </article>
 
       <article class="card">
@@ -139,7 +139,7 @@
         <p class="summary">트랜스포머를 직접 구현한 한영 번역 소형 모델</p>
         <ul><li>어텐션을 minGRU 선형 순환으로 바꿔 긴 입력에서 메모리 약 2.5배 절감</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">구현, 학습, 평가, 서빙 수행</p><p class="stack">PyTorch, minGRU, apache-2.0</p><div class="links"><a href="projects/translator.html">자세히 보기 →</a><a href="https://github.com/wndaasa/ko-en-translator" target="_blank" rel="noopener">GitHub</a><a href="https://huggingface.co/Imsbee/ko-en-translator" target="_blank" rel="noopener">Hugging Face</a></div></div>
+        <div class="foot"><p class="role">구현, 학습, 평가, 서빙 수행</p><p class="stack">PyTorch, minGRU</p><div class="links"><a href="projects/translator.html">자세히 보기 →</a><a href="https://github.com/wndaasa/ko-en-translator" target="_blank" rel="noopener">GitHub</a><a href="https://huggingface.co/Imsbee/ko-en-translator" target="_blank" rel="noopener">Hugging Face</a></div></div>
       </article>
 
     </div>
