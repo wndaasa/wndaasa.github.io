@@ -142,7 +142,7 @@
     <div class="sub" id="ch1-7">
       <h3><small>1-7</small>LLM 서빙 환경 구축</h3>
       <p>A100 80GB 2장 서버 한 대에 k3s 단일 노드로 vLLM을 올렸습니다. 컨테이너로 운영하고 작은 모델은 레플리카로 늘리기 위해 Docker 구성에서 옮겼습니다.</p>
-      <p>쿠버네티스의 GPU 공유 방식은 맞는 것이 없었습니다. time-slicing은 파드에 특정 GPU를 지정할 수 없고, MPS는 메모리를 균등하게 나누며, MIG는 조각이 너무 큽니다. 그래서 파드마다 NVIDIA_VISIBLE_DEVICES로 GPU를 고정했습니다. EXAONE-4.0-32B-AWQ는 계약상 인스턴스를 하나만 둘 수 있어 TP2로 두 장에 나눠 올리고, bge-m3는 GPU마다 레플리카를 하나씩 두었습니다.</p>
+      <p>쿠버네티스의 GPU 공유 방식은 맞는 것이 없었습니다. time-slicing은 파드에 특정 GPU를 지정할 수 없고, MPS는 메모리를 균등하게 나누며, MIG는 조각이 너무 큽니다. 그래서 파드마다 NVIDIA_VISIBLE_DEVICES로 GPU를 고정했습니다. EXAONE-4.0-32B-AWQ는 단일 인스턴스를 TP2로 두 장에 나눠 올리고, bge-m3는 GPU마다 레플리카를 하나씩 두었습니다.</p>
       <p>KV 캐시는 gpu-memory-utilization 비율 대신 바이트로 지정했습니다. 비율은 기동할 때 남은 메모리를 기준으로 잡혀서, 같은 GPU에 여러 모델을 띄우면 KV 크기가 흔들립니다. EXAONE의 최대 컨텍스트는 128K(131,072 토큰)입니다. 기동 로그로 잰 토큰당 KV 크기가 GPU당 약 38.9KB라, KV 캐시를 GPU당 <mark>10GiB</mark>로 지정해 약 27만 토큰(275,855)을 확보했습니다.</p>
       <p>같은 모델의 투기 디코딩 실험과 vLLM 패치는 <a href="serving32b.html">32B 서빙 최적화</a> 페이지에 정리했습니다.</p>
     </div>
