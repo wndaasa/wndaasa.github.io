@@ -15,8 +15,8 @@
 <nav class="nav"><div class="wrap"><a href="../index.html#projects">← 포트폴리오로</a><b>임영기</b></div></nav>
 
 <aside class="minimap" aria-label="목차">
-  <div class="bars"><a href="#ch1" aria-label="챗봇 설계"></a><a href="#ch2" aria-label="합성 데이터 구축"></a><a href="#ch3" aria-label="LoRA 학습"></a><a href="#ch4" aria-label="트러블슈팅"></a></div>
-  <div class="panel"><a href="#ch1">챗봇 설계</a><a href="#ch2">합성 데이터 구축</a><a href="#ch3">LoRA 학습</a><a href="#ch4">트러블슈팅</a></div>
+  <div class="bars"><a href="#ch1" aria-label="챗봇 설계"></a><a href="#ch2" aria-label="합성 데이터 구축"></a><a href="#ch3" aria-label="LoRA 학습"></a><a href="#ch4" aria-label="트러블슈팅"></a><a href="#ch5" aria-label="평가"></a></div>
+  <div class="panel"><a href="#ch1">챗봇 설계</a><a href="#ch2">합성 데이터 구축</a><a href="#ch3">LoRA 학습</a><a href="#ch4">트러블슈팅</a><a href="#ch5">평가</a></div>
 </aside>
 
 <div class="wrap">
@@ -58,6 +58,7 @@
           <li><a href="#ch4-3">4-3. 한국어 답변에 중국어 토큰이 섞임</a></li>
         </ol>
       </li>
+      <li><a href="#ch5">5. 평가</a></li>
     </ol>
   </nav>
 
@@ -143,7 +144,7 @@
       <h3><small>4-1</small>LoRA 강도를 높이면 학습한 말투로만 답함</h3>
       <div class="psr">
         <div><b>문제</b><p>LoRA 강도를 높게 두면 학습한 말투로만 답했습니다.</p></div>
-        <div><b>해결</b><p>추론 때 LoRA 강도를 실사용하며 0.8 ~ 0.9로 조절했습니다.</p></div>
+        <div><b>해결</b><p>추론 때 실사용하면서 추론 때 LoRA 강도를 0.8 ~ 0.9로 맞췄습니다.</p></div>
       </div>
     </div>
 
@@ -162,6 +163,10 @@
         <div><b>해결</b><p>추론 결과의 유니코드 범위를 검사해 한자가 섞이면 다시 생성하도록 했습니다.</p></div>
       </div>
     </div>
+  </section>
+  <section id="ch5">
+    <h2><small>05</small>평가</h2>
+    <p>영상 생성 경험이 없는 비전문가 10명에게 챗봇 적용 전후의 프롬프트와 그 프롬프트로 만든 영상을 A-B로 비교하게 했습니다. 프롬프트 만족도는 3.6에서 4.5로, 생성 영상 만족도는 2.1에서 <mark>4.6</mark>으로 올랐고, 같은 프롬프트의 G-Eval 점수는 3.6에서 4.9로 올랐습니다.</p>
   </section>
 </div>
 

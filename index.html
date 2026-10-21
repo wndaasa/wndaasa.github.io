@@ -59,7 +59,7 @@
         <h3>원윈도우 AI 검색 시스템 고도화</h3>
         <p class="meta">2026.09 ~ 현재</p>
         <div class="metric"><b>13.6초 → 5.2초</b><span>시험셋 99문항, 현행 검색 시스템 대비 검색 결과까지 평균</span></div>
-        <p class="summary">공공 데이터 약 13만 건을 대상으로 검색 및 멀티턴 챗봇 시스템을 구축하는 국가 인프라 고도화 사업</p>
+        <p class="summary">공공 데이터 약 13만 건을 대상으로 검색 및 멀티턴 챗봇 시스템을 구축하는 NIA 국가 데이터 인프라 사업</p>
         <ul><li>LLM 검색어 확장, 키워드와 벡터 검색, LLM 재순위로 현행 검색 시스템을 대체</li><li>시험셋 99문항에서 AI 검색 hit@1 56개 → 82개</li><li>간헐적 500 에러를 keep-alive 경쟁 조건으로 재현하여 에러 원인 확정</li></ul>
         <span class="fill"></span>
         <div class="foot"><p class="role">검색 API, 품질 점검 API, LLM 서빙, MCP 연동, 평가 담당</p><p class="stack">MCP, PostgreSQL, pgvector, FastAPI, SSE, Docker, k3s, vLLM, httpx</p><div class="links"><a href="projects/onewindow.html">자세히 보기 →</a></div></div>
@@ -80,20 +80,20 @@
         <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span>평가</span></div>
         <h3>newbie 데스크톱 에이전트 앱</h3>
         <p class="meta">2026.05 ~ 10</p>
-        <div class="metric"><b>회상 6개 → 12개</b><span>84K 토큰 대화를 압축한 뒤 물은 사실 12개 중 맞힌 수, 압축 재설계 전후</span></div>
+        <div class="metric"><b>회상 6개 → 12개</b><span>8.4만 토큰 대화를 압축한 뒤 물은 사실 12개 중 맞힌 수, 압축 재설계 전후</span></div>
         <p class="summary">파일을 읽고 고치고 명령을 실행하며 작업하는 Windows 데스크톱 에이전트 앱, 사내 스터디 3인 프로젝트</p>
         <ul><li>작은 컨텍스트 창을 위한 이력 압축, 프롬프트 캐시를 깨지 않는 요청 구성, 로컬과 API 프로바이더 6종</li><li>진전이 없을 때만 멈추는 턴 종료, 보조 에이전트&nbsp;위임</li><li>허용 목록 밖 셸 명령을 LLM 분류기로 판정해 실행하는 자동 모드</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">컨텍스트 관리, 턴 종료 설계, 권한과 자동 모드 분류기, 배포 담당</p><p class="stack">TypeScript, Electron, GitHub Actions</p><div class="links"><a href="https://github.com/wndaasa/newbie-harness" target="_blank" rel="noopener">GitHub</a></div></div>
+        <div class="foot"><p class="role">컨텍스트 관리, 턴 종료 재설계, 권한과 자동 모드 분류기, 배포 담당</p><p class="stack">TypeScript, Electron, GitHub Actions</p><div class="links"><a href="https://github.com/wndaasa/newbie-harness" target="_blank" rel="noopener">GitHub</a></div></div>
       </article>
 
       <article class="card">
         <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
         <h3>NPU 온프레미스 LLM 추론 서비스</h3>
         <p class="meta">2026.06 ~ 현재</p>
-        <div class="metric"><b>13.5초 → 2.35초</b><span>이미지 10장 대화의 첫 토큰 지연, 비전 임베딩 캐시</span></div>
+        <div class="metric"><b>13.5초 → 2.35초</b><span>이미지 10장이 든 대화의 다음 턴 첫 토큰 지연, 비전 임베딩 캐시</span></div>
         <p class="summary">벤더가 지원하지 않는 33B 모델을 NPU에 포팅해 상시 서비스로 운영</p>
-        <ul><li>EXAONE 4.5 33B 포팅, 원본과 출력이 갈린 곳은 모두 1, 2위 후보가 bf16 동률인 토큰</li><li>동시 4요청 합계 73.3 tok/s, 임베딩 처리량 3.4배</li><li>LSTM이 오류 없이 틀린 값을 내는 NPU 결함을 대조군으로 격리</li></ul>
+        <ul><li>EXAONE 4.5 33B 포팅, 원본과 출력이 달라진 토큰은 모두 bf16에서 1, 2위 후보 확률이 같은 자리</li><li>동시 4요청 합계 73.3 tok/s, 임베딩 처리량 3.4배</li><li>LSTM이 오류 없이 틀린 값을 내는 NPU 결함을 대조군으로 격리</li></ul>
         <span class="fill"></span>
         <div class="foot"><p class="role">LLM 포팅과 서빙, 이미지 입력 확장, 임베딩 서빙 최적화</p><p class="stack">optimum-rbln, rebel-compiler, vLLM, vllm-rbln, PyTorch</p><div class="links"><a href="projects/npu.html">자세히 보기 →</a></div></div>
       </article>
@@ -126,7 +126,7 @@
         <p class="meta">2026.08</p>
         <div class="metric"><b>AUC 0.848</b><span>구조가 다른 대리 모델에서의 암기 신호 탐지, 통제군 0.522</span></div>
         <p class="summary">블랙박스 이미지 생성 모델의 저작권 침해를 그 출력으로 학습한 대리 모델에서 탐지할 수 있는지 검증</p>
-        <ul><li>SD1.4, SD3.5 풀 파인튜닝. SD3.5 학습 코드를 작성하여 45GB 안에 맞춘 메모리 설계</li><li>0.983이 나온 실험의 교란을 통제군으로 밝히고 조건을 바꿔 재입증</li></ul>
+        <ul><li>SD1.4, SD3.5 풀 파인튜닝, SD3.5 학습 코드는 45GB 안에 맞게 작성</li><li>AUC 0.983이 나온 앞선 실험의 교란을 통제군으로 밝히고 조건을 바꿔 재입증</li></ul>
         <span class="fill"></span>
         <div class="foot"><p class="role">실험 설계, 학습, 평가 수행</p><p class="stack">PyTorch, diffusers, accelerate</p><div class="links"><a href="projects/copyright.html">자세히 보기 →</a></div></div>
       </article>
@@ -170,7 +170,7 @@
   <div class="wrap">
     <div class="sec-head"><h2>PAPERS</h2></div>
     <div class="papers">
-      <div class="paper"><div class="k">1저자<small>2026</small></div><div><p class="t">멀티홉 질의응답을 위한 에이전트 기반 반복 검색</p><p class="v">한국인터넷정보학회 추계학술발표대회. NPU에 올린 33B 모델로 실험, 평균 EM 0.572(단일 패스 RAG 대비 +12.8%p)</p></div></div>
+      <div class="paper"><div class="k">1저자<small>2026</small></div><div><p class="t">멀티홉 질의응답을 위한 에이전트 기반 반복 검색</p><p class="v">한국인터넷정보학회 추계학술발표대회. NPU에 올린 33B 모델로 실험, 평균 EM 0.572(단일 RAG 대비 +12.8%p)</p></div></div>
       <div class="paper"><div class="k">1저자<small>2025</small></div><div><p class="t">한국어 기반 Text-to-Video 프롬프트 엔지니어링 시스템 연구: CogVideoX를 중점으로</p><p class="v">제6회 한국 인공지능 학술대회. VPE-Ko</p></div></div>
       <div class="paper"><div class="k">저널, 3저자<small>2026</small></div><div><p class="t">KoPESV-SD: A Self-Diagnosing Korean-based Prompt Engineering System for Video Generation Model with a Complementary Dual Safety Net</p><p class="v">Journal of Internet Computing and Services. 생성 전 경고 파트 담당</p></div></div>
       <div class="paper"><div class="k">국제학술대회, 3저자<small>2025</small></div><div><p class="t">A Study on Korean-based Prompt Engineering System for Video Generation Model: Focusing on CogVideoX</p><p class="v">ICONI 2025</p></div></div>
@@ -204,7 +204,7 @@
       <div class="step">
         <div class="no"><b>04</b><h3>평가</h3></div>
         <p>통제군과 신뢰구간으로 개선 검증</p>
-        <div class="tools"><span class="key">통제군 설계</span><span>Bootstrap CI</span><span>순열검정</span><span>G-Eval</span><span>hit@k, nDCG</span></div>
+        <div class="tools"><span class="key">통제군 설계</span><span>Bootstrap CI</span><span>순열검정</span><span>G-Eval</span><span>hit@k, nDCG, MRR</span></div>
         <p class="where">저작권 탐지, 원윈도우, 반복 검색 연구, VPE-Ko</p>
       </div>
     </div>
