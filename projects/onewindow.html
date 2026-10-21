@@ -26,7 +26,7 @@
     <p class="lead">공공 데이터 약 13만 건을 대상으로 검색 및 멀티턴 챗봇 시스템을 구축하는 국가 인프라 고도화 사업</p>
     <dl class="facts">
       <dt>기간</dt><dd>2026.09 ~ 현재</dd>
-      <dt>역할</dt><dd>검색 API 구축, 카탈로그 품질 자동 점검 API 구축</dd>
+      <dt>역할</dt><dd>검색 API, 품질 점검 API, LLM 서빙, MCP 연동, 평가</dd>
       <dt>기술</dt>
       <dd><span class="chips"><span>MCP</span><span>PostgreSQL</span><span>pgvector</span><span>FastAPI</span><span>SSE</span><span>Docker</span><span>k3s</span><span>vLLM</span><span>httpx</span></span></dd>
     </dl>
@@ -79,7 +79,7 @@
         <defs><marker id="a1" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="#161616"/></marker></defs>
         <g font-size="13" text-anchor="middle">
           <rect x="10" y="120" width="90" height="56" rx="10" fill="#ffffff" stroke="#161616"/><text x="55" y="152" font-weight="700" fill="#161616">질의</text>
-          <rect x="130" y="102" width="120" height="92" rx="10" fill="#e3d9fb" stroke="#6a3fbf"/><text x="190" y="133" font-weight="700" fill="#161616">의도 라우터 (5분류)</text><text x="190" y="155" font-size="11" fill="#444444">검색, 상세, API,</text><text x="190" y="171" font-size="11" fill="#444444">외부지식, 잡담</text>
+          <rect x="130" y="102" width="120" height="92" rx="10" fill="#e3d9fb" stroke="#6a3fbf"/><text x="190" y="133" font-weight="700" fill="#161616">의도 라우터 (4분류)</text><text x="190" y="155" font-size="11" fill="#444444">검색, 상세,</text><text x="190" y="171" font-size="11" fill="#444444">API, 잡담</text>
           <rect x="280" y="120" width="110" height="56" rx="10" fill="#e3d9fb" stroke="#6a3fbf"/><text x="335" y="144" font-weight="700" fill="#161616">LLM 검색어</text><text x="335" y="162" fill="#161616">확장</text>
           <rect x="420" y="60" width="130" height="56" rx="10" fill="#ffffff" stroke="#161616"/><text x="485" y="84" font-weight="700" fill="#161616">키워드 검색</text><text x="485" y="102" font-size="11.5" fill="#444444">MCP</text>
           <rect x="420" y="180" width="130" height="56" rx="10" fill="#ffffff" stroke="#161616"/><text x="485" y="204" font-weight="700" fill="#161616">벡터 검색</text><text x="485" y="222" font-size="11.5" fill="#444444">bge-m3 + pgvector</text>
@@ -101,8 +101,8 @@
 
     <div class="sub" id="ch1-1">
       <h3><small>1-1</small>질의 의도 라우터</h3>
-      <p>질의를 검색, 상세, API, 외부지식, 잡담 5가지로 나누는 프롬프트를 설계하고, vLLM의 structured outputs로 다섯 라벨 외의 토큰은 생성하지 못하게 막았습니다.</p>
-      <p>정답 라벨을 미리 붙인 단일 질의 156개 중 <mark>153개</mark>, 직전 질의가 있는 멀티턴 질의 30개 중 29개를 맞게 분류했습니다. 분류 한 건의 응답 시간은 평균 0.06초입니다.</p>
+      <p>질의를 검색, 상세, API, 잡담 4가지로 나누는 프롬프트를 설계하고, vLLM의 structured outputs로 네 라벨 외의 토큰은 생성하지 못하게 막았습니다.</p>
+      <p>정답 라벨을 미리 붙인 단일 질의 156개 중 <mark>155개</mark>, 직전 질의가 있는 멀티턴 질의 30개 모두를 맞게 분류했습니다. 분류 한 건의 응답 시간은 평균 0.06초입니다.</p>
       <p>API로 분류된 질의는 공공데이터포털 오픈API 호출 URL을 만들어 돌려줍니다. EXAONE은 대상 API와 파라미터만 JSON으로 내고, 서버가 오픈API 명세와 대조해 URL을 조립합니다. 서비스키는 LLM에 넘기지 않습니다.</p>
     </div>
 
@@ -142,8 +142,8 @@
     <div class="sub" id="ch1-7">
       <h3><small>1-7</small>LLM 서빙 환경 구축</h3>
       <p>A100 80GB 2장 서버 한 대에 k3s 단일 노드로 vLLM을 올렸습니다. 컨테이너로 운영하고 작은 모델은 레플리카로 늘리기 위해 Docker 구성에서 옮겼습니다.</p>
-      <p>쿠버네티스의 GPU 공유 방식은 맞는 것이 없었습니다. time-slicing은 파드에 특정 GPU를 지정할 수 없고, MPS는 메모리를 균등하게 나누며, MIG는 조각이 너무 큽니다. 그래서 파드마다 NVIDIA_VISIBLE_DEVICES로 GPU를 고정했습니다. EXAONE-4.0-32B-AWQ는 라이선스상 인스턴스를 하나만 둘 수 있어 TP2로 두 장에 나눠 올리고, bge-m3는 GPU마다 레플리카를 하나씩 두었습니다.</p>
-      <p>KV 캐시는 gpu-memory-utilization 비율 대신 바이트로 지정했습니다. 비율은 기동할 때 남은 메모리를 기준으로 잡혀서, 같은 GPU에 여러 모델을 띄우면 KV 크기가 흔들립니다. EXAONE의 컨텍스트는 256K(262,144 토큰)로 잡았습니다. 기동 로그로 잰 토큰당 KV 크기가 GPU당 약 38.9KB라 필요한 KV 캐시는 약 9.5GiB이고, 이를 GPU당 <mark>10GiB</mark>로 지정해 실제로 275,855 토큰을 확보했습니다.</p>
+      <p>쿠버네티스의 GPU 공유 방식은 맞는 것이 없었습니다. time-slicing은 파드에 특정 GPU를 지정할 수 없고, MPS는 메모리를 균등하게 나누며, MIG는 조각이 너무 큽니다. 그래서 파드마다 NVIDIA_VISIBLE_DEVICES로 GPU를 고정했습니다. EXAONE-4.0-32B-AWQ는 계약상 인스턴스를 하나만 둘 수 있어 TP2로 두 장에 나눠 올리고, bge-m3는 GPU마다 레플리카를 하나씩 두었습니다.</p>
+      <p>KV 캐시는 gpu-memory-utilization 비율 대신 바이트로 지정했습니다. 비율은 기동할 때 남은 메모리를 기준으로 잡혀서, 같은 GPU에 여러 모델을 띄우면 KV 크기가 흔들립니다. EXAONE의 최대 컨텍스트는 128K(131,072 토큰)입니다. 기동 로그로 잰 토큰당 KV 크기가 GPU당 약 38.9KB라, KV 캐시를 GPU당 <mark>10GiB</mark>로 지정해 약 27만 토큰(275,855)을 확보했습니다.</p>
       <p>같은 모델의 투기 디코딩 실험과 vLLM 패치는 <a href="serving32b.html">32B 서빙 최적화</a> 페이지에 정리했습니다.</p>
     </div>
 
@@ -156,35 +156,33 @@
 
     <div class="sub" id="ch1-9">
       <h3><small>1-9</small>검색 품질 평가</h3>
-      <p>hit@1, hit@3, F1@3, nDCG@3, 처리 시간으로 채점 스크립트를 만들어 현행 검색 시스템과 같은 100문항으로 비교했습니다. 문항당 처리 시간은 14.8초에서 1.7초로 줄었습니다.</p>
+      <p>hit@1, hit@3, F1@3, nDCG@3, 처리 시간으로 채점 스크립트를 만들고, 튜닝에 쓰지 않은 시험셋 99문항으로 현행 검색 시스템과 비교했습니다. AI 검색 hit@1은 56개에서 <mark>82개</mark>로 올랐고, 목록을 받기까지의 평균은 현행 13.6초, 고도화 3.7초이며 재순위 결과까지 포함하면&nbsp;5.2초입니다.</p>
       <figure>
-        <svg viewBox="0 0 720 300" role="img" aria-label="현행 검색 시스템과 고도화 검색 비교: hit@1 71 대 86, hit@3 74 대 91, F1 0.521 대 0.690">
-          <line x1="60" y1="210" x2="700" y2="210" stroke="#161616"/>
-          <g stroke="#d4d0de" stroke-dasharray="3 3"><line x1="60" y1="120" x2="700" y2="120"/><line x1="60" y1="30" x2="700" y2="30"/></g>
-          <g font-size="11.5" fill="#666666" text-anchor="end"><text x="52" y="214">0</text><text x="52" y="124">50</text><text x="52" y="34">100</text></g>
-          <rect x="120" y="82.2" width="50" height="127.8" fill="#c9c6d2"/><rect x="178" y="55.2" width="50" height="154.8" fill="#6a3fbf"/>
-          <rect x="330" y="76.8" width="50" height="133.2" fill="#c9c6d2"/><rect x="388" y="46.2" width="50" height="163.8" fill="#6a3fbf"/>
-          <rect x="540" y="116.2" width="50" height="93.8" fill="#c9c6d2"/><rect x="598" y="85.8" width="50" height="124.2" fill="#6a3fbf"/>
-          <g font-size="12.5" font-weight="700" text-anchor="middle" fill="#161616">
-            <text x="145" y="76">71</text><text x="203" y="49" fill="#6a3fbf">86</text>
-            <text x="355" y="70">74</text><text x="413" y="40" fill="#6a3fbf">91</text>
-            <text x="565" y="110">0.521</text><text x="623" y="80" fill="#6a3fbf">0.690</text>
+        <svg viewBox="0 0 720 236" role="img" aria-label="시험셋 99문항 비교: hit@1 현행 56 대 고도화 82, 목록 수신 평균 현행 13.6초 대 고도화 3.7초, 재순위 포함 5.2초">
+          <g font-size="12.5" font-weight="700" fill="#161616"><text x="20" y="24">hit@1 (99문항)</text><text x="20" y="134">목록 수신 평균 (초)</text></g>
+          <g font-size="13" fill="#161616" text-anchor="end"><text x="130" y="52">현행</text><text x="130" y="86">고도화</text><text x="130" y="162">현행</text><text x="130" y="196">고도화</text></g>
+          <rect x="140" y="36" width="294" height="22" rx="2" fill="#c9c6d2"/>
+          <rect x="140" y="70" width="431" height="22" rx="2" fill="#6a3fbf"/>
+          <rect x="140" y="146" width="505" height="22" rx="2" fill="#c9c6d2"/>
+          <rect x="140" y="180" width="137" height="22" rx="2" fill="#6a3fbf"/>
+          <rect x="277" y="180" width="56" height="22" rx="2" fill="#c9b8f5"/>
+          <g font-size="12.5" font-weight="700" fill="#161616">
+            <text x="442" y="52">56</text><text x="579" y="86" fill="#6a3fbf">82</text>
+            <text x="653" y="162">13.6초</text><text x="341" y="196" fill="#6a3fbf">3.7초, 재순위 포함 5.2초</text>
           </g>
-          <g font-size="13" text-anchor="middle" fill="#161616"><text x="174" y="232">hit@1</text><text x="384" y="232">hit@3</text><text x="594" y="232">F1@3 (×100 축)</text></g>
-          <g font-size="12.5" fill="#161616"><rect x="240" y="262" width="14" height="14" fill="#c9c6d2"/><text x="260" y="274">현행 검색 시스템</text><rect x="380" y="262" width="14" height="14" fill="#6a3fbf"/><text x="400" y="274">고도화 검색</text></g>
         </svg>
       </figure>
     </div>
 
     <div class="sub" id="ch1-10">
       <h3><small>1-10</small>부하 측정</h3>
-      <p>동시 요청 수별 응답 시간 p95를 재서 동시 처리 상한을 정했습니다. 측정할 때는 vLLM 프리픽스 캐시 효과를 무작위 프롬프트로 제거하고, 같은 GPU를 쓰는 다른 작업에 오염된 표본은 분리해 부트스트랩 신뢰구간을 냈습니다. 동시 8건에서 p95가 4건의 두 배 가까이로 늘어 상한을 4로 정하고, 세션별 요청 한도도 두었습니다.</p>
+      <p>동시 요청 수별로 검색 요청부터 답변 스트리밍이 끝날 때까지의 p95를 재서 동시 처리 상한을 정했습니다. 측정할 때는 vLLM 프리픽스 캐시 효과를 무작위 프롬프트로 제거하고, 같은 GPU를 쓰는 다른 작업에 오염된 표본은 분리해 부트스트랩 2,000회로 95% 신뢰구간을 냈습니다. 동시 4건에서 8건으로 늘리면 처리량은 초당 0.43건에서 0.54건으로 25% 느는 데 그치고 답변 완료 p95는 12.4초에서 23.2초로 구간이 겹치지 않게 늘어, 상한을 4로 정하고 세션별 요청 한도도&nbsp;두었습니다.</p>
       <figure>
-        <svg viewBox="0 0 720 136" role="img" aria-label="동시 요청 수별 p95 응답 시간: 4건 12.4초, 8건 23.2초">
+        <svg viewBox="0 0 720 136" role="img" aria-label="동시 요청 수별 답변 완료 p95: 4건 12.4초 (95% 신뢰구간 11.6에서 12.9초), 8건 23.2초 (21.2에서 24.0초)">
           <g font-size="13" fill="#161616" text-anchor="end"><text x="120" y="48">동시 4건</text><text x="120" y="98">동시 8건</text></g>
           <rect x="130" y="32" width="248" height="24" rx="2" fill="#6a3fbf"/>
           <rect x="130" y="82" width="464" height="24" rx="2" fill="#c9c6d2"/>
-          <g font-size="12.5" font-weight="700"><text x="386" y="49" fill="#6a3fbf">p95 12.4초, 상한으로 채택</text><text x="602" y="99" fill="#161616">p95 23.2초</text></g>
+          <g font-size="12.5" font-weight="700"><text x="386" y="49" fill="#6a3fbf">p95 12.4초 (11.6 ~ 12.9), 상한으로 채택</text><text x="602" y="99" fill="#161616">p95 23.2초 (21.2 ~ 24.0)</text></g>
         </svg>
       </figure>
     </div>
@@ -192,7 +190,7 @@
 
   <section id="ch2">
     <h2><small>02</small>카탈로그 품질 자동 점검 API 구축</h2>
-    <p>원윈도우 카탈로그의 상품 메타데이터는 각 플랫폼에서 수집되는데, 빈 값이 있거나 원천 페이지와 값이 달라도 걸러 낼 수단이 없었습니다. 원천 페이지를 크롤링해 DB 값과 대조하고, 관리자가 승인한 수정값만 반영하는 API를 만들었습니다.</p>
+    <p>원윈도우 카탈로그의 상품 메타데이터는 각 플랫폼에서 수집됩니다. 현행 품질진단은 플랫폼이 판정한 결과를 저장만 하고 적용 규칙도 이름 길이 2건뿐이라 빈 값이나 원천 페이지와 다른 값을 걸러 내지 못했고, 랜딩 페이지 점검은 주기 실행과 시작 화면 없이 API를 직접 호출해야 했습니다. 원천 페이지를 크롤링해 DB 값과 대조하고, 관리자가 승인한 수정값만 반영하는 API를 만들었습니다.</p>
 
     <figure>
       <svg viewBox="0 0 1000 250" role="img" aria-label="품질 점검 흐름: 대상 상품, 랜딩 페이지 크롤링, 규칙 추출 또는 LLM 추출, DB 값 대조, LLM 이상값 판정, 관리자 검토">
@@ -253,7 +251,7 @@
     <div class="sub" id="ch2-4">
       <h3><small>2-4</small>점검 회차와 수정값 반영</h3>
       <p>점검은 오래 걸리기 때문에 실행 요청은 회차만 만들고 바로 응답한 뒤, 점검은 백그라운드에서 진행합니다. 진행 상황과 결과는 회차 단위로 조회하고 중간에 멈출 수 있습니다.</p>
-      <p>결과마다 발견값, 사유, 제안값이 붙고, 관리자가 승인한 제안값만 상품 테이블에 반영합니다.</p>
+      <p>결과마다 발견값, 사유, 제안값이 붙고, 관리자가 승인한 제안값만 상품 테이블에 반영합니다. 공공데이터포털 상품 100건 표본은 규칙 추출 모드로 54초에 결측, 이상값, 값 불일치 후보 162건을 찾았고, 원천 페이지 값으로 수정값 후보 138건을 제안했습니다.</p>
     </div>
 
   </section>
@@ -274,7 +272,7 @@
     <div class="sub" id="ch3-2">
       <h3><small>3-2</small>keep-alive 경쟁 조건으로 인한 간헐적 500 에러</h3>
       <div class="psr">
-        <div><b>문제</b><p>부하 측정 중 임베딩 호출 1,393건 중 1건에서 500 에러가 났습니다.</p></div>
+        <div><b>문제</b><p>부하 측정 중 임베딩 호출 1,275건 중 1건에서 500 에러가 났습니다.</p></div>
         <div><b>원인</b><p>httpx 클라이언트와 vLLM 서버의 keep-alive가 둘 다 5초라, 서버가 먼저 닫은 연결을 클라이언트가 재사용했습니다. 연결을 4.996 ~ 4.999초 쉬게 했을 때만 16번 중 8번 재현돼 원인을 확정했습니다.</p></div>
         <div><b>해결</b><p>클라이언트 keep-alive를 4초로 줄이고, 연결 오류는 1번 재시도하게 했습니다.</p></div>
         <div><b>결과</b><p>같은 구간에서 44번 모두 성공했습니다.</p></div>

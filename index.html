@@ -42,7 +42,7 @@
       <div><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg><b>이름</b><span>임영기 (Younggi Lim)</span></div>
       <div><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="M8 7h2M14 7h2M8 11h2M14 11h2M10 21v-4h4v4"/></svg><b>소속</b><span>㈜피씨엔 R&amp;S본부<br>AI 개발자 (사원)</span></div>
       <div><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><b>경력</b><span>2024.11 ~ 현재<br>정부 R&amp;D, 공공 AI 사업</span></div>
-      <div><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg><b>주력 분야</b><span>LLM 학습, 서빙 최적화, 평가 설계</span></div>
+      <div><svg viewBox="0 0 24 24"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg><b>주력 분야</b><span>LLM 검색과 에이전트, 학습, 서빙 최적화, 평가 설계</span></div>
       <div><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><b>이메일</b><span><a href="mailto:younggi1105@gmail.com">younggi1105@gmail.com</a></span></div>
       <div><svg viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg><b>링크</b><span><a href="https://github.com/wndaasa" target="_blank" rel="noopener">GitHub</a>, <a href="https://huggingface.co/Imsbee" target="_blank" rel="noopener">Hugging Face</a></span></div>
     </div>
@@ -58,11 +58,33 @@
         <div class="stages"><span class="on">데이터</span><span>학습</span><span class="on">서빙</span><span class="on">평가</span></div>
         <h3>원윈도우 AI 검색 시스템 고도화</h3>
         <p class="meta">2026.09 ~ 현재</p>
-        <div class="metric"><b>14.8초 → 1.7초</b><span>현행 검색 시스템 대비 문항당 처리 시간</span></div>
+        <div class="metric"><b>13.6초 → 5.2초</b><span>시험셋 99문항, 현행 검색 시스템 대비 검색 결과까지 평균</span></div>
         <p class="summary">공공 데이터 약 13만 건을 대상으로 검색 및 멀티턴 챗봇 시스템을 구축하는 국가 인프라 고도화 사업</p>
-        <ul><li>LLM 검색어 확장, 키워드와 벡터 검색, LLM 재순위로 현행 검색 시스템을 대체</li><li>k3s와 vLLM으로 32B LLM 모델 및 임베딩 모델 서빙</li><li>간헐적 500 에러를 keep-alive 경쟁 조건으로 재현하여 에러 원인 확정</li></ul>
+        <ul><li>LLM 검색어 확장, 키워드와 벡터 검색, LLM 재순위로 현행 검색 시스템을 대체</li><li>시험셋 99문항에서 AI 검색 hit@1 56개 → 82개</li><li>간헐적 500 에러를 keep-alive 경쟁 조건으로 재현하여 에러 원인 확정</li></ul>
         <span class="fill"></span>
-        <div class="foot"><p class="role">검색 API 구축, 카탈로그 품질 자동 점검 API 구축</p><p class="stack">MCP, PostgreSQL, pgvector, FastAPI, SSE, Docker, k3s, vLLM, httpx</p><div class="links"><a href="projects/onewindow.html">자세히 보기 →</a></div></div>
+        <div class="foot"><p class="role">검색 API, 품질 점검 API, LLM 서빙, MCP 연동, 평가 담당</p><p class="stack">MCP, PostgreSQL, pgvector, FastAPI, SSE, Docker, k3s, vLLM, httpx</p><div class="links"><a href="projects/onewindow.html">자세히 보기 →</a></div></div>
+      </article>
+
+      <article class="card">
+        <div class="stages"><span class="on">데이터</span><span>학습</span><span>서빙</span><span class="on">평가</span></div>
+        <h3>에이전트 기반 반복 검색 연구</h3>
+        <p class="meta">2026.07 ~ 08</p>
+        <div class="metric"><b>EM 0.444 → 0.572</b><span>단일 RAG 대비 멀티홉 QA 3종 평균, 같은 검색기와 LLM으로 통제한 비교</span></div>
+        <p class="summary">도구를 호출하며 다시 검색하는 에이전트가 한 번 검색하는 RAG보다 어떤 질문에서 얼마나 나은지와 그 비용을 잰 1저자 논문 연구</p>
+        <ul><li>운영 중인 vLLM을 재시작하지 않고 클라이언트 파싱으로 도구 호출을 구현한 하네스</li><li>검색량을 맞춘 RAG-20 대조군으로 격차가 검색 단계에서 생김을 분리</li><li>왕복을 절반으로 줄인 개선판과 이력 압축 ablation</li></ul>
+        <span class="fill"></span>
+        <div class="foot"><p class="role">도구 호출 하네스, 하이브리드 검색기, 평가 설계 담당</p><p class="stack">vLLM, BM25, bge-m3, RRF, numpy</p><div class="links"><a href="projects/research.html">자세히 보기 →</a></div></div>
+      </article>
+
+      <article class="card">
+        <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span>평가</span></div>
+        <h3>newbie 데스크톱 에이전트 앱</h3>
+        <p class="meta">2026.05 ~ 10</p>
+        <div class="metric"><b>회상 6개 → 12개</b><span>84K 토큰 대화를 압축한 뒤 물은 사실 12개 중 맞힌 수, 압축 재설계 전후</span></div>
+        <p class="summary">파일을 읽고 고치고 명령을 실행하며 작업하는 Windows 데스크톱 에이전트 앱, 사내 스터디 3인 프로젝트</p>
+        <ul><li>작은 컨텍스트 창을 위한 이력 압축, 프롬프트 캐시를 깨지 않는 요청 구성, 로컬과 API 프로바이더 6종</li><li>진전이 없을 때만 멈추는 턴 종료, 보조 에이전트&nbsp;위임</li><li>허용 목록 밖 셸 명령을 LLM 분류기로 판정해 실행하는 자동 모드</li></ul>
+        <span class="fill"></span>
+        <div class="foot"><p class="role">컨텍스트 관리, 턴 종료 설계, 권한과 자동 모드 분류기, 배포 담당</p><p class="stack">TypeScript, Electron, GitHub Actions</p><div class="links"><a href="https://github.com/wndaasa/newbie-harness" target="_blank" rel="noopener">GitHub</a></div></div>
       </article>
 
       <article class="card">
@@ -85,17 +107,6 @@
         <ul><li>Tiptap, Yjs 기반 실시간 협업 에디터의 블록 시스템, 버전 히스토리, 표 편집기 개발</li><li>댓글 @AI 블록 제안, 채팅 이미지 멀티모달, WhisperX 화자 분리 STT 회의록</li><li>httpOnly 쿠키와 리프레시 토큰 회전으로 인증 개편, OWASP LLM Top 10 기준 보안 하드닝</li></ul>
         <span class="fill"></span>
         <div class="foot"><p class="role">프론트엔드, 백엔드, LLM 서빙 연동 담당</p><p class="stack">React, Tiptap, Yjs, Express, PostgreSQL, pgvector, vLLM</p><div class="links"><a href="projects/npu.html">LLM 서빙: NPU 추론 서비스 →</a></div></div>
-      </article>
-
-      <article class="card">
-        <div class="stages"><span>데이터</span><span>학습</span><span class="on">서빙</span><span>평가</span></div>
-        <h3>newbie 데스크톱 에이전트 앱</h3>
-        <p class="meta">2026.04 ~ 09</p>
-        <div class="metric"><b>LLM 프로바이더 5종</b><span>Ollama, llama.cpp, vLLM 로컬 모델과 OpenAI, Anthropic을 한 화면에서 전환</span></div>
-        <p class="summary">파일을 읽고 고치고 명령을 실행하며 작업하는 Windows 데스크톱 에이전트 앱</p>
-        <ul><li>작은 컨텍스트 창을 위한 이력 압축, 프롬프트 캐시를 깨지 않는 요청 구성</li><li>HWP, PDF, XLSX, DOCX 문서 파싱, 보조 에이전트 위임</li><li>허용 목록 밖 셸 명령을 LLM 분류기로 판정해 실행하는 자동 모드</li></ul>
-        <span class="fill"></span>
-        <div class="foot"><p class="role">에이전트 코어, 프로바이더 연동, 자동 모드, 배포 담당</p><p class="stack">TypeScript, Electron, GitHub Actions</p><div class="links"><a href="https://github.com/wndaasa/newbie-harness" target="_blank" rel="noopener">GitHub</a></div></div>
       </article>
 
       <article class="card">
@@ -124,7 +135,7 @@
         <div class="stages"><span class="on">데이터</span><span class="on">학습</span><span>서빙</span><span class="on">평가</span></div>
         <h3>VPE-Ko 한국어 영상 프롬프트 챗봇</h3>
         <p class="meta">2024.11 ~ 2025.08</p>
-        <div class="metric"><b>G-Eval 3.6 → 4.9</b><span>비전문가 A-B 테스트, 생성 영상 만족도 2.1 → 4.6</span></div>
+        <div class="metric"><b>G-Eval 3.6 → 4.9</b><span>자동 평가, 비전문가 10명 영상 만족도 2.1 → 4.6</span></div>
         <p class="summary">한국어 대화로 영상 생성 모델(CogVideoX)용 영어 프롬프트를 완성해 주는 멀티턴 기반 챗봇 시스템</p>
         <ul><li>GPT 두 개를 대화시켜 학습 쌍 24,769건 합성 데이터 구축</li><li>Qwen2 한국어 LoRA 학습, 1저자 논문 발표</li></ul>
         <span class="fill"></span>
@@ -176,7 +187,7 @@
         <div class="no"><b>01</b><h3>데이터</h3></div>
         <p>학습 데이터 생성과 평가셋 설계</p>
         <div class="tools"><span class="key">합성 데이터 생성</span><span>평가셋 설계</span><span>블라인드 판정</span><span>데이터 통계 점검</span></div>
-        <p class="where">VPE-Ko, 원윈도우</p>
+        <p class="where">VPE-Ko, 원윈도우, 반복 검색 연구</p>
       </div>
       <div class="step">
         <div class="no"><b>02</b><h3>학습</h3></div>
@@ -194,7 +205,7 @@
         <div class="no"><b>04</b><h3>평가</h3></div>
         <p>통제군과 신뢰구간으로 개선 검증</p>
         <div class="tools"><span class="key">통제군 설계</span><span>Bootstrap CI</span><span>순열검정</span><span>G-Eval</span><span>hit@k, nDCG</span></div>
-        <p class="where">저작권 탐지, 원윈도우, VPE-Ko</p>
+        <p class="where">저작권 탐지, 원윈도우, 반복 검색 연구, VPE-Ko</p>
       </div>
     </div>
   </div>
